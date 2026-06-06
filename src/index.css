@@ -10,7 +10,7 @@
 /* Root & HTML */
 html {
   font-size: 62.5%;
-  background: #262524;
+  background: #cfcdbd;
 }
 
 :root {
@@ -20,11 +20,11 @@ html {
     "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
   /* Text */
-  --text-color: rgba(217, 217, 217, 0.8);
-  --text-secondary-color: rgba(217, 217, 217, 0.4);
+  --text-color: var(--color-primary-700);
+  --text-secondary-color: var(--color-primary-400);
 
   /* Surfaces */
-  --background-color: #262524;
+  --background-color: #cfcdbd;
   --background-secondary-color: rgba(217, 217, 217, 0.04);
   --border-color: rgba(217, 217, 217, 0.08);
 
@@ -122,41 +122,6 @@ body {
   position: relative;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-bg);
-  pointer-events: none;
-
-  background:
-    /* 작은 노이즈 */ url("/noise-light.png") repeat 0 0 / 30px
-      30px,
-    /* 큰 노이즈 */ url("/noise-light.png") repeat 0 0 / 240px 240px,
-    /* 그라디언트 */
-      linear-gradient(
-        108deg,
-        #2a2928 0%,
-        #262524 45%,
-        #242322 55%,
-        #262524 100%
-      ),
-    repeating-linear-gradient(
-      108deg,
-      rgba(0, 0, 0, 0.015) 0px,
-      rgba(0, 0, 0, 0.015) 1px,
-      rgba(255, 255, 255, 0.015) 1px,
-      rgba(255, 255, 255, 0.015) 2px
-    );
-  background-repeat: repeat, repeat, no-repeat, repeat;
-  background-size: 30px 30px, 240px 240px, cover, auto;
-  opacity: 0.7;
-
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  contain: paint;
-}
 
 #root,
 .app {

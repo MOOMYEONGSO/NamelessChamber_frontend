@@ -13,16 +13,16 @@
   font-size: var(--p1-font-size);
   line-height: var(--p1-font-line-height);
   letter-spacing: var(--p1-font-letter-spacing);
-  color: var(--color-gray-3);
+  color: var(--color-primary-400);
 }
 
 .tablist :global(button).tab.active,
 .tablist button.tab.active {
-  color: var(--color-gray-2);
+  color: var(--color-primary-800);
 }
 
 .tab[aria-selected="true"] {
-  color: var(--color-gray-2);
+  color: var(--color-primary-800);
   position: relative;
 }
 
@@ -33,7 +33,7 @@
   right: 0;
   bottom: -8px;
   height: 2px;
-  background: var(--color-gray-2);
+  background: var(--color-primary-800);
 }
 
 @media (max-width: 768px) {

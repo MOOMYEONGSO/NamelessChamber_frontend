@@ -204,7 +204,7 @@ function LoginPage() {
             onClick={goNextOrSubmit}
             disabled={isPending}
             aria-disabled={!isButtonEnabled}
-            variant={isButtonEnabled ? "main" : "sub"}
+            variant={isButtonEnabled ? "main" : "main"}
             state={isButtonEnabled ? "active" : "default"}
             className={classes.submit}
           >

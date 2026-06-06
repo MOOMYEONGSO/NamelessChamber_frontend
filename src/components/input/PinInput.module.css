@@ -18,10 +18,10 @@
   min-width: 0;
   box-sizing: border-box;
   height: 5.6rem;
-  background-color: var(--color-gray-4);
+  background-color: var(--color-primary-100);
   border: 1px solid transparent;
   border-radius: 8px;
-  color: var(--color-gray-2);
+  color: var(--color-primary-800);
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
