@@ -308,6 +308,7 @@ const AllPostsFeedPage: React.FC = () => {
                 tags={post.tags}
                 views={post.views}
                 commentCount={post.commentCount}
+                imageUrls={post.imageUrls}
 
                 isAuthor={false}
                 size={cardSizeFromId(post.postId)}

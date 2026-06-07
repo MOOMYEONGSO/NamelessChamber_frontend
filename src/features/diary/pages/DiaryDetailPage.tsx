@@ -19,6 +19,7 @@ function DetailContent({
   type,
   postId,
   comments = [],
+  imageUrls,
 }: {
   content?: string;
   isLoading: boolean;
@@ -26,11 +27,14 @@ function DetailContent({
   type?: DiaryType;
   postId?: string;
   comments?: Comment[];
+  imageUrls?: string[];
 }) {
   const paragraphs = useMemo(() => {
     const trimmed = content?.trim();
     return trimmed ? trimmed.split(/\n{2,}/g) : [];
   }, [content]);
+
+  const hasImages = imageUrls && imageUrls.length > 0;
 
   return (
     <section className={`${classes.diary} ${classes.detail}`}>
@@ -40,25 +44,38 @@ function DetailContent({
         </Paragraph>
       )}
 
-      <div className={classes.lines} aria-busy={isLoading}>
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className={classes.paragraphSkeleton} />
-          ))
-        ) : paragraphs.length > 0 ? (
-          <>
-            {paragraphs.map((p, i) => (
-              <FadeInOnView key={i} className={classes.paragraph} once>
-                {p}
-              </FadeInOnView>
-            ))}
-          </>
-        ) : (
-          <div className={classes.empty} role="status" aria-live="polite">
-            아직 내용이 없습니다.
-          </div>
-        )}
-      </div>
+      {hasImages ? (
+        <div className={classes.imageGrid}>
+          {imageUrls.map((url, i) => (
+            <img
+              key={url}
+              src={url}
+              alt={`사진 ${i + 1}`}
+              className={classes.detailImage}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={classes.lines} aria-busy={isLoading}>
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className={classes.paragraphSkeleton} />
+            ))
+          ) : paragraphs.length > 0 ? (
+            <>
+              {paragraphs.map((p, i) => (
+                <FadeInOnView key={i} className={classes.paragraph} once>
+                  {p}
+                </FadeInOnView>
+              ))}
+            </>
+          ) : (
+            <div className={classes.empty} role="status" aria-live="polite">
+              아직 내용이 없습니다.
+            </div>
+          )}
+        </div>
+      )}
 
       {!isLoading && postId && type === "MOOMYEONGSO" && (
         <CommentSection postId={postId} comments={comments} />
@@ -119,6 +136,7 @@ export default function DiaryDetailPage() {
       type={data?.type}
       postId={data?.postId}
       comments={data?.comments}
+      imageUrls={data?.imageUrls}
     />
   );
 }

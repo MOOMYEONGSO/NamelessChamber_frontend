@@ -11,6 +11,7 @@ export type CreateDiaryRequest = PostBody & {
   // TODO: postType "DIARY" 로 임시 조치 해제
   type: DiaryType | "DIARY" | (string & {});
   tags: string[];
+  imageIds?: string[];
 };
 
 export type CreateDiaryResponse = {
@@ -37,6 +38,7 @@ export type DiaryPreview = {
   commentCount?: number;
   createdAt?: string;
   type?: DiaryType;
+  imageUrls?: string[];
 };
 
 export type PostsPayload = {
@@ -63,6 +65,7 @@ export type DiaryDetail = {
   coin: number;
   type?: DiaryType;
   comments: Comment[];
+  imageUrls?: string[];
 };
 
 export type Topic = {

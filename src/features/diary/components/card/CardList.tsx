@@ -33,6 +33,7 @@ const CardList = ({ diaries, onClickCard }: CardListProps) => {
               tags={diary.tags}
               views={diary.views}
               commentCount={diary.commentCount}
+              imageUrls={diary.imageUrls}
               size={cardSizeFromId(diary.postId)}
             />
           </li>

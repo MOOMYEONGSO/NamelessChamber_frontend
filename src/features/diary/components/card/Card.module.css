@@ -109,8 +109,76 @@
   align-items: center;
 }
 
+/* ── 사진 카드 ── */
+.photoCard {
+  width: 100%;
+  max-width: 320px;
+  overflow: hidden;
+  border-radius: 0.8rem;
+  background: var(--color-primary-800);
+  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.12);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photoCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(64, 61, 44, 0.18);
+}
+
+/* 이미지 그리드 */
+.photoGrid {
+  width: 100%;
+  display: grid;
+  gap: 2px;
+}
+
+.photoGrid1 {
+  grid-template-columns: 1fr;
+}
+
+.photoGrid2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.photoGrid3 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+.photoGrid3 .photoImg:first-child {
+  grid-column: 1 / -1;
+}
+
+.photoGrid4 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.photoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 1 / 1;
+}
+
+/* 1장일 때만 자연 비율 유지 */
+.photoGrid1 .photoImg {
+  aspect-ratio: unset;
+  height: auto;
+}
+
+.photoFooter {
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  align-items: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .card {
+  .card,
+  .photoCard {
     transition: none;
   }
 }

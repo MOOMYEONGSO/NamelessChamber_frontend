@@ -18,6 +18,11 @@
   gap: 4rem;
 }
 
+.buttonGroup {
+  display: flex;
+  gap: 1.2rem;
+}
+
 .content .title {
   display: flex;
   flex-direction: column;

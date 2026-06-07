@@ -2,12 +2,14 @@ import { useEffect, useRef, useState, type ComponentPropsWithoutRef } from "reac
 import classes from "./Card.module.css";
 import View from "../label/view/View";
 import CommentCount from "../label/commentCount/commentcount";
+
 type CardProps = ComponentPropsWithoutRef<"article"> & {
   title: string;
   tags?: string[];
   isAuthor?: boolean;
   views?: number;
   commentCount?: number;
+  imageUrls?: string[];
   size?: "sm" | "lg";
 };
 
@@ -20,18 +22,45 @@ const Card = ({
   tags: tagIds = [],
   views = 0,
   commentCount,
+  imageUrls,
   size = "lg",
   ...props
 }: CardProps) => {
+  const isPhoto = imageUrls && imageUrls.length > 0;
   const lineClamp = size === "sm" ? 4 : 6;
   const titleRef = useRef<HTMLParagraphElement>(null);
   const [isClamped, setIsClamped] = useState(false);
 
   useEffect(() => {
+    if (isPhoto) return;
     const el = titleRef.current;
     if (!el) return;
     setIsClamped(el.scrollHeight > el.clientHeight);
-  }, [title, size]);
+  }, [title, size, isPhoto]);
+
+  if (isPhoto) {
+    return (
+      <article
+        className={`${classes.photoCard} ${className ?? ""}`}
+        data-tags={tagIds.join(",")}
+        {...props}
+      >
+        <div className={classes.photoGrid}>
+          <img
+            src={imageUrls[0]}
+            alt="사진"
+            className={classes.photoImg}
+          />
+        </div>
+        <div className={classes.photoFooter}>
+          {commentCount !== undefined && commentCount > 0 && (
+            <CommentCount>{commentCount}</CommentCount>
+          )}
+          <View>{views}</View>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <article

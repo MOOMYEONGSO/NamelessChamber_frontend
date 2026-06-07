@@ -74,6 +74,21 @@
   padding: 0.8rem 0;
 }
 
+.imageGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.detailImage {
+  width: 100%;
+  height: auto;
+  border-radius: 0.8rem;
+  display: block;
+  background-color: var(--color-primary-200);
+}
+
 /* StoryPrompt 하단 배치 및 위계 낮추기 */
 .storyPromptWrapper {
   margin-top: auto;

@@ -14,6 +14,7 @@ export const PATHS = {
   PROFILE: "/profile",
   FEEDBACK: "/feedback",
   DIARY_REROLL: "/diary/reroll/:type",
+  DIARY_NEW_PHOTO: "/diary/new/photo",
 
   ADMIN_DIARIES_BY_TYPE: (type: string) => `/admin/diaries/${type}`,
   ADMIN_DIARY_DETAIL: (postId: string) => `/admin/diaries/post/${postId}`,

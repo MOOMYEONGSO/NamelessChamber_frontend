@@ -12,11 +12,17 @@ function LandingPage() {
   const { ensure, ensuring } = useEnsureSession(false);
   const navigate = useNavigate();
 
-  const handleClick = async () => {
+  const handleEnter = async (mode: "text" | "photo") => {
     setStep(1);
     try {
       const ok = await ensure();
-      if (ok) navigate(PATHS.DIARY_NEW_TYPE("today"));
+      if (ok) {
+        if (mode === "photo") {
+          navigate(PATHS.DIARY_NEW_PHOTO);
+        } else {
+          navigate(PATHS.DIARY_NEW_TYPE("today"));
+        }
+      }
     } catch (e) {
       console.error("세션 확보 실패:", e);
       setStep(0);
@@ -31,14 +37,26 @@ function LandingPage() {
             <Text variant="t1">어디에도 하지 못한 말을</Text>
             <Text variant="t1">이곳 무명소에 흘려보내세요.</Text>
           </div>
-          <Button
-            revealOnMount
-            revealDelay={400}
-            onClick={handleClick}
-            disabled={ensuring}
-          >
-            입장
-          </Button>
+          <div className={classes.buttonGroup}>
+            <Button
+              revealOnMount
+              revealDelay={400}
+              onClick={() => handleEnter("text")}
+              disabled={ensuring}
+              variant="main"
+            >
+              글로
+            </Button>
+            <Button
+              revealOnMount
+              revealDelay={500}
+              onClick={() => handleEnter("photo")}
+              disabled={ensuring}
+              variant="sub"
+            >
+              사진으로
+            </Button>
+          </div>
         </div>
       )}
 

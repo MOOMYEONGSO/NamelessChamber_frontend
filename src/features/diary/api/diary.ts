@@ -49,4 +49,14 @@ export const diaryApi = {
   async deleteComment(postId: string, commentId: string): Promise<void> {
     await client.delete(`/posts/${postId}/comments/${commentId}`);
   },
+  async uploadImage(file: File): Promise<string> {
+    const form = new FormData();
+    form.append("image", file);
+    const res = await client.post<ApiResponse<{ imageId: string }>>(
+      "/post-images",
+      form,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+    return unwrap(res).imageId;
+  },
 };
