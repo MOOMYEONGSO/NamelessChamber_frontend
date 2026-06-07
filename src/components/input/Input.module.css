@@ -1,8 +1,8 @@
 .input {
   width: 100%;
-  background-color: var(--color-gray-4);
+  background-color: var(--color-primary-100);
   border: none;
-  color: var(--color-gray-2);
+  color: var(--color-primary-800);
   border-radius: 8px;
   padding: 1.2rem 1.6rem;
   caret-color: var(--color-caret);
@@ -12,6 +12,10 @@
   font-size: var(--c1-font-size);
   line-height: var(--c1-font-line-height);
   letter-spacing: var(--c1-font-letter-spacing);
+}
+
+.input::placeholder {
+  color: var(--color-primary-400);
 }
 
 input:focus {

@@ -1,67 +1,26 @@
 .cardSkeleton {
   list-style: none;
   width: 100%;
-  padding: 2.4rem;
-  border-radius: 0.8rem;
-  background: rgba(41, 40, 39, 0.6);
+  height: 248px;
+  padding: 3.6rem 2.4rem 1.6rem;
+  border-radius: 1.6rem;
+  background: var(--color-primary-100);
   position: relative;
   overflow: hidden;
-  /* 미세 그림자 */
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25) inset;
+  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.1);
 }
 
-/* Radial */
-.cardSkeleton::before {
-  content: "";
-  position: absolute;
-  left: -40%;
-  top: -40%;
-  width: 180%;
-  height: 180%;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at var(--glow-x, 42%) var(--glow-y, 46%),
-    rgba(242, 219, 153, 0.06) 0%,
-    rgba(242, 219, 153, 0.03) 30%,
-    rgba(242, 219, 153, 0.015) 50%,
-    rgba(242, 219, 153, 0) 70%
-  );
-  filter: blur(20px);
-  mix-blend-mode: screen;
-  z-index: 0;
-  animation: glow-drift 8s ease-in-out infinite alternate;
-}
-
-@keyframes glow-drift {
-  0% {
-    --glow-x: 38%;
-    --glow-y: 44%;
-  }
-  100% {
-    --glow-x: 55%;
-    --glow-y: 52%;
-  }
-}
-
-.block {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  border-radius: 0.4rem;
-  background: rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-}
-
-.block::after {
+/* shimmer overlay */
+.cardSkeleton::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     100deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.1) 40%,
-    rgba(255, 255, 255, 0.18) 50%,
-    rgba(255, 255, 255, 0.1) 60%,
+    rgba(255, 255, 255, 0.45) 40%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.45) 60%,
     transparent 100%
   );
   transform: translateX(-100%);
@@ -74,29 +33,38 @@
   }
 }
 
-/* 레이아웃 */
+.block {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  border-radius: 0.4rem;
+  background: var(--color-primary-200);
+  overflow: hidden;
+}
+
 .titleRow {
   margin-bottom: 2.5rem;
 }
+
 .title {
   height: 2.4rem;
   width: 70%;
 }
+
 .metaRow {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 }
+
 .count {
   height: 2.4rem;
   width: 4.4rem;
   border-radius: 0.4rem;
 }
 
-/* 모션 줄이기 */
 @media (prefers-reduced-motion: reduce) {
-  .cardSkeleton::before,
-  .block::after {
+  .cardSkeleton::after {
     animation: none;
   }
 }

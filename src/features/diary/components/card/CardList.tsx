@@ -3,6 +3,11 @@ import type { DiaryPreview } from "../../types/types";
 import Card from "./Card";
 import { getCurrentIdentity } from "../../../auth/api/tokenStore";
 
+const cardSizeFromId = (id: string): "sm" | "lg" =>
+  id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) % 2 === 0
+    ? "sm"
+    : "lg";
+
 type CardListProps = {
   diaries: DiaryPreview[];
   onClickCard: (postId: string) => void;
@@ -27,8 +32,9 @@ const CardList = ({ diaries, onClickCard }: CardListProps) => {
               isAuthor={isAuthor}
               tags={diary.tags}
               views={diary.views}
-              type={diary.type}
               commentCount={diary.commentCount}
+              imageUrls={diary.imageUrls}
+              size={cardSizeFromId(diary.postId)}
             />
           </li>
         );

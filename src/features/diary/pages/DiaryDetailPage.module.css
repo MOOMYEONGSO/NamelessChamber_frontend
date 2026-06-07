@@ -21,7 +21,7 @@
   flex-direction: column;
   gap: 3.2rem;
   flex: 1 1 auto;
-  background-color: var(--color-gray-4);
+  background-color: var(--color-primary-100);
   padding: 2.4rem 10rem;
   min-height: 300px;
 }
@@ -38,7 +38,7 @@
   font-size: 24px;
   line-height: 2;
   letter-spacing: 0.01em;
-  color: #d9d9d9;
+  color: var(--color-primary-700);
 }
 
 .paragraphSkeleton {
@@ -72,6 +72,21 @@
 .empty {
   opacity: 0.7;
   padding: 0.8rem 0;
+}
+
+.imageGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.detailImage {
+  width: 100%;
+  height: auto;
+  border-radius: 0.8rem;
+  display: block;
+  background-color: var(--color-primary-200);
 }
 
 /* StoryPrompt 하단 배치 및 위계 낮추기 */

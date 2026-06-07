@@ -8,8 +8,13 @@ import { diaryApi } from "../api/diary";
 import Modal from "../../../components/modal/Modal";
 import Button from "../../../components/button/Button";
 
-const CELL_W = 400; // 카드의 가로 공간 (Card 크기에 맞춰 확장)
-const CELL_H = 420; // 카드의 세로 공간 (Card 크기에 맞춰 확장)
+const CELL_W = 380;
+const CELL_H = 380;
+
+const cardSizeFromId = (id: string): "sm" | "lg" =>
+  id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) % 2 === 0
+    ? "sm"
+    : "lg";
 const PREFETCH_RINGS = 2; // 최외곽 링에서 N링 이내 접근 시 다음 페이지 선제 로드
 
 // (col, row) 좌표를 생성하는 바둑판 스파이럴(Spiral) 알고리즘
@@ -300,11 +305,13 @@ const AllPostsFeedPage: React.FC = () => {
             >
               <Card
                 title={post.title}
-                type={post.type}
                 tags={post.tags}
                 views={post.views}
                 commentCount={post.commentCount}
+                imageUrls={post.imageUrls}
+
                 isAuthor={false}
+                size={cardSizeFromId(post.postId)}
               />
             </div>
           ))}

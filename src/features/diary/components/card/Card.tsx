@@ -1,66 +1,92 @@
-import { useMemo, type ComponentPropsWithoutRef } from "react";
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
 import classes from "./Card.module.css";
-import Title from "../title/Title";
-// import Count from "../count/Count";
 import View from "../label/view/View";
 import CommentCount from "../label/commentCount/commentcount";
-import Tag from "../label/tag/Tag";
-import { getRandomCardOverlayUrl } from "../../utils/overlayImages";
-import { CARD_TAG_LABEL } from "../../constants/diaryTags";
-import type { tags } from "../../types/tags";
-import type { DiaryType } from "../../types/types";
 
 type CardProps = ComponentPropsWithoutRef<"article"> & {
   title: string;
-  type?: DiaryType;
   tags?: string[];
   isAuthor?: boolean;
   views?: number;
   commentCount?: number;
+  imageUrls?: string[];
+  size?: "sm" | "lg";
 };
+
+const LINE_HEIGHT = 32;
 
 const Card = ({
   title,
   isAuthor,
   className,
-  tags,
-  type,
+  tags: tagIds = [],
   views = 0,
   commentCount,
+  imageUrls,
+  size = "lg",
   ...props
 }: CardProps) => {
-  const authorType = isAuthor ? "self" : "other";
+  const isPhoto = imageUrls && imageUrls.length > 0;
+  const lineClamp = size === "sm" ? 4 : 6;
+  const titleRef = useRef<HTMLParagraphElement>(null);
+  const [isClamped, setIsClamped] = useState(false);
 
-  const randomOverlay = useMemo(() => getRandomCardOverlayUrl(), [title]);
+  useEffect(() => {
+    if (isPhoto) return;
+    const el = titleRef.current;
+    if (!el) return;
+    setIsClamped(el.scrollHeight > el.clientHeight);
+  }, [title, size, isPhoto]);
+
+  if (isPhoto) {
+    return (
+      <article
+        className={`${classes.photoCard} ${className ?? ""}`}
+        data-tags={tagIds.join(",")}
+        {...props}
+      >
+        <div className={classes.photoGrid}>
+          <img
+            src={imageUrls[0]}
+            alt="사진"
+            className={classes.photoImg}
+          />
+        </div>
+        <div className={classes.photoFooter}>
+          {commentCount !== undefined && commentCount > 0 && (
+            <CommentCount>{commentCount}</CommentCount>
+          )}
+          <View>{views}</View>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <article
-      className={`${classes.card} ${classes[authorType]} ${className ?? ""}`}
+      className={`${classes.card} ${classes[size]} ${isAuthor ? classes.self : classes.other} ${className ?? ""}`}
+      data-tags={tagIds.join(",")}
       {...props}
     >
-      <div className={classes.contentWrapper}>
-        <Title authorType={authorType}>{title}</Title>
-        <div className={classes.metaInfo}>
-          <div className={classes.metaLeft}>
-            {tags?.map((tag) => {
-              const label = CARD_TAG_LABEL[tag as tags];
-              if (!label) return null;
-
-              return <Tag key={tag}>{label}</Tag>;
-            })}
-          </div>
-          <div className={classes.metaRight}>
-            {type === "MOOMYEONGSO" && commentCount !== undefined && (
-              <CommentCount>{commentCount}</CommentCount>
-            )}
-            <View>{views}</View>
-          </div>
+      <div className={`${classes.tape} ${isAuthor ? classes.tapeAuthor : ""}`} />
+      <div className={classes.content}>
+        <p
+          ref={titleRef}
+          className={classes.title}
+          style={{ maxHeight: LINE_HEIGHT * lineClamp }}
+        >
+          {title}
+        </p>
+        {isClamped && <span className={classes.readMore}>...자세히 보기</span>}
+      </div>
+      <div className={classes.footer}>
+        <div className={classes.metaRight}>
+          {commentCount !== undefined && commentCount > 0 && (
+            <CommentCount>{commentCount}</CommentCount>
+          )}
+          <View>{views}</View>
         </div>
       </div>
-
-      {randomOverlay && (
-        <img src={randomOverlay} alt="" className={classes.overlayImage} />
-      )}
     </article>
   );
 };
