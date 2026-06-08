@@ -11,19 +11,7 @@ import type {
 
 const IMAGE_UPLOAD_TIMEOUT_MS = 60_000;
 
-type UploadedPostImage = {
-  imageId: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  contentType: string;
-  size: number;
-  width: number;
-  height: number;
-};
-
-type PostImageUploadResponse = {
-  images: UploadedPostImage[];
-};
+type ImagePostCreateRequest = Pick<CreateDiaryRequest, "type" | "tags">;
 
 export const diaryApi = {
   // TODO: 서버 조회 타입 정책 확정 후 DIARY 임시 허용 타입 정리하기.
@@ -65,17 +53,24 @@ export const diaryApi = {
   async deleteComment(postId: string, commentId: string): Promise<void> {
     await client.delete(`/posts/${postId}/comments/${commentId}`);
   },
-  async uploadImages(files: File[]): Promise<string[]> {
+  async createImagePost(
+    files: File[],
+    request: ImagePostCreateRequest,
+  ): Promise<CreateDiaryResponse> {
     const form = new FormData();
+    form.append(
+      "request",
+      new Blob([JSON.stringify(request)], { type: "application/json" }),
+    );
     files.forEach((file) => {
       form.append("images", file);
     });
 
-    const res = await client.post<ApiResponse<PostImageUploadResponse>>(
+    const res = await client.post<ApiResponse<CreateDiaryResponse>>(
       "/post-images",
       form,
       { timeout: IMAGE_UPLOAD_TIMEOUT_MS },
     );
-    return unwrap(res).images.map((image) => image.imageId);
+    return unwrap(res);
   },
 };

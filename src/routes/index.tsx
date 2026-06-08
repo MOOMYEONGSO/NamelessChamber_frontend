@@ -20,7 +20,7 @@ import AdminDiaryListPage from "../features/admin/pages/diary/AdminDiaryListPage
 import AdminDiaryDetailPage from "../features/admin/pages/diary/AdminDiaryDetailPage";
 import DiaryRerollPage from "../features/diary/pages/DiaryRerollPage";
 import AllPostsFeedPage from "../features/diary/pages/AllPostsFeedPage";
-import DiaryPhotoPage from "../features/diary/pages/DiaryPhotoPage";
+import DiaryImagePage from "../features/diary/pages/DiaryImagePage";
 
 const router = createBrowserRouter([
   {
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
   },
   { path: PATHS.DIARY_STREAK, element: <DiaryStreakPage /> },
   { path: PATHS.DIARY_SUBMIT, element: <DiaryPostSubmitPage /> },
-  { path: PATHS.DIARY_NEW_PHOTO, element: <DiaryPhotoPage /> },
+  { path: PATHS.DIARY_NEW_IMAGE, element: <DiaryImagePage /> },
   { path: PATHS.DIARY_NEW, element: <DiaryWritePage /> },
   { path: PATHS.ERROR, element: <ErrorPage /> },
   { path: "*", element: <NotFoundPage /> },

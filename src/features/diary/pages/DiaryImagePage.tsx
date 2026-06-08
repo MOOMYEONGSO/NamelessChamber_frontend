@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../components/button/Button";
 import { useToast } from "../../../contexts/ToastContext";
 import { diaryApi } from "../api/diary";
-import { useCreateDiary } from "../hooks/useCreateDiary";
 import { PATHS } from "../../../constants/path";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
-import classes from "./DiaryPhotoPage.module.css";
+import classes from "./DiaryImagePage.module.css";
 
 const MAX_IMAGES = 5;
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10MB
@@ -85,37 +84,13 @@ function prepareImageFile(file: File) {
   return withNormalizedContentType(file);
 }
 
-function DiaryPhotoPage() {
+function DiaryImagePage() {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imagesRef = useRef<ImageItem[]>([]);
   const navigate = useNavigate();
   const { showToast } = useToast();
-
-  const { mutateAsync } = useCreateDiary("TODAY", {
-    onSuccess: (data) => {
-      navigate(PATHS.DIARY_SUBMIT_TYPE("today"), {
-        replace: true,
-        state: {
-          type: "today",
-          tags: [],
-          showCalendar: data.showCalendar,
-          streakState: data.showCalendar
-            ? {
-                calendar: data.calendar,
-                coin: data.coin,
-                totalPosts: data.totalPosts,
-                postId: data.postId,
-                tags: [],
-              }
-            : undefined,
-          stayMs: 1600,
-          message: SUBMIT_LOADING_MESSAGE,
-        },
-      });
-    },
-  });
 
   useEffect(() => {
     imagesRef.current = images;
@@ -194,13 +169,29 @@ function DiaryPhotoPage() {
 
     setUploading(true);
     try {
-      const imageIds = await diaryApi.uploadImages(images.map((item) => item.file));
-
-      await mutateAsync({
-        title: "",
-        content: "",
+      const data = await diaryApi.createImagePost(images.map((item) => item.file), {
+        type: "TODAY",
         tags: [],
-        imageIds,
+      });
+
+      navigate(PATHS.DIARY_SUBMIT_TYPE("today"), {
+        replace: true,
+        state: {
+          type: "today",
+          tags: [],
+          showCalendar: data.showCalendar,
+          streakState: data.showCalendar
+            ? {
+                calendar: data.calendar,
+                coin: data.coin,
+                totalPosts: data.totalPosts,
+                postId: data.postId,
+                tags: [],
+              }
+            : undefined,
+          stayMs: 1600,
+          message: SUBMIT_LOADING_MESSAGE,
+        },
       });
     } catch {
       showToast("사진 업로드에 실패했어요. 다시 시도해주세요.", "cancel");
@@ -280,4 +271,4 @@ function DiaryPhotoPage() {
   );
 }
 
-export default DiaryPhotoPage;
+export default DiaryImagePage;

@@ -12,13 +12,13 @@ function LandingPage() {
   const { ensure, ensuring } = useEnsureSession(false);
   const navigate = useNavigate();
 
-  const handleEnter = async (mode: "text" | "photo") => {
+  const handleEnter = async (mode: "text" | "image") => {
     setStep(1);
     try {
       const ok = await ensure();
       if (ok) {
-        if (mode === "photo") {
-          navigate(PATHS.DIARY_NEW_PHOTO);
+        if (mode === "image") {
+          navigate(PATHS.DIARY_NEW_IMAGE);
         } else {
           navigate(PATHS.DIARY_NEW_TYPE("today"));
         }
@@ -50,7 +50,7 @@ function LandingPage() {
             <Button
               revealOnMount
               revealDelay={500}
-              onClick={() => handleEnter("photo")}
+              onClick={() => handleEnter("image")}
               disabled={ensuring}
               variant="sub"
             >
