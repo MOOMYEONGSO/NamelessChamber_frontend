@@ -54,6 +54,7 @@ function withNormalizedContentType(file: File) {
   const type = file.type.toLowerCase();
   if (UPLOAD_IMAGE_TYPES.has(type)) return file;
 
+  // 모바일 브라우저의 빈 File.type 대응을 위한 확장자 기반 보정
   const extension = getExtension(file.name);
   const normalizedType = EXTENSION_TO_CONTENT_TYPE[extension] ?? (type === "image/jpg" ? "image/jpeg" : "");
   if (!normalizedType) return file;
@@ -69,6 +70,7 @@ function formatMB(bytes: number) {
 }
 
 function prepareImageFile(file: File) {
+  // 백엔드 허용 포맷(JPG, PNG, WEBP) 외 iPhone HEIC/HEIF 차단
   if (isHeicImage(file)) {
     throw new ImagePrepareError("HEIC/HEIF 사진은 아직 지원하지 않아요. JPG로 변환한 뒤 다시 올려주세요.");
   }
@@ -93,11 +95,13 @@ function DiaryImagePage() {
   const { showToast } = useToast();
 
   useEffect(() => {
+    // 페이지 이탈 시 남은 미리보기 URL 정리를 위한 최신 목록 보관
     imagesRef.current = images;
   }, [images]);
 
   useEffect(() => {
     return () => {
+      // 모바일 대용량 사진의 브라우저 메모리 점유를 줄이기 위한 Object URL 해제
       imagesRef.current.forEach((item) => URL.revokeObjectURL(item.previewUrl));
     };
   }, []);
@@ -169,6 +173,7 @@ function DiaryImagePage() {
 
     setUploading(true);
     try {
+      // 이미지 게시글은 /post-images 한 번으로 파일 업로드와 게시글 생성 처리
       const data = await diaryApi.createImagePost(images.map((item) => item.file), {
         type: "TODAY",
         tags: [],
