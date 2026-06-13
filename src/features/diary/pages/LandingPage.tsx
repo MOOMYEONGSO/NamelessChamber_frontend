@@ -16,10 +16,13 @@ const WRITE_METHODS = [
     desc: ["떠오르는 마음을 그대로 적어보세요.", "한 줄이어도 괜찮습니다."],
   },
   {
-    mode: "photo" as const,
+    mode: "image" as const,
     image: photoLetterImg,
     title: "사진으로 올리기",
-    desc: ["오늘을 담은 사진 한 장을 올려보세요.", "말로 못 다 한 하루를 대신합니다."],
+    desc: [
+      "오늘을 담은 사진 한 장을 올려보세요.",
+      "말로 못 다 한 하루를 대신합니다.",
+    ],
   },
 ];
 
@@ -28,13 +31,13 @@ function LandingPage() {
   const { ensure, ensuring } = useEnsureSession(false);
   const navigate = useNavigate();
 
-  const handleEnter = async (mode: "text" | "photo") => {
+  const handleEnter = async (mode: "text" | "image") => {
     setStep(1);
     try {
       const ok = await ensure();
       if (ok) {
-        if (mode === "photo") {
-          navigate(PATHS.DIARY_NEW_PHOTO);
+        if (mode === "image") {
+          navigate(PATHS.DIARY_NEW_IMAGE);
         } else {
           navigate(PATHS.DIARY_NEW_TYPE("today"));
         }
@@ -59,11 +62,7 @@ function LandingPage() {
                 onClick={() => handleEnter(method.mode)}
                 disabled={ensuring}
               >
-                <img
-                  src={method.image}
-                  alt=""
-                  className={classes.cardImage}
-                />
+                <img src={method.image} alt="" className={classes.cardImage} />
                 <h3 className={classes.cardTitle}>{method.title}</h3>
                 <p className={classes.cardDesc}>
                   {method.desc[0]}

@@ -53,7 +53,6 @@ export const diaryApi = {
   async deleteComment(postId: string, commentId: string): Promise<void> {
     await client.delete(`/posts/${postId}/comments/${commentId}`);
   },
-
   async createImagePost(
     files: File[],
     request: ImagePostCreateRequest,
