@@ -304,11 +304,11 @@ const AllPostsFeedPage: React.FC = () => {
               }}
             >
               <Card
-                title={post.title}
+                contentPreview={post.contentPreview ?? ""}
                 tags={post.tags}
                 views={post.views}
                 commentCount={post.commentCount}
-                imageUrls={post.imageUrls}
+                thumbnailUrl={post.thumbnailUrl}
 
                 isAuthor={false}
                 size={cardSizeFromId(post.postId)}

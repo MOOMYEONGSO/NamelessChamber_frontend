@@ -21,15 +21,14 @@ function getErrorMessage(err: unknown) {
 }
 
 export function useCreateDiary(
-  // TODO: postType "DIARY" 로 임시 조치 해제
-  defaultType: CreateDiaryRequest["type"] = "DIARY",
   options?: UseMutationOptions<Res, AxiosError, Vars, unknown>,
 ) {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
 
   return useMutation<Res, AxiosError, Vars, unknown>({
-    mutationFn: (body: Vars) => diaryApi.create({ ...body, type: defaultType }),
+    mutationFn: (body: Vars) =>
+      diaryApi.create({ ...body, type: "MOOMYEONGSO" }),
 
     onSuccess: (data, vars, ctx) => {
       queryClient.invalidateQueries({ queryKey: ["diaries"] });

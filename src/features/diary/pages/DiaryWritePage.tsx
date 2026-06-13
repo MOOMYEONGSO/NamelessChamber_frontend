@@ -61,7 +61,6 @@ function DiaryWritePage() {
   const DRAFT_KEY = `draft:diary-write:${diaryType}`;
 
   const isToday = type === "today";
-  const createType = diaryType;
 
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);
 
@@ -83,7 +82,7 @@ function DiaryWritePage() {
       ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
       : "이곳은 나만의 일기장입니다. 솔직한 이야기를 기록해보세요.";
 
-  const { mutateAsync } = useCreateDiary(createType, {
+  const { mutateAsync } = useCreateDiary({
     onSuccess: (data) => {
       formRef.current?.clear();
       setTitle("");

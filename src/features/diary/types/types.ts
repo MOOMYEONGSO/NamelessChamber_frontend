@@ -38,7 +38,7 @@ export type DiaryPreview = {
   commentCount?: number;
   createdAt?: string;
   type?: DiaryType;
-  imageUrls?: string[];
+  thumbnailUrl?: string | null;
 };
 
 export type PostsPayload = {
@@ -55,17 +55,25 @@ export type Comment = {
   mine: boolean;
 };
 
+export type DiaryImage = {
+  imageId: string;
+  imageUrl: string;
+  thumbnailUrl: string;
+  sortOrder: number;
+};
+
 export type DiaryDetail = {
   postId: string;
-  title: string;
+  title?: string;
   content: string;
   likes: number;
   views: number;
+  commentCount?: number;
   createdAt: string;
   coin: number;
   type?: DiaryType;
   comments: Comment[];
-  imageUrls?: string[];
+  images?: DiaryImage[];
 };
 
 export type Topic = {
@@ -100,6 +108,7 @@ export type RandomDiary = {
   views: number;
   createdAt: string;
   type?: DiaryType;
+  thumbnailUrl?: string | null;
 };
 
 export type RandomDiaryResponse = {

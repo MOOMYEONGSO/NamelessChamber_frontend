@@ -28,12 +28,12 @@ const CardList = ({ diaries, onClickCard }: CardListProps) => {
           <li key={diary.postId}>
             <Card
               onClick={() => onClickCard(diary.postId)}
-              title={diary.title}
+              contentPreview={diary.contentPreview ?? ""}
               isAuthor={isAuthor}
               tags={diary.tags}
               views={diary.views}
               commentCount={diary.commentCount}
-              imageUrls={diary.imageUrls}
+              thumbnailUrl={diary.thumbnailUrl}
               size={cardSizeFromId(diary.postId)}
             />
           </li>

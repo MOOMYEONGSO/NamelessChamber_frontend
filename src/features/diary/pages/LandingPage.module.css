@@ -23,6 +23,64 @@
   gap: 1.2rem;
 }
 
+/* 작성방식 선택 카드 */
+.cardGroup {
+  display: flex;
+  gap: 2.4rem;
+  width: 100%;
+  max-width: 84rem;
+}
+
+.methodCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.6rem 1.6rem 2rem;
+  background-color: var(--color-primary-100);
+  border: none;
+  border-radius: 1.6rem;
+  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.methodCard:hover {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.12);
+}
+
+.methodCard:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cardImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 1rem;
+  background-color: var(--color-primary-200);
+  display: block;
+}
+
+.cardTitle {
+  margin: 0.4rem 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary-800);
+}
+
+.cardDesc {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: var(--color-primary-500);
+}
+
 .content .title {
   display: flex;
   flex-direction: column;
@@ -87,6 +145,13 @@
     grid-template-columns: 1fr; /* 세로 1열 */
     gap: 4rem;
     justify-items: center;
+  }
+
+  /* 작성방식 카드: 모바일에서 세로 정렬 */
+  .cardGroup {
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 42rem;
   }
 
   .slot {

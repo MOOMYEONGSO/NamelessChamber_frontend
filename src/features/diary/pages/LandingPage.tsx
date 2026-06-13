@@ -1,11 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Text from "../../../components/text/Text";
-import Button from "../../../components/button/Button";
 import classes from "./LandingPage.module.css";
 import { PATHS } from "../../../constants/path";
 import { useEnsureSession } from "../../auth/hooks/useEnsureSession";
 import Paragraph from "../../../components/paragraph/Paragraph";
+import typeConfessImg from "../../../assets/landing/type-confess.png";
+import photoLetterImg from "../../../assets/landing/photo-letter.png";
+
+const WRITE_METHODS = [
+  {
+    mode: "text" as const,
+    image: typeConfessImg,
+    title: "글로 고백하기",
+    desc: ["떠오르는 마음을 그대로 적어보세요.", "한 줄이어도 괜찮습니다."],
+  },
+  {
+    mode: "photo" as const,
+    image: photoLetterImg,
+    title: "사진으로 올리기",
+    desc: ["오늘을 담은 사진 한 장을 올려보세요.", "말로 못 다 한 하루를 대신합니다."],
+  },
+];
 
 function LandingPage() {
   const [step, setStep] = useState(0);
@@ -33,29 +49,29 @@ function LandingPage() {
     <div className={classes.landing}>
       {step === 0 && (
         <div className={classes.content}>
-          <div className={classes.title}>
-            <Text variant="t1">어디에도 하지 못한 말을</Text>
-            <Text variant="t1">이곳 무명소에 흘려보내세요.</Text>
-          </div>
-          <div className={classes.buttonGroup}>
-            <Button
-              revealOnMount
-              revealDelay={400}
-              onClick={() => handleEnter("text")}
-              disabled={ensuring}
-              variant="main"
-            >
-              글로
-            </Button>
-            <Button
-              revealOnMount
-              revealDelay={500}
-              onClick={() => handleEnter("photo")}
-              disabled={ensuring}
-              variant="sub"
-            >
-              사진으로
-            </Button>
+          <Text variant="t1">작성방식을 선택해주세요.</Text>
+          <div className={classes.cardGroup}>
+            {WRITE_METHODS.map((method) => (
+              <button
+                key={method.mode}
+                type="button"
+                className={classes.methodCard}
+                onClick={() => handleEnter(method.mode)}
+                disabled={ensuring}
+              >
+                <img
+                  src={method.image}
+                  alt=""
+                  className={classes.cardImage}
+                />
+                <h3 className={classes.cardTitle}>{method.title}</h3>
+                <p className={classes.cardDesc}>
+                  {method.desc[0]}
+                  <br />
+                  {method.desc[1]}
+                </p>
+              </button>
+            ))}
           </div>
         </div>
       )}
