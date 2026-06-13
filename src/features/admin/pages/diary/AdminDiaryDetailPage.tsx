@@ -127,7 +127,7 @@ export default function AdminDiaryDetailPage() {
           <Button
             type="button"
             alwaysHoverStyle
-            variant="main"
+            variant="sub"
             state="default"
             onClick={() => setDeleteOpen(false)}
             disabled={deleteMutation.isPending}

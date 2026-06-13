@@ -8,7 +8,7 @@ import { formatDiaryTime } from "../../../lib/diary/formatDiaryTime";
 import StoryPrompt from "../components/storyPrompt/StoryPrompt";
 import { PATHS } from "../../../constants/path";
 import { InlineError } from "../../../components/status/InlineStates";
-import type { DiaryType } from "../types/types";
+import type { DiaryType, DiaryImage } from "../types/types";
 import CommentSection from "../components/comment/CommentSection";
 import type { Comment } from "../types/types";
 
@@ -19,7 +19,7 @@ function DetailContent({
   type,
   postId,
   comments = [],
-  imageUrls,
+  images,
 }: {
   content?: string;
   isLoading: boolean;
@@ -27,14 +27,18 @@ function DetailContent({
   type?: DiaryType;
   postId?: string;
   comments?: Comment[];
-  imageUrls?: string[];
+  images?: DiaryImage[];
 }) {
   const paragraphs = useMemo(() => {
     const trimmed = content?.trim();
     return trimmed ? trimmed.split(/\n{2,}/g) : [];
   }, [content]);
 
-  const hasImages = imageUrls && imageUrls.length > 0;
+  const sortedImages = useMemo(
+    () => (images ? [...images].sort((a, b) => a.sortOrder - b.sortOrder) : []),
+    [images],
+  );
+  const hasImages = sortedImages.length > 0;
 
   return (
     <section className={`${classes.diary} ${classes.detail}`}>
@@ -46,10 +50,10 @@ function DetailContent({
 
       {hasImages ? (
         <div className={classes.imageGrid}>
-          {imageUrls.map((url, i) => (
+          {sortedImages.map((image, i) => (
             <img
-              key={url}
-              src={url}
+              key={image.imageId}
+              src={image.imageUrl}
               alt={`사진 ${i + 1}`}
               className={classes.detailImage}
             />
@@ -136,7 +140,7 @@ export default function DiaryDetailPage() {
       type={data?.type}
       postId={data?.postId}
       comments={data?.comments}
-      imageUrls={data?.imageUrls}
+      images={data?.images}
     />
   );
 }

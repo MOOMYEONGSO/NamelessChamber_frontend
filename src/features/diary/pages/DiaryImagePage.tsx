@@ -86,9 +86,33 @@ function prepareImageFile(file: File) {
   return withNormalizedContentType(file);
 }
 
+function CloudIcon() {
+  return (
+    <svg
+      className={classes.cloudIcon}
+      viewBox="0 0 64 44"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M49 42H17C8.72 42 2 35.28 2 27c0-7.86 6.05-14.3 13.75-14.94C18.3 5.02 24.6 0 32 0c8.97 0 16.34 6.78 17.36 15.49C57.5 16.6 62 21 62 26.5 62 35.06 55.06 42 49 42Z"
+        fill="currentColor"
+      />
+      <path
+        d="M32 33V20m0 0-5 5m5-5 5 5"
+        stroke="var(--color-primary-100)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function DiaryImagePage() {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imagesRef = useRef<ImageItem[]>([]);
   const navigate = useNavigate();
@@ -106,10 +130,10 @@ function DiaryImagePage() {
     };
   }, []);
 
-  const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const files = Array.from(e.target.files ?? []);
-      e.target.value = "";
+  const openPicker = () => fileInputRef.current?.click();
+
+  const addFiles = useCallback(
+    (files: File[]) => {
       if (!files.length) return;
       if (uploading) return;
 
@@ -122,17 +146,19 @@ function DiaryImagePage() {
       try {
         const toAdd = files.slice(0, remainingSlots);
         const preparedFiles: File[] = [];
-
         for (const file of toAdd) {
           preparedFiles.push(prepareImageFile(file));
         }
 
-        const totalSize = [...images.map((item) => item.file), ...preparedFiles].reduce(
-          (sum, file) => sum + file.size,
-          0,
-        );
+        const totalSize = [
+          ...images.map((item) => item.file),
+          ...preparedFiles,
+        ].reduce((sum, file) => sum + file.size, 0);
         if (totalSize > MAX_TOTAL_BYTES) {
-          showToast(`전체 사진 용량은 ${formatMB(MAX_TOTAL_BYTES)}MB 이하만 등록할 수 있어요.`, "cancel");
+          showToast(
+            `전체 사진 용량은 ${formatMB(MAX_TOTAL_BYTES)}MB 이하만 등록할 수 있어요.`,
+            "cancel",
+          );
           return;
         }
 
@@ -154,16 +180,51 @@ function DiaryImagePage() {
     [images, showToast, uploading],
   );
 
-  const handleRemove = useCallback((index: number) => {
-    if (uploading) return;
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(e.target.files ?? []);
+      e.target.value = "";
+      addFiles(files);
+    },
+    [addFiles],
+  );
 
-    setImages((prev) => {
-      if (!prev[index]) return prev;
+  const handleDragOver = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      if (uploading) return;
+      setIsDragging(true);
+    },
+    [uploading],
+  );
 
-      URL.revokeObjectURL(prev[index].previewUrl);
-      return prev.filter((_, i) => i !== index);
-    });
-  }, [uploading]);
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+      addFiles(Array.from(e.dataTransfer.files ?? []));
+    },
+    [addFiles],
+  );
+
+  const handleRemove = useCallback(
+    (index: number) => {
+      if (uploading) return;
+
+      setImages((prev) => {
+        if (!prev[index]) return prev;
+
+        URL.revokeObjectURL(prev[index].previewUrl);
+        return prev.filter((_, i) => i !== index);
+      });
+    },
+    [uploading],
+  );
 
   const handleSubmit = async () => {
     if (!images.length) {
@@ -174,10 +235,10 @@ function DiaryImagePage() {
     setUploading(true);
     try {
       // 이미지 게시글은 /post-images 한 번으로 파일 업로드와 게시글 생성 처리
-      const data = await diaryApi.createImagePost(images.map((item) => item.file), {
-        type: "TODAY",
-        tags: [],
-      });
+      const data = await diaryApi.createImagePost(
+        images.map((item) => item.file),
+        { type: "MOOMYEONGSO", tags: [] },
+      );
 
       navigate(PATHS.DIARY_SUBMIT_TYPE("today"), {
         replace: true,
@@ -204,22 +265,46 @@ function DiaryImagePage() {
     }
   };
 
+  const isEmpty = images.length === 0;
+
   return (
     <div className={classes.page}>
       <div className={classes.inner}>
-        <div className={classes.uploadArea}>
-          {images.length === 0 ? (
-            <button
-              type="button"
-              className={classes.emptyPicker}
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-            >
-              <span className={classes.emptyIcon}>＋</span>
-              <span className={classes.emptyText}>사진 추가</span>
-              <span className={classes.emptyHint}>최대 5장 · 장당 10MB 이하</span>
-            </button>
-          ) : (
+        <h1 className={classes.heading}>
+          손으로 쓴 편지{" "}
+          <span className={classes.count}>
+            ({images.length}/{MAX_IMAGES})
+          </span>
+        </h1>
+
+        {isEmpty ? (
+          <button
+            type="button"
+            className={`${classes.dropzone} ${isDragging ? classes.dragging : ""}`}
+            onClick={openPicker}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            disabled={uploading}
+          >
+            <div className={classes.dropInner}>
+              <CloudIcon />
+              <p className={classes.dropTitle}>
+                이곳을 클릭하거나 파일을 마우스로 끌어 오세요
+              </p>
+              <span className={classes.browseBtn}>찾아보기</span>
+              <p className={classes.dropHint}>
+                또는 파일을 드래그하여 업로드하세요.
+              </p>
+            </div>
+          </button>
+        ) : (
+          <div
+            className={`${classes.dropzoneFilled} ${isDragging ? classes.dragging : ""}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
             <div className={classes.previewGrid}>
               {images.map((item, i) => (
                 <div key={item.previewUrl} className={classes.previewItem}>
@@ -243,34 +328,44 @@ function DiaryImagePage() {
                 <button
                   type="button"
                   className={classes.addMore}
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={openPicker}
                   disabled={uploading}
+                  aria-label="사진 추가"
                 >
                   ＋
                 </button>
               )}
             </div>
-          )}
+          </div>
+        )}
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept={ACCEPTED_IMAGE_INPUT}
-            multiple
-            disabled={uploading}
-            className={classes.hiddenInput}
-            onChange={handleFileChange}
-          />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={ACCEPTED_IMAGE_INPUT}
+          multiple
+          disabled={uploading}
+          className={classes.hiddenInput}
+          onChange={handleFileChange}
+        />
+
+        <div className={classes.footer}>
+          <ul className={classes.constraints}>
+            <li>
+              장당 {formatMB(MAX_FILE_BYTES)}MB · 합계 {formatMB(MAX_TOTAL_BYTES)}MB
+              이하
+            </li>
+            <li>JPG, PNG, WEBP</li>
+          </ul>
+          <Button
+            variant="sub"
+            onClick={handleSubmit}
+            disabled={isEmpty || uploading}
+            className={classes.submitBtn}
+          >
+            {uploading ? "업로드 중..." : "작성완료"}
+          </Button>
         </div>
-
-        <Button
-          variant="main"
-          onClick={handleSubmit}
-          disabled={images.length === 0 || uploading}
-          className={classes.submitBtn}
-        >
-          {uploading ? "업로드 중..." : "작성 완료"}
-        </Button>
       </div>
     </div>
   );

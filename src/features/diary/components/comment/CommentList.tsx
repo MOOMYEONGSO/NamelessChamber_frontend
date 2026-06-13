@@ -50,7 +50,11 @@ export default function CommentList({ postId, comments }: Props) {
         <Modal.Title>삭제 하시겠습니까?</Modal.Title>
         <Modal.Textarea>삭제한 한마디는 되돌릴 수 없습니다.</Modal.Textarea>
         <Modal.Actions>
-          <Button onClick={() => setDeleteTargetId(null)} disabled={isPending}>
+          <Button
+            variant="sub"
+            onClick={() => setDeleteTargetId(null)}
+            disabled={isPending}
+          >
             닫기
           </Button>
           <Button

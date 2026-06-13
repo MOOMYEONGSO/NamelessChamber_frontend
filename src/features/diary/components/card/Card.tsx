@@ -4,29 +4,29 @@ import View from "../label/view/View";
 import CommentCount from "../label/commentCount/commentcount";
 
 type CardProps = ComponentPropsWithoutRef<"article"> & {
-  title: string;
+  contentPreview: string;
   tags?: string[];
   isAuthor?: boolean;
   views?: number;
   commentCount?: number;
-  imageUrls?: string[];
+  thumbnailUrl?: string | null;
   size?: "sm" | "lg";
 };
 
 const LINE_HEIGHT = 32;
 
 const Card = ({
-  title,
+  contentPreview,
   isAuthor,
   className,
   tags: tagIds = [],
   views = 0,
   commentCount,
-  imageUrls,
+  thumbnailUrl,
   size = "lg",
   ...props
 }: CardProps) => {
-  const isPhoto = imageUrls && imageUrls.length > 0;
+  const isPhoto = !!thumbnailUrl;
   const lineClamp = size === "sm" ? 4 : 6;
   const titleRef = useRef<HTMLParagraphElement>(null);
   const [isClamped, setIsClamped] = useState(false);
@@ -36,7 +36,7 @@ const Card = ({
     const el = titleRef.current;
     if (!el) return;
     setIsClamped(el.scrollHeight > el.clientHeight);
-  }, [title, size, isPhoto]);
+  }, [contentPreview, size, isPhoto]);
 
   if (isPhoto) {
     return (
@@ -47,7 +47,7 @@ const Card = ({
       >
         <div className={classes.photoGrid}>
           <img
-            src={imageUrls[0]}
+            src={thumbnailUrl ?? ""}
             alt="사진"
             className={classes.photoImg}
           />
@@ -75,7 +75,7 @@ const Card = ({
           className={classes.title}
           style={{ maxHeight: LINE_HEIGHT * lineClamp }}
         >
-          {title}
+          {contentPreview}
         </p>
         {isClamped && <span className={classes.readMore}>...자세히 보기</span>}
       </div>
