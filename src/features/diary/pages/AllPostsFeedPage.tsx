@@ -345,7 +345,7 @@ const AllPostsFeedPage: React.FC = () => {
           <Button
             type="button"
             alwaysHoverStyle
-            variant="main"
+            variant="sub"
             state="default"
             onClick={() => setCoinEmptyOpen(false)}
           >
@@ -382,7 +382,7 @@ const AllPostsFeedPage: React.FC = () => {
           <Button
             type="button"
             alwaysHoverStyle
-            variant="main"
+            variant="sub"
             state="default"
             onClick={() => {
               setConfirmOpen(false);

@@ -102,9 +102,9 @@
 }
 
 .activeNextButton {
-  background-color: #556028 !important;
-  border-color: #556028 !important;
-  color: #ffffff !important;
+  background-color: var(--color-primary-800) !important;
+  border-color: var(--color-primary-800) !important;
+  color: var(--color-primary-100) !important;
 }
 
 @media (max-width: 768px) {

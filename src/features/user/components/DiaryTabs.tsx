@@ -3,9 +3,8 @@ import classes from "./DiaryTabs.module.css";
 
 type Tab = { id: string; label: string };
 const TABS: Tab[] = [
-  { id: "written", label: "작성소" },
-  { id: "read", label: "열람소" },
-  { id: "community", label: "커뮤니티" },
+  { id: "written", label: "작성한 일기" },
+  { id: "read", label: "열람한 일기" },
 ];
 
 type Props = { onChange?: (tabId: string) => void };

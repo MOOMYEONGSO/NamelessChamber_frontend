@@ -106,7 +106,7 @@ const CardListContainer = ({
               <Button
                 type="button"
                 alwaysHoverStyle
-                variant="main"
+                variant="sub"
                 state="default"
                 onClick={() => setCoinEmptyOpen(false)}
               >
@@ -148,7 +148,7 @@ const CardListContainer = ({
               <Button
                 type="button"
                 alwaysHoverStyle
-                variant="main"
+                variant="sub"
                 state="default"
                 onClick={() => {
                   setConfirmOpen(false);

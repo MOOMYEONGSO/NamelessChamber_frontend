@@ -2,9 +2,10 @@ import type { Editor } from "@tiptap/react";
 import classes from "./RichEditorToolbar.module.css";
 
 const FONT_STYLES = [
-  { label: "차분한", value: "'Pretendard Variable', Pretendard, sans-serif" },
-  { label: "감성적", value: "Georgia, serif" },
-  { label: "모던", value: "'Courier New', monospace" },
+  { label: "정직한", value: "'Pretendard Variable', Pretendard, sans-serif" },
+  { label: "차분한", value: "'Nanum Myeongjo', serif" },
+  { label: "솔직한", value: "'Nanum Brush Script', cursive" },
+  { label: "결연한", value: "'East Sea Dokdo', cursive" },
 ];
 
 const FONT_SIZES = [
@@ -50,8 +51,16 @@ export default function RichEditorToolbar({ editor }: RichEditorToolbarProps) {
   const currentColor =
     editor.getAttributes("textStyle").color ?? "#2a2827";
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const chain = editor.chain().focus() as any;
+  const setFontSize = (value: string) => {
+    // 매 호출마다 현재 선택 영역 기준으로 새 체인 생성 (stale chain 방지)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const chain = editor.chain().focus() as any;
+    if (value === "18px") {
+      chain.unsetFontSize().run();
+    } else {
+      chain.setFontSize(value).run();
+    }
+  };
 
   return (
     <div className={classes.toolbar}>
@@ -78,13 +87,7 @@ export default function RichEditorToolbar({ editor }: RichEditorToolbarProps) {
         <select
           className={classes.select}
           value={currentFontSize}
-          onChange={(e) => {
-            if (e.target.value === "18px") {
-              chain.unsetFontSize().run();
-            } else {
-              chain.setFontSize(e.target.value).run();
-            }
-          }}
+          onChange={(e) => setFontSize(e.target.value)}
         >
           {FONT_SIZES.map(({ label, value }) => (
             <option key={value} value={value}>

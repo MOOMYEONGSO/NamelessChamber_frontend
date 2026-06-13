@@ -1,6 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle, Color, FontFamily, FontSize } from "@tiptap/extension-text-style";
 import CharacterCount from "@tiptap/extension-character-count";
@@ -24,8 +23,8 @@ export default function RichEditor({
 }: RichEditorProps) {
   const editor = useEditor({
     extensions: [
+      // StarterKit(v3)에 underline이 이미 포함되어 있어 별도 등록 시 중복 충돌 발생
       StarterKit,
-      Underline,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TextStyle,
       Color,

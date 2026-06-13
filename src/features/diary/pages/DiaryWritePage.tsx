@@ -220,6 +220,7 @@ function DiaryWritePage() {
           >
             <Button
               type="button"
+              variant="sub"
               onClick={handleOpenConfirm}
               disabled={submitting || !canSubmit}
             >
@@ -257,7 +258,7 @@ function DiaryWritePage() {
           <Button
             type="button"
             alwaysHoverStyle
-            variant="main"
+            variant="sub"
             state="default"
             onClick={() => setShowTagSelect(false)}
           >
@@ -298,7 +299,7 @@ function DiaryWritePage() {
           <Button
             type="button"
             alwaysHoverStyle
-            variant="main"
+            variant="sub"
             state="default"
             onClick={() => setShowConfirm(false)}
           >

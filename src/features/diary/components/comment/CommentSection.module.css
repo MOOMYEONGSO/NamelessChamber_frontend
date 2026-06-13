@@ -31,8 +31,8 @@
 }
 
 .submitButton {
-  background-color: var(--color-green) !important;
-  color: var(--color-black) !important;
+  background-color: var(--color-primary-800) !important;
+  color: var(--color-primary-100) !important;
   font-weight: 700;
   align-self: flex-end;
   min-width: 120px;

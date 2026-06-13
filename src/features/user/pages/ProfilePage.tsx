@@ -18,9 +18,7 @@ import { useToast } from "../../../contexts/ToastContext";
 import { ApiError } from "../../../api/types";
 
 function ProfilePage() {
-  const [currentTab, setCurrentTab] = useState<
-    "written" | "read" | "community"
-  >("written");
+  const [currentTab, setCurrentTab] = useState<"written" | "read">("written");
   const { data: me, isLoading: isMeLoading, error, isError } = useUserMe();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -46,28 +44,18 @@ function ProfilePage() {
   }, [isError, error, navigate, showToast]);
 
   const { data: readData, isLoading: isReadLoading } = useReadDiaries(
-    "read",
     currentTab === "read",
-  );
-  const { data: communityData, isLoading: isCommunityLoading } = useReadDiaries(
-    "community",
-    currentTab === "community",
   );
   const { data: writtenData, isLoading: isWrittenLoading } =
     useWrittenDiaries();
 
   const diaries = useMemo(() => {
     if (currentTab === "read") return readData?.posts ?? [];
-    if (currentTab === "community") return communityData?.posts ?? [];
     return writtenData ?? [];
-  }, [currentTab, readData, communityData, writtenData]);
+  }, [currentTab, readData, writtenData]);
 
   const isListLoading =
-    currentTab === "read"
-      ? isReadLoading
-      : currentTab === "community"
-        ? isCommunityLoading
-        : isWrittenLoading;
+    currentTab === "read" ? isReadLoading : isWrittenLoading;
 
   const isEmpty = !isListLoading && (diaries?.length ?? 0) === 0;
 
@@ -121,9 +109,7 @@ function ProfilePage() {
 
       <div className={classes.listSection}>
         <DiaryTabs
-          onChange={(id) =>
-            setCurrentTab(id as "written" | "read" | "community")
-          }
+          onChange={(id) => setCurrentTab(id as "written" | "read")}
         />
         <CardListContainer
           diaries={diaries}
@@ -134,9 +120,7 @@ function ProfilePage() {
           emptyMessage={
             currentTab === "read"
               ? "아직 열람한 글이 없어요."
-              : currentTab === "community"
-                ? "아직 열람한 커뮤니티 글이 없어요."
-                : "아직 작성한 글이 없어요."
+              : "아직 작성한 글이 없어요."
           }
           interactionMode="direct"
         />
