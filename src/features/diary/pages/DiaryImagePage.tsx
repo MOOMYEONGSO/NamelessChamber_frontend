@@ -5,86 +5,22 @@ import { useToast } from "../../../contexts/ToastContext";
 import { diaryApi } from "../api/diary";
 import { PATHS } from "../../../constants/path";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
+import {
+  MAX_IMAGES,
+  MAX_TOTAL_BYTES,
+  ACCEPTED_IMAGE_INPUT,
+  ImagePrepareError,
+  isPdf,
+  prepareUploadFile,
+  formatMB,
+  compressForUpload,
+} from "../utils/imageUpload";
 import classes from "./DiaryImagePage.module.css";
-
-const MAX_IMAGES = 5;
-const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10MB
-const MAX_TOTAL_BYTES = MAX_IMAGES * MAX_FILE_BYTES;
-const ACCEPTED_IMAGE_INPUT =
-  ".jpg,.jpeg,.png,.webp,.heic,.heif,image/jpeg,image/png,image/webp,image/heic,image/heif";
-
-const UPLOAD_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
-const HEIC_IMAGE_TYPES = new Set([
-  "image/heic",
-  "image/heif",
-  "image/heic-sequence",
-  "image/heif-sequence",
-]);
-const EXTENSION_TO_CONTENT_TYPE: Record<string, string> = {
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-};
 
 type ImageItem = {
   file: File;
   previewUrl: string;
 };
-
-class ImagePrepareError extends Error {}
-
-function getExtension(fileName: string) {
-  return fileName.split(".").pop()?.toLowerCase() ?? "";
-}
-
-function isHeicImage(file: File) {
-  const type = file.type.toLowerCase();
-  const extension = getExtension(file.name);
-  return HEIC_IMAGE_TYPES.has(type) || extension === "heic" || extension === "heif";
-}
-
-function isSupportedUploadImage(file: File) {
-  const type = file.type.toLowerCase();
-  const extension = getExtension(file.name);
-  return UPLOAD_IMAGE_TYPES.has(type) || type === "image/jpg" || extension in EXTENSION_TO_CONTENT_TYPE;
-}
-
-function withNormalizedContentType(file: File) {
-  const type = file.type.toLowerCase();
-  if (UPLOAD_IMAGE_TYPES.has(type)) return file;
-
-  // 모바일 브라우저의 빈 File.type 대응을 위한 확장자 기반 보정
-  const extension = getExtension(file.name);
-  const normalizedType = EXTENSION_TO_CONTENT_TYPE[extension] ?? (type === "image/jpg" ? "image/jpeg" : "");
-  if (!normalizedType) return file;
-
-  return new File([file], file.name, {
-    type: normalizedType,
-    lastModified: file.lastModified,
-  });
-}
-
-function formatMB(bytes: number) {
-  return Math.ceil(bytes / 1024 / 1024);
-}
-
-function prepareImageFile(file: File) {
-  // 백엔드 허용 포맷(JPG, PNG, WEBP) 외 iPhone HEIC/HEIF 차단
-  if (isHeicImage(file)) {
-    throw new ImagePrepareError("HEIC/HEIF 사진은 아직 지원하지 않아요. JPG로 변환한 뒤 다시 올려주세요.");
-  }
-
-  if (!isSupportedUploadImage(file)) {
-    throw new ImagePrepareError("JPG, PNG, WEBP 사진만 등록할 수 있어요.");
-  }
-
-  if (file.size > MAX_FILE_BYTES) {
-    throw new ImagePrepareError(`사진은 장당 ${formatMB(MAX_FILE_BYTES)}MB 이하만 등록할 수 있어요.`);
-  }
-
-  return withNormalizedContentType(file);
-}
 
 function CloudIcon() {
   return (
@@ -139,7 +75,10 @@ function DiaryImagePage() {
 
       const remainingSlots = MAX_IMAGES - images.length;
       if (remainingSlots <= 0) {
-        showToast(`사진은 최대 ${MAX_IMAGES}장까지 등록할 수 있어요.`, "cancel");
+        showToast(
+          `사진은 최대 ${MAX_IMAGES}장까지 등록할 수 있어요.`,
+          "cancel",
+        );
         return;
       }
 
@@ -147,7 +86,7 @@ function DiaryImagePage() {
         const toAdd = files.slice(0, remainingSlots);
         const preparedFiles: File[] = [];
         for (const file of toAdd) {
-          preparedFiles.push(prepareImageFile(file));
+          preparedFiles.push(prepareUploadFile(file));
         }
 
         const totalSize = [
@@ -173,7 +112,7 @@ function DiaryImagePage() {
         const message =
           error instanceof ImagePrepareError
             ? error.message
-            : "사진을 준비하지 못했어요. 다시 선택해주세요.";
+            : "파일을 불러오지 못했어요. 다시 선택해주세요.";
         showToast(message, "cancel");
       }
     },
@@ -234,11 +173,16 @@ function DiaryImagePage() {
 
     setUploading(true);
     try {
-      // 이미지 게시글은 /post-images 한 번으로 파일 업로드와 게시글 생성 처리
-      const data = await diaryApi.createImagePost(
-        images.map((item) => item.file),
-        { type: "MOOMYEONGSO", tags: [] },
+      // 업로드 전 이미지는 압축, PDF는 그대로 (서버 용량 한도 대응)
+      const compressedFiles = await Promise.all(
+        images.map((item) => compressForUpload(item.file)),
       );
+
+      // 이미지 게시글은 /post-images 한 번으로 파일 업로드와 게시글 생성 처리
+      const data = await diaryApi.createImagePost(compressedFiles, {
+        type: "MOOMYEONGSO",
+        tags: [],
+      });
 
       navigate(PATHS.DIARY_SUBMIT_TYPE("today"), {
         replace: true,
@@ -259,7 +203,8 @@ function DiaryImagePage() {
           message: SUBMIT_LOADING_MESSAGE,
         },
       });
-    } catch {
+    } catch (error) {
+      console.error("이미지 게시글 작성 실패:", error);
       showToast("사진 업로드에 실패했어요. 다시 시도해주세요.", "cancel");
       setUploading(false);
     }
@@ -308,17 +253,24 @@ function DiaryImagePage() {
             <div className={classes.previewGrid}>
               {images.map((item, i) => (
                 <div key={item.previewUrl} className={classes.previewItem}>
-                  <img
-                    src={item.previewUrl}
-                    alt={`선택된 사진 ${i + 1}`}
-                    className={classes.previewImg}
-                  />
+                  {isPdf(item.file) ? (
+                    <div className={classes.pdfPreview}>
+                      <span className={classes.pdfBadge}>PDF</span>
+                      <span className={classes.pdfName}>{item.file.name}</span>
+                    </div>
+                  ) : (
+                    <img
+                      src={item.previewUrl}
+                      alt={`선택된 파일 ${i + 1}`}
+                      className={classes.previewImg}
+                    />
+                  )}
                   <button
                     type="button"
                     className={classes.removeBtn}
                     onClick={() => handleRemove(i)}
                     disabled={uploading}
-                    aria-label="사진 제거"
+                    aria-label="파일 제거"
                   >
                     ✕
                   </button>
@@ -351,11 +303,8 @@ function DiaryImagePage() {
 
         <div className={classes.footer}>
           <ul className={classes.constraints}>
-            <li>
-              장당 {formatMB(MAX_FILE_BYTES)}MB · 합계 {formatMB(MAX_TOTAL_BYTES)}MB
-              이하
-            </li>
-            <li>JPG, PNG, WEBP</li>
+            <li>합계 {formatMB(MAX_TOTAL_BYTES)}MB 이하</li>
+            <li>JPG, PNG, PDF</li>
           </ul>
           <Button
             variant="sub"

@@ -22,6 +22,7 @@
     "@tiptap/react": "^3.23.6",
     "@tiptap/starter-kit": "^3.23.6",
     "axios": "^1.11.0",
+    "browser-image-compression": "^2.0.2",
     "react": "^19.1.2",
     "react-dom": "^19.1.2",
     "react-router": "^7.7.1",
