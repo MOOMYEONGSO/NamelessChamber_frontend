@@ -9,7 +9,7 @@
 }
 
 .message {
-  color: var(--color-gray-2);
+  color: var(--color-primary-700);
   font-family: var(--p1-font-family);
   font-weight: var(--p1-font-weight);
   font-size: var(--p1-font-size);
