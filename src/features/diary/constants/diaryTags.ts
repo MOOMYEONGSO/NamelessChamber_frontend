@@ -61,4 +61,9 @@ export const DIARY_TAGS = [
     subtitle: "딱 잘라 말하기 어렵네요",
     image: iconOther,
   },
-];
+] as const satisfies ReadonlyArray<{
+  id: tags;
+  title: string;
+  subtitle: string;
+  image: string;
+}>;

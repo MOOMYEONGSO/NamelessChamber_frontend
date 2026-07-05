@@ -6,6 +6,7 @@ interface TagButtonProps {
   subtitle: string;
   image?: string;
   isSelected: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }
 
@@ -14,6 +15,7 @@ export default function TagButton({
   subtitle,
   image,
   isSelected,
+  disabled = false,
   onClick,
 }: TagButtonProps) {
   return (
@@ -21,6 +23,7 @@ export default function TagButton({
       type="button"
       className={`${classes.container} ${isSelected ? classes.active : ""}`}
       onClick={onClick}
+      disabled={disabled}
     >
       <div className={classes.image}>
         {image && <img src={image} alt="" className={classes.icon} />}

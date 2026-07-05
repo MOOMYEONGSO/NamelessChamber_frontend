@@ -5,12 +5,13 @@ import { useToast } from "../../../contexts/ToastContext";
 import { diaryApi } from "../api/diary";
 import { PATHS } from "../../../constants/path";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
+import type { tags as DiaryTag } from "../types/tags";
+import TagSelectModal from "../components/tag/TagSelectModal";
 import {
   MAX_IMAGES,
   MAX_TOTAL_BYTES,
   ACCEPTED_IMAGE_INPUT,
   ImagePrepareError,
-  isPdf,
   prepareUploadFile,
   formatMB,
   compressForUpload,
@@ -47,6 +48,8 @@ function CloudIcon() {
 
 function DiaryImagePage() {
   const [images, setImages] = useState<ImageItem[]>([]);
+  const [tags, setTags] = useState<DiaryTag[]>([]);
+  const [showTagSelect, setShowTagSelect] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -165,38 +168,53 @@ function DiaryImagePage() {
     [uploading],
   );
 
+  const handleOpenTagSelect = () => {
+    if (!images.length) {
+      showToast("사진을 한 장 이상 선택해주세요.", "cancel");
+      return;
+    }
+    setShowTagSelect(true);
+  };
+
   const handleSubmit = async () => {
+    if (uploading) return;
+
     if (!images.length) {
       showToast("사진을 한 장 이상 선택해주세요.", "cancel");
       return;
     }
 
+    if (!tags.length) {
+      showToast("태그를 하나 이상 선택해주세요.", "info");
+      return;
+    }
+
     setUploading(true);
     try {
-      // 업로드 전 이미지는 압축, PDF는 그대로 (서버 용량 한도 대응)
+      // 업로드 전 이미지는 압축해 서버 용량 한도에 맞춘다.
       const compressedFiles = await Promise.all(
         images.map((item) => compressForUpload(item.file)),
       );
 
       // 이미지 게시글은 /post-images 한 번으로 파일 업로드와 게시글 생성 처리
       const data = await diaryApi.createImagePost(compressedFiles, {
-        type: "MOOMYEONGSO",
-        tags: [],
+        tags,
       });
 
+      setShowTagSelect(false);
       navigate(PATHS.DIARY_SUBMIT_TYPE("today"), {
         replace: true,
         state: {
           type: "today",
-          tags: [],
-          showCalendar: data.showCalendar,
-          streakState: data.showCalendar
+          tags,
+          showCalendar: data.showCalendar && !!data.calendar,
+          streakState: data.showCalendar && data.calendar
             ? {
                 calendar: data.calendar,
                 coin: data.coin,
                 totalPosts: data.totalPosts,
                 postId: data.postId,
-                tags: [],
+                tags,
               }
             : undefined,
           stayMs: 1600,
@@ -253,18 +271,11 @@ function DiaryImagePage() {
             <div className={classes.previewGrid}>
               {images.map((item, i) => (
                 <div key={item.previewUrl} className={classes.previewItem}>
-                  {isPdf(item.file) ? (
-                    <div className={classes.pdfPreview}>
-                      <span className={classes.pdfBadge}>PDF</span>
-                      <span className={classes.pdfName}>{item.file.name}</span>
-                    </div>
-                  ) : (
-                    <img
-                      src={item.previewUrl}
-                      alt={`선택된 파일 ${i + 1}`}
-                      className={classes.previewImg}
-                    />
-                  )}
+                  <img
+                    src={item.previewUrl}
+                    alt={`선택된 파일 ${i + 1}`}
+                    className={classes.previewImg}
+                  />
                   <button
                     type="button"
                     className={classes.removeBtn}
@@ -304,11 +315,11 @@ function DiaryImagePage() {
         <div className={classes.footer}>
           <ul className={classes.constraints}>
             <li>합계 {formatMB(MAX_TOTAL_BYTES)}MB 이하</li>
-            <li>JPG, PNG, PDF</li>
+            <li>JPG, PNG, WEBP</li>
           </ul>
           <Button
             variant="sub"
-            onClick={handleSubmit}
+            onClick={handleOpenTagSelect}
             disabled={isEmpty || uploading}
             className={classes.submitBtn}
           >
@@ -316,6 +327,15 @@ function DiaryImagePage() {
           </Button>
         </div>
       </div>
+
+      <TagSelectModal
+        isOpen={showTagSelect}
+        selectedTags={tags}
+        onChange={setTags}
+        onClose={() => setShowTagSelect(false)}
+        onSubmit={() => void handleSubmit()}
+        disabled={uploading}
+      />
     </div>
   );
 }

@@ -1,29 +1,23 @@
-import { useRef, useState, useEffect, type ChangeEvent } from "react";
+import { useRef, useState, useEffect } from "react";
 import Form, { type FormHandle } from "../../../components/form/Form";
-import textAreaClasses from "../../../components/textarea/TextArea.module.css";
 import classes from "./DiaryWritePage.module.css";
 import Button from "../../../components/button/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../../../components/modal/Modal";
 import { useToast } from "../../../contexts/ToastContext";
 import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import { useCreateDiary } from "../hooks/useCreateDiary";
 import { PATHS } from "../../../constants/path";
-import {
-  API_TO_UI,
-  UI_TO_API,
-  type ApiType,
-  type UiType,
-} from "../types/typeMap";
+import type { UiType } from "../types/typeMap";
 import { useTopic } from "../hooks/useTopic";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
-import TagButton from "../components/tag/TagButton";
 import { DIARY_TAGS } from "../constants/diaryTags";
 import RichEditor from "../components/editor/RichEditor";
+import type { tags as DiaryTag } from "../types/tags";
+import TagSelectModal from "../components/tag/TagSelectModal";
 
 const FORM_ID = "diary-form";
 const SHORT_MIN_LENGTH = 30;
-const LONG_MIN_LENGTH = 100;
+const DIARY_TAG_IDS = new Set<DiaryTag>(DIARY_TAGS.map((option) => option.id));
 
 const isContentValid = (textLength: number, minLength: number) =>
   textLength >= minLength;
@@ -40,13 +34,11 @@ function useCurrentTime() {
 function DiaryWritePage() {
   const formRef = useRef<FormHandle>(null);
   const containerRef = useRef<HTMLElement>(null);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<DiaryTag[]>([]);
   const [content, setContent] = useState("");
   const [count, setCount] = useState(0);
-  const [title, setTitle] = useState("");
   const [loaded, setLoaded] = useState(false);
 
-  const [showConfirm, setShowConfirm] = useState(false);
   const [showTagSelect, setShowTagSelect] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -55,16 +47,15 @@ function DiaryWritePage() {
   const now = useCurrentTime();
 
   const { type } = useParams<{ type: UiType }>();
-  const diaryType: ApiType =
-    type && UI_TO_API[type] ? UI_TO_API[type] : "MOOMYEONGSO";
+  const routeType: UiType = type ?? "today";
 
-  const DRAFT_KEY = `draft:diary-write:${diaryType}`;
+  const DRAFT_KEY = `draft:diary-write:${routeType}`;
 
-  const isToday = type === "today";
+  const isToday = routeType === "today";
 
   const { data: topic, isLoading: topicLoading } = useTopic(isToday);
 
-  const MIN_LENGTH = diaryType === "DIARY" ? LONG_MIN_LENGTH : SHORT_MIN_LENGTH;
+  const MIN_LENGTH = SHORT_MIN_LENGTH;
 
   const parsedTags = tags;
 
@@ -72,33 +63,32 @@ function DiaryWritePage() {
     ? topicLoading
       ? "오늘의 주제를 불러오는 중…"
       : (topic?.title ?? "오늘의 주제를 불러오지 못했어요")
-    : diaryType === "MOOMYEONGSO"
+    : routeType === "public"
       ? "짧은 기록 순간의 생각을 가볍게 남겨요."
       : "마음 깊은 곳의 이야기를 꺼내보아요.";
 
   const PLACEHOLDER_MESSAGE = isToday
     ? "주제에 대해서 자유롭게 작성해보세요."
-    : diaryType === "MOOMYEONGSO"
+    : routeType === "public"
       ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
       : "이곳은 나만의 일기장입니다. 솔직한 이야기를 기록해보세요.";
 
   const { mutateAsync } = useCreateDiary({
     onSuccess: (data) => {
       formRef.current?.clear();
-      setTitle("");
       setContent("");
       setCount(0);
       setTags([]);
+      setShowTagSelect(false);
       localStorage.removeItem(DRAFT_KEY);
 
-      const typeLower = API_TO_UI[diaryType];
-      navigate(PATHS.DIARY_SUBMIT_TYPE(typeLower), {
+      navigate(PATHS.DIARY_SUBMIT_TYPE(routeType), {
         replace: true,
         state: {
-          type: typeLower,
+          type: routeType,
           tags: parsedTags,
-          showCalendar: data.showCalendar,
-          streakState: data.showCalendar
+          showCalendar: data.showCalendar && !!data.calendar,
+          streakState: data.showCalendar && data.calendar
             ? {
                 calendar: data.calendar,
                 coin: data.coin,
@@ -121,14 +111,16 @@ function DiaryWritePage() {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object") {
-          if ("title" in parsed && typeof parsed.title === "string") {
-            setTitle(parsed.title);
-          }
           if ("content" in parsed && typeof parsed.content === "string") {
             setContent(parsed.content);
           }
           if ("tags" in parsed && Array.isArray(parsed.tags)) {
-            setTags(parsed.tags);
+            setTags(
+              parsed.tags.filter(
+                (tag: unknown): tag is DiaryTag =>
+                  typeof tag === "string" && DIARY_TAG_IDS.has(tag as DiaryTag),
+              ),
+            );
           }
         }
       }
@@ -145,14 +137,14 @@ function DiaryWritePage() {
       try {
         localStorage.setItem(
           DRAFT_KEY,
-          JSON.stringify({ title, content, tags }),
+          JSON.stringify({ content, tags }),
         );
       } catch {
         // ignore
       }
     }, 350);
     return () => clearTimeout(id);
-  }, [title, content, tags, DRAFT_KEY, loaded]);
+  }, [content, tags, DRAFT_KEY, loaded]);
 
   const canSubmit = isContentValid(count, MIN_LENGTH);
 
@@ -167,7 +159,6 @@ function DiaryWritePage() {
     try {
       setSubmitting(true);
       await mutateAsync({
-        title: title.trim(),
         content: content.trim(),
         tags: parsedTags,
       });
@@ -207,7 +198,7 @@ function DiaryWritePage() {
               setCount(textLength);
             }}
             placeholder={PLACEHOLDER_MESSAGE}
-            disabled={submitting || showTagSelect || showConfirm}
+            disabled={submitting || showTagSelect}
           />
         )}
 
@@ -230,93 +221,14 @@ function DiaryWritePage() {
         </div>
       </Form>
 
-      {/* 태그 선택 모달 */}
-      <Modal isOpen={showTagSelect} onClose={() => setShowTagSelect(false)}>
-        <Modal.Title>작성한 이야기는 어떠한 내용인가요?</Modal.Title>
-        <div className={classes.tagContainer}>
-          {DIARY_TAGS.map((option) => (
-            <TagButton
-              key={option.id}
-              id={option.id}
-              title={option.title}
-              subtitle={option.subtitle}
-              image={option.image}
-              isSelected={tags.includes(option.id)}
-              onClick={() => {
-                if (tags.includes(option.id)) {
-                  setTags(tags.filter((t) => t !== option.id));
-                } else if (tags.length < 2) {
-                  setTags([...tags, option.id]);
-                } else {
-                  setTags([tags[0], option.id]);
-                }
-              }}
-            />
-          ))}
-        </div>
-        <Modal.Actions>
-          <Button
-            type="button"
-            alwaysHoverStyle
-            variant="sub"
-            state="default"
-            onClick={() => setShowTagSelect(false)}
-          >
-            닫기
-          </Button>
-          <Button
-            type="button"
-            alwaysHoverStyle
-            variant="main"
-            state={tags.length > 0 ? "active" : "default"}
-            disabled={tags.length === 0}
-            className={tags.length > 0 ? classes.activeNextButton : undefined}
-            onClick={() => {
-              setShowTagSelect(false);
-              setShowConfirm(true);
-            }}
-          >
-            다음
-          </Button>
-        </Modal.Actions>
-      </Modal>
-
-      {/* 제목 작성 모달 */}
-      <Modal isOpen={showConfirm} onClose={() => setShowConfirm(false)}>
-        <Modal.Title id="submit-title">작성하신 글을 정리해볼까요?</Modal.Title>
-        <Modal.Textarea
-          name="title"
-          form={FORM_ID}
-          placeholder="제목 작성하기"
-          value={title}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setTitle(e.target.value)
-          }
-          disabled={submitting}
-          className={textAreaClasses.textarea}
-        />
-        <Modal.Actions>
-          <Button
-            type="button"
-            alwaysHoverStyle
-            variant="sub"
-            state="default"
-            onClick={() => setShowConfirm(false)}
-          >
-            닫기
-          </Button>
-          <Button
-            type="submit"
-            form={FORM_ID}
-            alwaysHoverStyle
-            variant="main"
-            state="default"
-            disabled={submitting || !title.trim()}
-          >
-            완료하기
-          </Button>
-        </Modal.Actions>
-      </Modal>
+      <TagSelectModal
+        isOpen={showTagSelect}
+        selectedTags={tags}
+        onChange={setTags}
+        onClose={() => setShowTagSelect(false)}
+        onSubmit={() => void handleSave()}
+        disabled={submitting}
+      />
     </section>
   );
 }
