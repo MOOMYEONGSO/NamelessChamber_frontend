@@ -8,6 +8,7 @@ import { InlineError } from "../../../components/status/InlineStates";
 import Paragraph from "../../../components/paragraph/Paragraph";
 import Button from "../../../components/button/Button";
 import { PATHS } from "../../../constants/path";
+import { toAppError } from "../../../api/errors";
 
 function DiaryRerollPage() {
   const { type } = useParams<{ type?: UiType }>();
@@ -31,9 +32,8 @@ function DiaryRerollPage() {
 
   if (isError) {
     const message =
-      error && typeof (error as any).message === "string"
-        ? (error as any).message
-        : "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
+      toAppError(error).message ??
+      "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
 
     return (
       <InlineError
