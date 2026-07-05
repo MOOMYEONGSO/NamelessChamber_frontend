@@ -32,7 +32,7 @@ const Header = () => {
   }
   
   function handleAdmin() {
-    navigate(PATHS.ADMIN_DIARIES);
+    navigate(PATHS.ADMIN_POSTS);
   }
 
 

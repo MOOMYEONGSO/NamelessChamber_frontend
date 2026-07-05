@@ -1,4 +1,4 @@
-import type { DiaryPreview } from "../../diary/types/types";
+import type { PostPreview } from "../../post/types/types";
 
 export type UserMe = {
   userId: string;
@@ -10,7 +10,7 @@ export type UserMe = {
   lastLoginAt: string;
 };
 
-export type ReadDiaries = {
+export type ReadPosts = {
   coin: number;
-  posts: DiaryPreview[];
+  posts: PostPreview[];
 };

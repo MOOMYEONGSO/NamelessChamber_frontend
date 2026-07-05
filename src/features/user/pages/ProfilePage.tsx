@@ -6,11 +6,11 @@ import UserInfo from "../components/UserInfo";
 import { useUserMe } from "../hooks/useUser";
 import classes from "./ProfilePage.module.css";
 import { PATHS } from "../../../constants/path";
-import DiaryTabs from "../components/DiaryTabs";
-import { useReadDiaries } from "../hooks/useReadDiaries";
+import PostTabs from "../components/PostTabs";
+import { useReadPosts } from "../hooks/useReadPosts";
 import { useEffect, useMemo, useRef, useState } from "react";
-import CardListContainer from "../../diary/components/card/CardListContainer";
-import { useWrittenDiaries } from "../hooks/useWrittenDiaries";
+import CardListContainer from "../../post/components/card/CardListContainer";
+import { useWrittenPosts } from "../hooks/useWrittenPosts";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import { useLogout } from "../../auth/hooks/useAuth";
 import LoadingDots from "../../../components/loading/LoadingDots";
@@ -43,13 +43,13 @@ function ProfilePage() {
     }
   }, [isError, error, navigate, showToast]);
 
-  const { data: readData, isLoading: isReadLoading } = useReadDiaries(
+  const { data: readData, isLoading: isReadLoading } = useReadPosts(
     currentTab === "read",
   );
   const { data: writtenData, isLoading: isWrittenLoading } =
-    useWrittenDiaries();
+    useWrittenPosts();
 
-  const diaries = useMemo(() => {
+  const posts = useMemo(() => {
     if (currentTab === "read") return readData?.posts ?? [];
     return writtenData ?? [];
   }, [currentTab, readData, writtenData]);
@@ -57,7 +57,7 @@ function ProfilePage() {
   const isListLoading =
     currentTab === "read" ? isReadLoading : isWrittenLoading;
 
-  const isEmpty = !isListLoading && (diaries?.length ?? 0) === 0;
+  const isEmpty = !isListLoading && (posts?.length ?? 0) === 0;
 
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
@@ -78,7 +78,7 @@ function ProfilePage() {
     if (!me?.coin) {
       showToast("열람권이 없어요! 글을 작성하고 열람권을 받아보세요.", "info");
     } else {
-      navigate(PATHS.DIARY_ALL);
+      navigate(PATHS.POST_ALL);
     }
   }
 
@@ -108,11 +108,11 @@ function ProfilePage() {
       </div>
 
       <div className={classes.listSection}>
-        <DiaryTabs
+        <PostTabs
           onChange={(id) => setCurrentTab(id as "written" | "read")}
         />
         <CardListContainer
-          diaries={diaries}
+          posts={posts}
           isLoading={isListLoading}
           isEmpty={isEmpty}
           coin={me?.coin ?? 0}
