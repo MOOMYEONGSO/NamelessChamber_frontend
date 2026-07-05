@@ -1,4 +1,4 @@
-import type { DiaryImage, PostType } from "../../diary/types/types";
+import type { PostImage, PostType } from "../../post/types/types";
 
 export type AdminPostStatus = "ACTIVE" | "PENDING" | "DELETED" | string;
 
@@ -13,6 +13,6 @@ export type AdminPostResponse = {
   commentCount: number;
   views: number;
   likes: number;
-  images: DiaryImage[];
+  images: PostImage[];
   createdAt: string;
 };
