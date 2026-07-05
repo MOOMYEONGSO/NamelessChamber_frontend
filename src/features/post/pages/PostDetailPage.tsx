@@ -106,7 +106,7 @@ export default function PostDetailPage() {
 
   const [retrying, setRetrying] = useState(false);
 
-  if (!id) return <Navigate to={PATHS.POST_LIST} replace />;
+  if (!id) return <Navigate to={PATHS.POST_ALL} replace />;
 
   if (isError) {
     const message =

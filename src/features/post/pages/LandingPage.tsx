@@ -39,7 +39,7 @@ function LandingPage() {
         if (mode === "image") {
           navigate(PATHS.POST_NEW_IMAGE);
         } else {
-          navigate(PATHS.POST_NEW_TYPE("today"));
+          navigate(PATHS.POST_ALL);
         }
       }
     } catch (e) {
@@ -80,7 +80,7 @@ function LandingPage() {
           <div className={classes.guide}>
             <div className={classes.guideText}>
               <Text variant="t2">잠시만 기다려주세요.</Text>
-              <Paragraph>오늘의 주제를 불러오고 있어요.</Paragraph>
+              <Paragraph>기본 페이지로 이동하고 있어요.</Paragraph>
             </div>
           </div>
         </div>

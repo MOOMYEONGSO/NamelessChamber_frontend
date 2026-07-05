@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import classes from "./PostSubmitPage.module.css";
 import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import { PATHS } from "../../../constants/path";
-import type { UiType } from "../types/typeMap";
+import { isUiType, type UiType } from "../types/typeMap";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
 
 type State = {
@@ -26,8 +26,12 @@ function PostSubmitPage() {
   const location = useLocation();
   const state = (location.state || {}) as State;
 
-  const { type: urlTypeParam } = useParams<{ type: UiType }>();
-  const routeType = urlTypeParam ?? state.type ?? "public";
+  const { type: urlTypeParam } = useParams<{ type?: string }>();
+  const stateType = state.type && isUiType(state.type) ? state.type : undefined;
+  const routeType = urlTypeParam && isUiType(urlTypeParam)
+    ? urlTypeParam
+    : (stateType ?? "public");
+  const shouldRedirect = Boolean(urlTypeParam && !isUiType(urlTypeParam));
 
   const stayMs = state.stayMs ?? 1600;
   const message = state.message ?? SUBMIT_LOADING_MESSAGE;
@@ -35,6 +39,8 @@ function PostSubmitPage() {
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (shouldRedirect) return;
+
     const t = setTimeout(() => {
       if (state.showCalendar) {
         nav(PATHS.POST_STREAK_TYPE(routeType), {
@@ -58,11 +64,16 @@ function PostSubmitPage() {
   }, [
     nav,
     routeType,
+    shouldRedirect,
     stayMs,
     state.showCalendar,
     state.streakState,
     state.tags,
   ]);
+
+  if (shouldRedirect) {
+    return <Navigate to={PATHS.POST_ALL} replace />;
+  }
 
   return (
     <main

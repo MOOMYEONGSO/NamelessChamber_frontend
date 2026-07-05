@@ -202,10 +202,10 @@ function PostImagePage() {
       });
 
       setShowTagSelect(false);
-      navigate(PATHS.POST_SUBMIT_TYPE("today"), {
+      navigate(PATHS.POST_SUBMIT_TYPE("public"), {
         replace: true,
         state: {
-          type: "today",
+          type: "public",
           tags,
           showCalendar: data.showCalendar && !!data.calendar,
           streakState: data.showCalendar && data.calendar

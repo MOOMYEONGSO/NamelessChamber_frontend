@@ -76,11 +76,6 @@ export type PostDetail = {
   images: PostImage[];
 };
 
-export type Topic = {
-  title: string;
-  status: string;
-  publishedDate: string;
-};
 export type TodayMetricsResponse = {
   textPosts: number;
   textTotalPosts: number;

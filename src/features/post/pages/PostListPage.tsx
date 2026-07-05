@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import CardListContainer from "../components/card/CardListContainer";
 import { usePosts } from "../hooks/usePosts";
 import classes from "./PostListPage.module.css";
-import { type UiType } from "../types/typeMap";
+import { isUiType } from "../types/typeMap";
 import { InlineError } from "../../../components/status/InlineStates";
 import Paragraph from "../../../components/paragraph/Paragraph";
 import { toAppError } from "../../../api/errors";
+import { PATHS } from "../../../constants/path";
 
 function PostListPage() {
-  const { type } = useParams<{ type?: UiType }>();
+  const { type } = useParams<{ type?: string }>();
+  const routeType = type && isUiType(type) ? type : undefined;
 
   const { data, isLoading, isError, error, refetch } = usePosts({
     type: undefined,
@@ -38,6 +40,10 @@ function PostListPage() {
     );
   }
 
+  if (type && !routeType) {
+    return <Navigate to={PATHS.POST_ALL} replace />;
+  }
+
   const posts = data?.posts ?? [];
   const coin = data?.coin ?? 0;
   const isEmpty = !isLoading && posts.length === 0;
@@ -54,7 +60,7 @@ function PostListPage() {
         coin={coin}
         isLoading={isLoading}
         isEmpty={isEmpty}
-        type={type}
+        type={routeType}
         emptyMessage="아직 등록된 글이 없어요"
       />
     </div>
