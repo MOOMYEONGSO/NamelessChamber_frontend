@@ -2,13 +2,12 @@ import { useRef, useState, useEffect } from "react";
 import Form, { type FormHandle } from "../../../components/form/Form";
 import classes from "./PostWritePage.module.css";
 import Button from "../../../components/button/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useToast } from "../../../contexts/ToastContext";
 import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import { useCreatePost } from "../hooks/useCreatePost";
 import { PATHS } from "../../../constants/path";
-import type { UiType } from "../types/typeMap";
-import { useTopic } from "../hooks/useTopic";
+import { isUiType, type UiType } from "../types/typeMap";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
 import { POST_TAGS } from "../constants/postTags";
 import RichEditor from "../components/editor/RichEditor";
@@ -34,6 +33,13 @@ function useCurrentTime() {
 function PostWritePage() {
   const formRef = useRef<FormHandle>(null);
   const containerRef = useRef<HTMLElement>(null);
+
+  const { type } = useParams<{ type?: string }>();
+  const routeType: UiType = type && isUiType(type) ? type : "public";
+  const shouldRedirect = Boolean(type && !isUiType(type));
+  const DRAFT_KEY = `draft:post-write:${routeType}`;
+
+  const [draftKey, setDraftKey] = useState(DRAFT_KEY);
   const [tags, setTags] = useState<PostTag[]>([]);
   const [content, setContent] = useState("");
   const [count, setCount] = useState(0);
@@ -46,30 +52,15 @@ function PostWritePage() {
   const navigate = useNavigate();
   const now = useCurrentTime();
 
-  const { type } = useParams<{ type: UiType }>();
-  const routeType: UiType = type ?? "today";
-
-  const DRAFT_KEY = `draft:post-write:${routeType}`;
-
-  const isToday = routeType === "today";
-
-  const { data: topic, isLoading: topicLoading } = useTopic(isToday);
-
   const MIN_LENGTH = SHORT_MIN_LENGTH;
 
   const parsedTags = tags;
 
-  const TITLE = isToday
-    ? topicLoading
-      ? "오늘의 주제를 불러오는 중…"
-      : (topic?.title ?? "오늘의 주제를 불러오지 못했어요")
-    : routeType === "public"
+  const TITLE = routeType === "public"
       ? "짧은 기록 순간의 생각을 가볍게 남겨요."
       : "마음 깊은 곳의 이야기를 꺼내보아요.";
 
-  const PLACEHOLDER_MESSAGE = isToday
-    ? "주제에 대해서 자유롭게 작성해보세요."
-    : routeType === "public"
+  const PLACEHOLDER_MESSAGE = routeType === "public"
       ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
       : "이곳은 나만의 일기장입니다. 솔직한 이야기를 기록해보세요.";
 
@@ -106,20 +97,23 @@ function PostWritePage() {
 
   // 초안 불러오기 — RichEditor가 올바른 initialValue로 마운트되도록 먼저 상태를 채운 후 렌더링
   useEffect(() => {
+    if (shouldRedirect) return;
+
+    let nextContent = "";
+    let nextTags: PostTag[] = [];
+
     try {
       const raw = localStorage.getItem(DRAFT_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object") {
           if ("content" in parsed && typeof parsed.content === "string") {
-            setContent(parsed.content);
+            nextContent = parsed.content;
           }
           if ("tags" in parsed && Array.isArray(parsed.tags)) {
-            setTags(
-              parsed.tags.filter(
-                (tag: unknown): tag is PostTag =>
-                  typeof tag === "string" && POST_TAG_IDS.has(tag as PostTag),
-              ),
+            nextTags = parsed.tags.filter(
+              (tag: unknown): tag is PostTag =>
+                typeof tag === "string" && POST_TAG_IDS.has(tag as PostTag),
             );
           }
         }
@@ -127,12 +121,20 @@ function PostWritePage() {
     } catch {
       // ignore
     }
+
+    setDraftKey(DRAFT_KEY);
+    setContent(nextContent);
+    setTags(nextTags);
+    setCount(0);
+    setShowTagSelect(false);
     setLoaded(true);
-  }, [DRAFT_KEY]);
+  }, [DRAFT_KEY, shouldRedirect]);
+
+  const isDraftReady = loaded && draftKey === DRAFT_KEY;
 
   // 자동 임시저장
   useEffect(() => {
-    if (!loaded) return;
+    if (shouldRedirect || !isDraftReady) return;
     const id = setTimeout(() => {
       try {
         localStorage.setItem(
@@ -144,7 +146,7 @@ function PostWritePage() {
       }
     }, 350);
     return () => clearTimeout(id);
-  }, [content, tags, DRAFT_KEY, loaded]);
+  }, [content, tags, DRAFT_KEY, isDraftReady, shouldRedirect]);
 
   const canSubmit = isContentValid(count, MIN_LENGTH);
 
@@ -177,6 +179,10 @@ function PostWritePage() {
 
   const formattedTime = `지금은 ${now.getFullYear()}년 ${String(now.getMonth() + 1).padStart(2, "0")}월 ${String(now.getDate()).padStart(2, "0")}일 ${String(now.getHours()).padStart(2, "0")}시${String(now.getMinutes()).padStart(2, "0")}분 입니다.`;
 
+  if (shouldRedirect) {
+    return <Navigate to={PATHS.POST_ALL} replace />;
+  }
+
   return (
     <section className={classes.write} ref={containerRef}>
       <div className={classes.topActions}>
@@ -189,7 +195,7 @@ function PostWritePage() {
       <h2 className={classes.title}>{TITLE}</h2>
 
       <Form id={FORM_ID} onSave={handleSave} ref={formRef}>
-        {loaded && (
+        {isDraftReady && (
           <RichEditor
             key={DRAFT_KEY}
             initialValue={content}

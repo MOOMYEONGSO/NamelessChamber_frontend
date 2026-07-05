@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import CardListContainer from "../components/card/CardListContainer";
 import { useRandomPosts } from "../hooks/useRandomPosts";
 import classes from "./PostRerollPage.module.css";
-import type { UiType } from "../types/typeMap";
+import { isUiType } from "../types/typeMap";
 import { InlineError } from "../../../components/status/InlineStates";
 import Paragraph from "../../../components/paragraph/Paragraph";
 import Button from "../../../components/button/Button";
@@ -11,10 +11,10 @@ import { PATHS } from "../../../constants/path";
 import { toAppError } from "../../../api/errors";
 
 function PostRerollPage() {
-  const { type } = useParams<{ type?: UiType }>();
+  const { type } = useParams<{ type?: string }>();
+  const routeType = type && isUiType(type) ? type : undefined;
   const navigate = useNavigate();
   const { state } = useLocation() as { state?: { tags?: string[] } };
-  // const routeType = type ?? "public";
   const tags = Array.isArray(state?.tags)
     ? state.tags.filter((tag): tag is string => typeof tag === "string")
     : [];
@@ -51,6 +51,10 @@ function PostRerollPage() {
     );
   }
 
+  if (type && !routeType) {
+    return <Navigate to={PATHS.POST_ALL} replace />;
+  }
+
   const posts = data?.posts ?? [];
   const coin = data?.coin ?? 0;
   const isEmpty = !isLoading && posts.length === 0;
@@ -66,7 +70,7 @@ function PostRerollPage() {
         coin={coin}
         isLoading={isLoading}
         isEmpty={isEmpty}
-        type={type}
+        type={routeType}
         emptyMessage="불러올 수 있는 이야기가 없어요."
       />
 

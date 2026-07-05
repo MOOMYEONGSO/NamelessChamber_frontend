@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import type { UiType } from "../types/typeMap";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { isUiType, type UiType } from "../types/typeMap";
 import { PATHS } from "../../../constants/path";
 import classes from "./PostStreakPage.module.css";
 import { isAuthenticatedUser } from "../../auth/api/tokenStore";
@@ -21,16 +21,23 @@ const isWeekArr = (a?: unknown[]) => Array.isArray(a) && a.length === 7;
 
 function PostStreakPage() {
   const navigate = useNavigate();
-  const { type } = useParams<{ type: UiType }>();
+  const { type } = useParams<{ type?: string }>();
   const { state } = useLocation() as { state?: StreakState };
-  const routeType: UiType = type ?? "public";
+  const routeType: UiType = type && isUiType(type) ? type : "public";
+  const shouldRedirect = Boolean(type && !isUiType(type));
   const isLoggedIn = isAuthenticatedUser();
 
   useEffect(() => {
+    if (shouldRedirect) return;
+
     if (!state) {
       navigate(PATHS.POST_LIST_TYPE(routeType), { replace: true });
     }
-  }, [state, navigate, routeType]);
+  }, [state, navigate, routeType, shouldRedirect]);
+
+  if (shouldRedirect) {
+    return <Navigate to={PATHS.POST_ALL} replace />;
+  }
 
   if (!state) {
     return (
