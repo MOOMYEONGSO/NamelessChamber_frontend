@@ -2,23 +2,19 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import CardListContainer from "../../../diary/components/card/CardListContainer";
 import classes from "../../../diary/pages/DiaryListPage.module.css";
-import type { UiType } from "../../../diary/types/typeMap";
 import { InlineError } from "../../../../components/status/InlineStates";
 import Paragraph from "../../../../components/paragraph/Paragraph";
 import { useAdminDiaries } from "../../hooks/useAdminDiaries";
 import { toAppError } from "../../../../api/errors";
-import type { DiaryPreview } from "../../../diary/types/types";
+import type { DiaryPreview, PostType } from "../../../diary/types/types";
 import { useTodayMetrics } from "../../hooks/useTodayMetrics";
 
 function AdminDiaryListPage() {
   const navigate = useNavigate();
-  const { type } = useParams<{ type?: UiType }>();
+  const { type } = useParams<{ type?: string }>();
 
-  let apiType: "MOOMYEONGSO" | "DIARY" | "TODAY" | undefined;
-  if (type === "public") apiType = "MOOMYEONGSO";
-  else if (type === "mind") apiType = "DIARY";
-  else if (type === "today") apiType = "TODAY";
-  else apiType = undefined;
+  const apiType: PostType | undefined =
+    type === "text" ? "TEXT" : type === "image" ? "IMAGE" : undefined;
 
   const { data, isLoading, isError, error, refetch } = useAdminDiaries({
     type: apiType,
@@ -59,13 +55,17 @@ function AdminDiaryListPage() {
   const diaries: DiaryPreview[] = (data ?? []).map((p) => ({
     postId: p.postId,
     userId: p.userId,
-    title: p.title,
+    type: p.type,
+    from: p.from,
+    to: p.to,
     contentPreview: p.content ? p.content.slice(0, 100) : "",
     contentLength: p.content ? p.content.length : 0,
     likes: p.likes,
     views: p.views,
+    commentCount: p.commentCount,
     createdAt: p.createdAt,
-    tags: p.tags ?? [],
+    tags: [],
+    thumbnailUrl: p.images?.[0]?.thumbnailUrl ?? null,
   }));
 
   const isEmpty = !isLoading && diaries.length === 0;
@@ -105,18 +105,13 @@ function AdminDiaryListPage() {
                   </div>
 
                   <div>
-                    · 무명소 기록 <b>{metrics.publicPosts}</b>개 (누적{" "}
-                    <b>{metrics.publicTotalPosts}</b>개)
+                    · 텍스트 글 <b>{metrics.textPosts}</b>개 (누적{" "}
+                    <b>{metrics.textTotalPosts}</b>개)
                   </div>
 
                   <div>
-                    · 깊은 고민 <b>{metrics.mindPosts}</b>개 (누적{" "}
-                    <b>{metrics.mindTotalPosts}</b>개)
-                  </div>
-
-                  <div>
-                    · 오늘의 주제 <b>{metrics.todayPosts}</b>개 (누적{" "}
-                    <b>{metrics.todayTotalPosts}</b>개)
+                    · 이미지 글 <b>{metrics.imagePosts}</b>개 (누적{" "}
+                    <b>{metrics.imageTotalPosts}</b>개)
                   </div>
 
                   <div style={{ marginTop: 4 }}>
@@ -147,7 +142,7 @@ function AdminDiaryListPage() {
         coin={0}
         isLoading={isLoading}
         isEmpty={isEmpty}
-        type={type}
+        type={undefined}
         emptyMessage="아직 등록된 글이 없어요"
         onClickCardOverride={(id) => navigate(`/admin/diaries/post/${id}`)}
       />

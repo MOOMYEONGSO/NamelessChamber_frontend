@@ -1,7 +1,7 @@
 import client from "../../../api/client";
 import { unwrap, unwrapNoContent } from "../../../api/helpers";
 import type { ApiResponse } from "../../../api/types";
-import type { DiaryPreview, DiaryType } from "../../diary/types/types";
+import type { DiaryPreview, PostType } from "../../diary/types/types";
 import type { ReadDiaries, UserMe } from "../type/types";
 
 export const userApi = {
@@ -20,7 +20,7 @@ export const userApi = {
 
     return unwrap(res);
   },
-  async getReadDiaries(type?: DiaryType): Promise<ReadDiaries> {
+  async getReadDiaries(type?: PostType): Promise<ReadDiaries> {
     const res = await client.get<ApiResponse<ReadDiaries>>("/posts/me/read", {
       params: type ? { type } : undefined,
     });

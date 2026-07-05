@@ -9,10 +9,14 @@ import { AxiosError } from "axios";
 import { useToast } from "../../../contexts/ToastContext";
 
 type Res = CreateDiaryResponse;
-type Vars = Omit<CreateDiaryRequest, "type">;
+type Vars = CreateDiaryRequest;
+type ErrorResponseBody = {
+  errorMsg?: string;
+  message?: string;
+};
 
 function getErrorMessage(err: unknown) {
-  const ax = err as AxiosError<any>;
+  const ax = err as AxiosError<ErrorResponseBody>;
   const msgFromServer =
     ax?.response?.data?.errorMsg || ax?.response?.data?.message || ax?.message;
   return (
@@ -27,21 +31,20 @@ export function useCreateDiary(
   const { showToast } = useToast();
 
   return useMutation<Res, AxiosError, Vars, unknown>({
-    mutationFn: (body: Vars) =>
-      diaryApi.create({ ...body, type: "MOOMYEONGSO" }),
+    mutationFn: (body: Vars) => diaryApi.create(body),
 
-    onSuccess: (data, vars, ctx) => {
+    onSuccess: (data, vars, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: ["diaries"] });
-      (options?.onSuccess as any)?.(data, vars, undefined, ctx);
+      options?.onSuccess?.(data, vars, onMutateResult, context);
     },
 
-    onError: (error, vars, ctx) => {
+    onError: (error, vars, onMutateResult, context) => {
       showToast(getErrorMessage(error), "cancel");
-      (options?.onError as any)?.(error, vars, undefined, ctx);
+      options?.onError?.(error, vars, onMutateResult, context);
     },
 
-    onSettled: (data, err, vars, ctx) => {
-      (options?.onSettled as any)?.(data, err, vars, undefined, ctx);
+    onSettled: (data, err, vars, onMutateResult, context) => {
+      options?.onSettled?.(data, err, vars, onMutateResult, context);
     },
   });
 }

@@ -1,14 +1,8 @@
-export const UI_TO_API = {
-  public: "MOOMYEONGSO",
-  mind: "DIARY",
-  today: "TODAY",
+export const UI_TO_POST_TYPE = {
+  public: "TEXT",
+  mind: "TEXT",
+  today: "TEXT",
 } as const;
 
-export const API_TO_UI = {
-  MOOMYEONGSO: "public",
-  DIARY: "mind",
-  TODAY: "today",
-} as const;
-
-export type UiType = keyof typeof UI_TO_API;
-export type ApiType = (typeof UI_TO_API)[UiType];
+export type UiType = keyof typeof UI_TO_POST_TYPE;
+export type ApiType = (typeof UI_TO_POST_TYPE)[UiType];

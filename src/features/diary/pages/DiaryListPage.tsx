@@ -10,28 +10,16 @@ import Paragraph from "../../../components/paragraph/Paragraph";
 function DiaryListPage() {
   const { type } = useParams<{ type?: UiType }>();
 
-  // TODO: 서버 조회 타입 정책 확정 후 daily/mind -> DIARY 임시 매핑 정리하기.
-  let apiType: "DIARY" | "MOOMYEONGSO" | "TODAY" | undefined;
-  if (type === "public") {
-    apiType = "MOOMYEONGSO";
-  } else if (type === "mind") {
-    apiType = "DIARY";
-  } else if (type === "today") {
-    apiType = "TODAY";
-  } else {
-    apiType = undefined;
-  }
-
   const { data, isLoading, isError, error, refetch } = useDiaries({
-    type: apiType,
+    type: undefined,
   });
 
   const [retrying, setRetrying] = useState(false);
 
   if (isError) {
     const message =
-      error && typeof (error as any).message === "string"
-        ? (error as any).message
+      error instanceof Error
+        ? error.message
         : "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
 
     return (

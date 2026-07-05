@@ -3,20 +3,18 @@ import { unwrap } from "../../../api/helpers";
 import type { ApiResponse } from "../../../api/types";
 import type {
   CreateDiaryRequest,
-  DiaryPreview,
   DiaryDetail,
   PostsPayload,
   CreateDiaryResponse,
+  CreateImageDiaryRequest,
+  PostType,
 } from "../types/types";
 
 const IMAGE_UPLOAD_TIMEOUT_MS = 60_000;
 
-type ImagePostCreateRequest = Pick<CreateDiaryRequest, "type" | "tags">;
-
 export const diaryApi = {
-  // TODO: 서버 조회 타입 정책 확정 후 DIARY 임시 허용 타입 정리하기.
   async getAll(
-    type?: "DIARY" | "MOOMYEONGSO" | "TODAY" | null,
+    type?: PostType | null,
     cursor?: string | null,
     limit: number = 20,
   ): Promise<PostsPayload & { nextCursor?: string | null }> {
@@ -45,7 +43,9 @@ export const diaryApi = {
   },
 
   getAllRaw() {
-    return client.get<ApiResponse<DiaryPreview[]>>("/posts");
+    return client.get<ApiResponse<PostsPayload & { nextCursor?: string | null }>>(
+      "/posts",
+    );
   },
   async createComment(postId: string, content: string): Promise<void> {
     await client.post(`/posts/${postId}/comments`, { content });
@@ -55,7 +55,7 @@ export const diaryApi = {
   },
   async createImagePost(
     files: File[],
-    request: ImagePostCreateRequest,
+    request: CreateImageDiaryRequest,
   ): Promise<CreateDiaryResponse> {
     const form = new FormData();
     form.append(

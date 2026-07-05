@@ -1,5 +1,5 @@
 import client from "../../../api/client";
-import type { DiaryType } from "../types/types";
+import type { PostType } from "../types/types";
 import type { AdminPostResponse} from "../../admin/types/adminPost";
 import type { TodayMetricsResponse } from "../types/types";
 import { unwrap } from "../../../api/helpers";
@@ -7,7 +7,7 @@ import { unwrap } from "../../../api/helpers";
 export type AdminPostDetailResponse = AdminPostResponse;
 
 export const adminDiaryApi = {
-  async getAll(type?: DiaryType): Promise<AdminPostResponse[]> {
+  async getAll(type?: PostType): Promise<AdminPostResponse[]> {
     const res = await client.get<AdminPostResponse[]>("/admin/posts", {
       params: type ? { type } : undefined,
     });

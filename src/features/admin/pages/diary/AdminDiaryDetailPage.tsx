@@ -12,22 +12,30 @@ import Button from "../../../../components/button/Button";
 import Modal from "../../../../components/modal/Modal";
 import { PATHS } from "../../../../constants/path";
 import { useAdminDiaryDelete } from "../../hooks/useAdminDiaryDelete";
+import type { DiaryImage } from "../../../diary/types/types";
 
 function DetailContent({
   content,
   isLoading,
   createdLabel,
+  images,
   actions,
 }: {
   content?: string;
   isLoading: boolean;
   createdLabel?: string;
+  images?: DiaryImage[];
   actions?: ReactNode;
 }) {
   const paragraphs = useMemo(() => {
     const trimmed = content?.trim();
     return trimmed ? trimmed.split(/\n{2,}/g) : [];
   }, [content]);
+  const sortedImages = useMemo(
+    () => (images ? [...images].sort((a, b) => a.sortOrder - b.sortOrder) : []),
+    [images],
+  );
+  const hasImages = sortedImages.length > 0;
 
   return (
     <section className={`${classes.diary} ${classes.detail}`}>
@@ -35,21 +43,34 @@ function DetailContent({
         <Paragraph className={classes.intro}>{createdLabel}</Paragraph>
       )}
 
-      <div className={classes.lines} aria-busy={isLoading}>
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className={classes.paragraphSkeleton} />
-          ))
-        ) : paragraphs.length > 0 ? (
-          paragraphs.map((p, i) => (
-            <FadeInOnView key={i} className={classes.paragraph} once>
-              {p}
-            </FadeInOnView>
-          ))
-        ) : (
-          <div className={classes.empty}>아직 내용이 없습니다.</div>
-        )}
-      </div>
+      {hasImages ? (
+        <div className={classes.imageGrid}>
+          {sortedImages.map((image, i) => (
+            <img
+              key={image.imageId}
+              src={image.imageUrl}
+              alt={`사진 ${i + 1}`}
+              className={classes.detailImage}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={classes.lines} aria-busy={isLoading}>
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className={classes.paragraphSkeleton} />
+            ))
+          ) : paragraphs.length > 0 ? (
+            paragraphs.map((p, i) => (
+              <FadeInOnView key={i} className={classes.paragraph} once>
+                {p}
+              </FadeInOnView>
+            ))
+          ) : (
+            <div className={classes.empty}>아직 내용이 없습니다.</div>
+          )}
+        </div>
+      )}
 
       {actions}
     </section>
@@ -97,6 +118,7 @@ export default function AdminDiaryDetailPage() {
         content={data?.content}
         isLoading={isLoading}
         createdLabel={createdLabel}
+        images={data?.images}
         actions={
           <div className={classes.buttonContainer}>
             <Button

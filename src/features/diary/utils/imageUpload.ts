@@ -4,7 +4,7 @@ export const MAX_IMAGES = 5;
 export const MAX_TOTAL_BYTES = 300 * 1024 * 1024;
 
 export const ACCEPTED_IMAGE_INPUT =
-  ".jpg,.jpeg,.png,.pdf,.heic,.heif,image/jpeg,image/png,application/pdf,image/heic,image/heif";
+  ".jpg,.jpeg,.png,.webp,.heic,.heif,image/jpeg,image/png,image/webp,image/heic,image/heif";
 
 // 업로드 전 클라이언트 압축
 const COMPRESS_OPTIONS = {
@@ -13,8 +13,7 @@ const COMPRESS_OPTIONS = {
   useWebWorker: true,
 };
 
-const PDF_TYPE = "application/pdf";
-const UPLOAD_IMAGE_TYPES = new Set(["image/jpeg", "image/png"]);
+const UPLOAD_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const HEIC_IMAGE_TYPES = new Set([
   "image/heic",
   "image/heif",
@@ -25,6 +24,7 @@ const EXTENSION_TO_CONTENT_TYPE: Record<string, string> = {
   jpg: "image/jpeg",
   jpeg: "image/jpeg",
   png: "image/png",
+  webp: "image/webp",
 };
 
 export class ImagePrepareError extends Error {}
@@ -41,14 +41,7 @@ function isHeicImage(file: File) {
   );
 }
 
-export function isPdf(file: File) {
-  return (
-    file.type.toLowerCase() === PDF_TYPE || getExtension(file.name) === "pdf"
-  );
-}
-
 function isSupportedFile(file: File) {
-  if (isPdf(file)) return true;
   const type = file.type.toLowerCase();
   const extension = getExtension(file.name);
   return (
@@ -60,7 +53,7 @@ function isSupportedFile(file: File) {
 
 function withNormalizedContentType(file: File) {
   const type = file.type.toLowerCase();
-  if (isPdf(file) || UPLOAD_IMAGE_TYPES.has(type)) return file;
+  if (UPLOAD_IMAGE_TYPES.has(type)) return file;
 
   // 모바일 브라우저의 빈 File.type 대응을 위한 확장자 기반 보정
   const extension = getExtension(file.name);
@@ -82,7 +75,7 @@ export function formatMB(bytes: number) {
 /**
  * 업로드 가능한 파일인지 검증하고 content-type을 정규화한다.
  * - HEIC/HEIF: 차단(안내)
- * - JPG/PNG/PDF만 허용
+ * - JPG/PNG/WEBP만 허용
  * - 장당 크기 제한 없음(업로드 직전 압축으로 처리)
  */
 export function prepareUploadFile(file: File): File {
@@ -93,16 +86,15 @@ export function prepareUploadFile(file: File): File {
   }
 
   if (!isSupportedFile(file)) {
-    throw new ImagePrepareError("JPG, PNG, PDF 파일만 등록할 수 있어요.");
+    throw new ImagePrepareError("JPG, PNG, WEBP 파일만 등록할 수 있어요.");
   }
 
   return withNormalizedContentType(file);
 }
 
 /**
- * 업로드 직전 변환: 이미지는 압축(EXIF 회전 보정), PDF는 그대로 반환.
+ * 업로드 직전 변환: 이미지를 압축한다.
  */
 export function compressForUpload(file: File): Promise<File> {
-  if (isPdf(file)) return Promise.resolve(file);
   return imageCompression(file, COMPRESS_OPTIONS);
 }

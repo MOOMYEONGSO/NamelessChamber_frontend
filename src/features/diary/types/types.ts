@@ -1,18 +1,17 @@
 import type { ApiResponse } from "../../../api/types";
+import type { tags as DiaryTag } from "./tags";
 
-export type DiaryType = "MOOMYEONGSO" | "DIARY" | "TODAY";
+export type PostType = "TEXT" | "IMAGE";
+export type DiaryType = PostType;
 
-export type PostBody = {
-  title: string;
+export type CreateDiaryRequest = {
+  from?: string;
+  to?: string;
   content: string;
+  tags: DiaryTag[];
 };
 
-export type CreateDiaryRequest = PostBody & {
-  // TODO: postType "DIARY" 로 임시 조치 해제
-  type: DiaryType | "DIARY" | (string & {});
-  tags: string[];
-  imageIds?: string[];
-};
+export type CreateImageDiaryRequest = Omit<CreateDiaryRequest, "content">;
 
 export type CreateDiaryResponse = {
   postId: string;
@@ -23,21 +22,22 @@ export type CreateDiaryResponse = {
     weekStart: string;
     days: boolean[];
     counts: number[];
-  };
+  } | null;
 };
 
 export type DiaryPreview = {
   postId: string;
   userId: string;
-  title: string;
-  contentPreview?: string;
+  type: PostType;
+  from: string;
+  to: string;
+  contentPreview: string;
   contentLength: number;
-  tags: string[];
-  likes?: number;
-  views?: number;
-  commentCount?: number;
-  createdAt?: string;
-  type?: DiaryType;
+  tags: DiaryTag[];
+  likes: number;
+  views: number;
+  commentCount: number;
+  createdAt: string;
   thumbnailUrl?: string | null;
 };
 
@@ -64,16 +64,17 @@ export type DiaryImage = {
 
 export type DiaryDetail = {
   postId: string;
-  title?: string;
+  type: PostType;
+  from: string;
+  to: string;
   content: string;
   likes: number;
   views: number;
-  commentCount?: number;
+  commentCount: number;
   createdAt: string;
   coin: number;
-  type?: DiaryType;
   comments: Comment[];
-  images?: DiaryImage[];
+  images: DiaryImage[];
 };
 
 export type Topic = {
@@ -82,34 +83,21 @@ export type Topic = {
   publishedDate: string;
 };
 export type TodayMetricsResponse = {
-  publicPosts: number;
-  publicTotalPosts: number;
-  mindPosts: number;
-  mindTotalPosts: number;
-  todayPosts: number;
-  todayTotalPosts: number;
+  textPosts: number;
+  textTotalPosts: number;
+  imagePosts: number;
+  imageTotalPosts: number;
   members: number;
-  totalMembers: number;
   anonymous: number;
+  totalMembers: number;
 };
 
-export type GetDiariesResponse = ApiResponse<DiaryPreview[]>;
+export type GetDiariesResponse = ApiResponse<
+  PostsPayload & { nextCursor?: string | null }
+>;
 export type GetDiaryResponse = ApiResponse<DiaryDetail>;
 
-// Random Diary 응답 타입
-export type RandomDiary = {
-  postId: string;
-  userId: string;
-  title: string;
-  contentPreview: string;
-  contentLength: number;
-  tags: string[];
-  likes: number;
-  views: number;
-  createdAt: string;
-  type?: DiaryType;
-  thumbnailUrl?: string | null;
-};
+export type RandomDiary = DiaryPreview;
 
 export type RandomDiaryResponse = {
   coin: number;

@@ -81,7 +81,7 @@ function DetailContent({
         </div>
       )}
 
-      {!isLoading && postId && type === "MOOMYEONGSO" && (
+      {!isLoading && postId && type === "TEXT" && (
         <CommentSection postId={postId} comments={comments} />
       )}
 
@@ -109,8 +109,8 @@ export default function DiaryDetailPage() {
 
   if (isError) {
     const message =
-      error && typeof (error as any).message === "string"
-        ? (error as any).message
+      error instanceof Error
+        ? error.message
         : "문제가 발생했어요. 잠시 후 다시 시도해주세요.";
 
     return (
