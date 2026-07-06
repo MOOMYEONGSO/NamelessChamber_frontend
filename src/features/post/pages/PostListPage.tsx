@@ -3,7 +3,7 @@ import { Navigate, useParams } from "react-router-dom";
 import CardListContainer from "../components/card/CardListContainer";
 import { usePosts } from "../hooks/usePosts";
 import classes from "./PostListPage.module.css";
-import { isUiType } from "../types/typeMap";
+import { isUiType, UI_TO_POST_TYPE } from "../types/typeMap";
 import { InlineError } from "../../../components/status/InlineStates";
 import Paragraph from "../../../components/paragraph/Paragraph";
 import { toAppError } from "../../../api/errors";
@@ -12,9 +12,10 @@ import { PATHS } from "../../../constants/path";
 function PostListPage() {
   const { type } = useParams<{ type?: string }>();
   const routeType = type && isUiType(type) ? type : undefined;
+  const postType = routeType ? UI_TO_POST_TYPE[routeType] : undefined;
 
   const { data, isLoading, isError, error, refetch } = usePosts({
-    type: undefined,
+    type: postType,
   });
 
   const [retrying, setRetrying] = useState(false);

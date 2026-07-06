@@ -23,7 +23,7 @@ function PostStreakPage() {
   const navigate = useNavigate();
   const { type } = useParams<{ type?: string }>();
   const { state } = useLocation() as { state?: StreakState };
-  const routeType: UiType = type && isUiType(type) ? type : "public";
+  const routeType: UiType = type && isUiType(type) ? type : "text";
   const shouldRedirect = Boolean(type && !isUiType(type));
   const isLoggedIn = isAuthenticatedUser();
 

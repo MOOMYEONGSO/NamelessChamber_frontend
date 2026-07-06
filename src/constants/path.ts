@@ -1,3 +1,5 @@
+type PostRouteType = "text" | "image";
+
 export const PATHS = {
   HOME: "/",
   POST_ALL: "/post",
@@ -18,10 +20,10 @@ export const PATHS = {
 
   ADMIN_POSTS_BY_TYPE: (type: string) => `/admin/posts/${type}`,
   ADMIN_POST_DETAIL: (postId: string) => `/admin/posts/v/${postId}`,
-  POST_LIST_TYPE: (type: "public" | "mind") => `/post/${type}`,
-  POST_SUBMIT_TYPE: (type: "public" | "mind") => `/post/submit/${type}`,
+  POST_LIST_TYPE: (type: PostRouteType) => `/post/${type}`,
+  POST_SUBMIT_TYPE: (type: PostRouteType) => `/post/submit/${type}`,
   POST_DETAIL_ID: (id: string) => `/post/v/${id}`,
-  POST_NEW_TYPE: (type: "public" | "mind") => `/post/new/${type}`,
-  POST_STREAK_TYPE: (type: "public" | "mind") => `/post/streak/${type}`,
-  POST_REROLL_TYPE: (type: "public" | "mind") => `/post/reroll/${type}`,
+  POST_NEW_TYPE: (type: PostRouteType) => `/post/new/${type}`,
+  POST_STREAK_TYPE: (type: PostRouteType) => `/post/streak/${type}`,
+  POST_REROLL_TYPE: (type: PostRouteType) => `/post/reroll/${type}`,
 } as const;

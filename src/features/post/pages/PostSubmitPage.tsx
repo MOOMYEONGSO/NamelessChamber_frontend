@@ -30,7 +30,7 @@ function PostSubmitPage() {
   const stateType = state.type && isUiType(state.type) ? state.type : undefined;
   const routeType = urlTypeParam && isUiType(urlTypeParam)
     ? urlTypeParam
-    : (stateType ?? "public");
+    : (stateType ?? "text");
   const shouldRedirect = Boolean(urlTypeParam && !isUiType(urlTypeParam));
 
   const stayMs = state.stayMs ?? 1600;
