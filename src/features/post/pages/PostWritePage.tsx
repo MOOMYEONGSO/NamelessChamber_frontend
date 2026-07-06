@@ -35,7 +35,7 @@ function PostWritePage() {
   const containerRef = useRef<HTMLElement>(null);
 
   const { type } = useParams<{ type?: string }>();
-  const routeType: UiType = type && isUiType(type) ? type : "public";
+  const routeType: UiType = type && isUiType(type) ? type : "text";
   const shouldRedirect = Boolean(type && !isUiType(type));
   const DRAFT_KEY = `draft:post-write:${routeType}`;
 
@@ -56,13 +56,10 @@ function PostWritePage() {
 
   const parsedTags = tags;
 
-  const TITLE = routeType === "public"
-      ? "짧은 기록 순간의 생각을 가볍게 남겨요."
-      : "마음 깊은 곳의 이야기를 꺼내보아요.";
+  const TITLE = "짧은 기록 순간의 생각을 가볍게 남겨요.";
 
-  const PLACEHOLDER_MESSAGE = routeType === "public"
-      ? "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다."
-      : "이곳은 나만의 일기장입니다. 솔직한 이야기를 기록해보세요.";
+  const PLACEHOLDER_MESSAGE =
+    "지금 떠오른 생각이나, 단 하나의 문장으로도 괜찮습니다.";
 
   const { mutateAsync } = useCreatePost({
     onSuccess: (data) => {

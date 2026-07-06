@@ -116,7 +116,7 @@ function ProfilePage() {
           isLoading={isListLoading}
           isEmpty={isEmpty}
           coin={me?.coin ?? 0}
-          type="public"
+          type="text"
           emptyMessage={
             currentTab === "read"
               ? "아직 열람한 글이 없어요."
