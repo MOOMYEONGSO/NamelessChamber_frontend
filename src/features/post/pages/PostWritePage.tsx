@@ -7,7 +7,7 @@ import { useToast } from "../../../contexts/ToastContext";
 import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import { useCreatePost } from "../hooks/useCreatePost";
 import { PATHS } from "../../../constants/path";
-import { isUiType, type UiType } from "../types/typeMap";
+import { type UiType } from "../types/typeMap";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
 import { POST_TAGS } from "../constants/postTags";
 import RichEditor from "../components/editor/RichEditor";
@@ -35,8 +35,8 @@ function PostWritePage() {
   const containerRef = useRef<HTMLElement>(null);
 
   const { type } = useParams<{ type?: string }>();
-  const routeType: UiType = type && isUiType(type) ? type : "text";
-  const shouldRedirect = Boolean(type && !isUiType(type));
+  const shouldRedirect = Boolean(type && type !== "text");
+  const routeType: UiType = "text";
   const DRAFT_KEY = `draft:post-write:${routeType}`;
 
   const [draftKey, setDraftKey] = useState(DRAFT_KEY);
