@@ -93,6 +93,7 @@ html {
 
   /* Layout */
   --header-height: 12rem;
+  --app-max-width: 480px;
 
   /* Effects */
   --blur-radius: 2px;
@@ -132,6 +133,9 @@ body {
 
 .app {
   min-height: 100%;
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   padding-top: var(--header-height);
@@ -147,7 +151,6 @@ body {
 
 .container {
   width: 100%;
-  max-width: 1280px;
   margin: 0 auto;
   padding-inline: 16px;
 }
