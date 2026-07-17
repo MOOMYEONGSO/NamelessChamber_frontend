@@ -35,8 +35,8 @@
   font-family: var(--t2-font-family, inherit);
   font-weight: var(--t2-font-weight, 600);
   font-size: var(--t2-font-size, 1.6rem);
-  line-height: var(--t2-line-height, 1.35);
-  letter-spacing: var(--t2-letter-spacing, 0);
+  line-height: var(--t2-font-line-height, 1.35);
+  letter-spacing: var(--t2-font-letter-spacing, 0);
 }
 
 .modal-textarea {

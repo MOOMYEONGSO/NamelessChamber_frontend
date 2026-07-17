@@ -1,7 +1,6 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import Button from "../../../components/button/Button";
 import Form, { type FormHandle } from "../../../components/form/Form";
-import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import TextArea from "../../../components/textarea/TextArea";
 import classes from "./FeedbackPage.module.css";
 import { useToast } from "../../../contexts/ToastContext";
@@ -43,12 +42,6 @@ function FeedbackPage() {
 
   return (
     <section className={classes.feedback} ref={containerRef}>
-      <div className={classes.topActions}>
-        <FullscreenToggleButton
-          targetRef={containerRef}
-          disabled={createFeedback.isPending}
-        />
-      </div>
       <h2>솔직한 피드백이 좋아요!</h2>
 
       <Form id={FORM_ID} onSave={handleSave} ref={formRef}>

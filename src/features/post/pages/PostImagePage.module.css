@@ -15,15 +15,17 @@
 
 /* 헤더 */
 .heading {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--t1-font-size);
+  font-weight: var(--t1-font-weight);
+  line-height: var(--t1-font-line-height);
   color: var(--color-primary-700);
   margin: 0;
 }
 
 .count {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: var(--color-primary-400);
 }
 
@@ -84,8 +86,9 @@
 
 .dropTitle {
   margin: 0;
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
   color: var(--color-primary-600);
 }
 
@@ -97,8 +100,9 @@
   border-radius: 2rem;
   background-color: var(--color-primary-500);
   color: var(--color-primary-100);
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
   transition: background-color 0.2s ease;
 }
 
@@ -108,7 +112,9 @@
 
 .dropHint {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: var(--color-primary-400);
 }
 
@@ -144,12 +150,13 @@
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
   border: none;
-  font-size: 1.2rem;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  line-height: 1;
+  line-height: var(--t3-font-line-height);
 }
 
 .addMore {
@@ -157,7 +164,9 @@
   border-radius: 0.8rem;
   background-color: var(--color-primary-100);
   border: 2px dashed var(--color-primary-300);
-  font-size: 2.4rem;
+  font-size: var(--t1-font-size);
+  font-weight: var(--t1-font-weight);
+  line-height: var(--t1-font-line-height);
   color: var(--color-primary-400);
   cursor: pointer;
   display: flex;
@@ -185,7 +194,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  font-size: 1.4rem;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: var(--color-primary-600);
 }
 
@@ -206,11 +217,15 @@
   }
 
   .heading {
-    font-size: 1.7rem;
+    font-size: var(--t1-font-size);
+    font-weight: var(--t1-font-weight);
+    line-height: var(--t1-font-line-height);
   }
 
   .count {
-    font-size: 1.3rem;
+    font-size: var(--p1-font-size);
+    font-weight: var(--p1-font-weight);
+    line-height: var(--p1-font-line-height);
   }
 
   .dropzone {
@@ -227,7 +242,9 @@
   }
 
   .dropTitle {
-    font-size: 1.4rem;
+    font-size: var(--button-font-size);
+    font-weight: var(--button-font-weight);
+    line-height: var(--button-font-line-height);
   }
 
   .previewGrid {

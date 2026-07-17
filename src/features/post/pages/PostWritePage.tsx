@@ -4,7 +4,6 @@ import classes from "./PostWritePage.module.css";
 import Button from "../../../components/button/Button";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useToast } from "../../../contexts/ToastContext";
-import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import { useCreatePost } from "../hooks/useCreatePost";
 import { PATHS } from "../../../constants/path";
 import { type UiType } from "../types/typeMap";
@@ -182,13 +181,6 @@ function PostWritePage() {
 
   return (
     <section className={classes.write} ref={containerRef}>
-      <div className={classes.topActions}>
-        <FullscreenToggleButton
-          targetRef={containerRef}
-          disabled={submitting}
-        />
-      </div>
-
       <h2 className={classes.title}>{TITLE}</h2>
 
       <Form id={FORM_ID} onSave={handleSave} ref={formRef}>

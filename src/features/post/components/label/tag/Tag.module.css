@@ -7,6 +7,7 @@
   opacity: 1;
   background-color: #333130;
   color: #878787;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
 }

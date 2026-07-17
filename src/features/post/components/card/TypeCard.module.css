@@ -53,11 +53,11 @@
 }
 
 .guide {
-  font-family: var(--p1-font-family);
-  font-weight: var(--p1-font-weight);
-  font-size: var(--p1-font-size);
-  line-height: var(--p1-font-line-height);
-  letter-spacing: var(--p1-font-letter-spacing);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-font-line-height);
+  letter-spacing: var(--button-font-letter-spacing);
 }
 
 @media (prefers-reduced-motion: reduce) {

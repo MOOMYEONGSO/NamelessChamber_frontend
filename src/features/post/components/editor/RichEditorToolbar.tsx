@@ -142,7 +142,7 @@ export default function RichEditorToolbar({ editor }: RichEditorToolbarProps) {
           className={classes.colorSwatch}
           style={{ backgroundColor: currentColor }}
         />
-        <span className={classes.selectArrow}>∨</span>
+        <span className={classes.colorArrow}>∨</span>
         <input
           type="color"
           className={classes.colorInput}

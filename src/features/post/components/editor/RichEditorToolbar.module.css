@@ -20,7 +20,9 @@
   background: transparent;
   border: none;
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
-  font-size: 1.4rem;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
   color: #5a524a;
   cursor: pointer;
   padding: 0.4rem 2.4rem 0.4rem 0.8rem;
@@ -37,7 +39,9 @@
   position: absolute;
   right: 0.6rem;
   pointer-events: none;
-  font-size: 1rem;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
   color: #7a7268;
 }
 
@@ -59,8 +63,9 @@
   padding: 0.5rem 0.8rem;
   border-radius: var(--border-radius);
   color: #5a524a;
-  font-size: 1.4rem;
-  line-height: 1;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -100,6 +105,14 @@
   border-radius: 0.2rem;
   border: 1px solid #a89f96;
   flex-shrink: 0;
+}
+
+.colorArrow {
+  pointer-events: none;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+  color: #7a7268;
 }
 
 .colorInput {

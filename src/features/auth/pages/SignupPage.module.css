@@ -74,7 +74,9 @@
 .iconBtn {
   background: transparent;
   border: none;
-  font-size: 1.2rem;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
   color: var(--color-gray-2, #888);
   cursor: pointer;
   padding: 0.5rem; /* 클릭 영역 확보 */

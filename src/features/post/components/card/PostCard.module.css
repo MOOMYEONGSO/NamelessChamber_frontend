@@ -21,7 +21,9 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  font-size: 0.8rem;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: #8e8e8e;
 }
 
@@ -31,8 +33,9 @@
 }
 
 .content {
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: #262626;
   white-space: pre-wrap;
   flex-grow: 1;
@@ -41,6 +44,8 @@
 .footer {
   margin-top: 1rem;
   text-align: right;
-  font-size: 0.75rem;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: #8e8e8e;
 }

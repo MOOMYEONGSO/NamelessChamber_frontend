@@ -1,15 +1,15 @@
 .authButton {
   width: 100%;
   background-color: var(--color-yellow);
-  padding: var(--btn-padding-y) var(--btn-padding-x);
+  padding: var(--button-padding-y) var(--button-padding-x);
   color: #262524;
   border: none;
   cursor: pointer;
   border-radius: 10px;
 
-  font-family: var(--btn-font-family);
-  font-weight: var(--btn-font-weight);
-  font-size: var(--btn-font-size);
-  line-height: var(--btn-line-height);
-  letter-spacing: var(--btn-letter-spacing);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-font-line-height);
+  letter-spacing: var(--button-font-letter-spacing);
 }
