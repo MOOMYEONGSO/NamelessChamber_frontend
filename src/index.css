@@ -11,7 +11,7 @@
 /* Root & HTML */
 html {
   font-size: 62.5%;
-  background: #cfcdbd;
+  background: #eeeef1;
 }
 
 :root {
@@ -25,20 +25,19 @@ html {
   --text-secondary-color: var(--color-primary-400);
 
   /* Surfaces */
-  --background-color: #cfcdbd;
+  --background-color: #eeeef1;
   --background-secondary-color: rgba(217, 217, 217, 0.04);
   --border-color: rgba(217, 217, 217, 0.08);
 
   /* Palette - Primary */
-  --color-primary-100: #f5f3e6;
-  --color-primary-200: #ece8cd;
-  --color-primary-300: #c5c0a0;
-  --color-primary-400: #8c8769;
-  --color-primary-500: #403d2c;
-  --color-primary-600: #37321f;
-  --color-primary-700: #2e2916;
-  --color-primary-800: #25200d;
-  --color-primary-900: #1f1a07;
+  --color-primary: #be4d47;
+  --color-primary-100: #fefeff;
+  --color-primary-200: #dfe1e5;
+  --color-primary-300: #bbbdc3;
+  --color-primary-400: #7e808a;
+  --color-primary-500: #3d3c43;
+  --color-primary-600: #29292e;
+  --color-primary-700: #18181a;
 
   /* Palette */
   --color-green: #556028;
@@ -54,27 +53,33 @@ html {
   --letter-spacing-default: 0.04em;
 
   --p1-font-family: Pretendard, sans-serif;
-  --p1-font-weight: 400;
-  --p1-font-size: 18px;
-  --p1-font-line-height: 1.8;
+  --p1-font-weight: 500;
+  --p1-font-size: 14px;
+  --p1-font-line-height: 1.3;
   --p1-font-letter-spacing: var(--letter-spacing-default);
 
   --t1-font-family: Pretendard, sans-serif;
-  --t1-font-weight: 400;
-  --t1-font-size: 28px;
-  --t1-line-height: 1.6;
+  --t1-font-weight: 600;
+  --t1-font-size: 24px;
+  --t1-line-height: 1.3;
   --t1-letter-spacing: var(--letter-spacing-default);
 
   --t2-font-family: Pretendard, sans-serif;
-  --t2-font-weight: 500;
-  --t2-font-size: 24px;
-  --t2-line-height: 1.5;
+  --t2-font-weight: 600;
+  --t2-font-size: 18px;
+  --t2-line-height: 1.3;
   --t2-letter-spacing: var(--letter-spacing-default);
+
+  --t3-font-family: Pretendard, sans-serif;
+  --t3-font-weight: 600;
+  --t3-font-size: 14px;
+  --t3-line-height: 1.3;
+  --t3-letter-spacing: var(--letter-spacing-default);
 
   --c1-font-family: Pretendard, sans-serif;
   --c1-font-weight: 500;
   --c1-font-size: 16px;
-  --c1-line-height: normal;
+  --c1-line-height: 1.3;
   --c1-letter-spacing: var(--letter-spacing-default);
 
   --body1-font-family: Pretendard, sans-serif;

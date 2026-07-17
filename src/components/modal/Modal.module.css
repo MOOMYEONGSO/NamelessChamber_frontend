@@ -21,7 +21,7 @@
   flex-direction: column;
   gap: 2.5rem;
 
-  background: #cfcdbd;
+  background: #eeeef1;
   border: 1px solid var(--color-primary-300);
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.12),
@@ -31,7 +31,7 @@
 
 .modal-title {
   margin: 0;
-  color: var(--color-primary-900);
+  color: var(--color-primary-700);
   font-family: var(--t2-font-family, inherit);
   font-weight: var(--t2-font-weight, 600);
   font-size: var(--t2-font-size, 1.6rem);
@@ -43,7 +43,7 @@
   width: 100%;
   background: var(--color-primary-100);
   border: 1px solid var(--color-primary-300);
-  color: var(--color-primary-800);
+  color: var(--color-primary-700);
   font-family: var(--p1-font-family);
   font-weight: var(--p1-font-weight);
   font-size: var(--p1-font-size);

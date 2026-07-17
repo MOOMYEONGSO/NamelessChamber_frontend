@@ -1,5 +1,6 @@
 #root {
   width: 100%;
+  max-width: var(--app-max-width);
   height: 100dvh;
   margin: 0 auto;
   text-align: center;

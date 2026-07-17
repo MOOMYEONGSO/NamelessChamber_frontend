@@ -115,7 +115,7 @@
   max-width: 320px;
   overflow: hidden;
   border-radius: 0.8rem;
-  background: var(--color-primary-800);
+  background: var(--color-primary-700);
   box-shadow: 0 2px 12px rgba(64, 61, 44, 0.12);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

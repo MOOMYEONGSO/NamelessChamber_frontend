@@ -14,11 +14,16 @@
 
 }
 
-.logoLink {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
+.menuButton {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-primary-700);
   cursor: pointer;
 }
 

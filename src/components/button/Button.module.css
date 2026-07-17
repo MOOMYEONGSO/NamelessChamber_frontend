@@ -52,12 +52,12 @@
 
 /* states × variants */
 .default.main {
-  background-color: var(--color-primary-800);
+  background-color: var(--color-primary-700);
   border: 1px solid transparent;
   color: var(--color-primary-100);
 }
 .active.main {
-  background-color: var(--color-primary-900);
+  background-color: var(--color-primary-700);
   border: 1px solid transparent;
   color: var(--color-primary-100);
 }
@@ -65,13 +65,13 @@
 .default.sub {
   background-color: var(--color-primary-100);
   border: 1px solid transparent;
-  color: var(--color-primary-800);
+  color: var(--color-primary-700);
 }
 
 .active.sub {
   background-color: var(--color-primary-200);
   border: 1px solid transparent;
-  color: var(--color-primary-800);
+  color: var(--color-primary-700);
 }
 
 .default.ghost {
