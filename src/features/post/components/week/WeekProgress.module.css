@@ -7,7 +7,9 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
-  font-size: 14px;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
 }
 
 .weekDots {

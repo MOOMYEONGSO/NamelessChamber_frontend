@@ -1,10 +1,14 @@
 .input {
   width: 100%;
+  /* 버튼 높이와 동일: (p1 font-size × line-height) + (button-pad-y 1.5rem × 2) */
+  min-height: calc(
+    (var(--p1-font-size) * var(--p1-font-line-height)) + (1.5rem * 2)
+  );
   background-color: var(--color-primary-100);
   border: none;
-  color: var(--color-primary-800);
-  border-radius: 8px;
-  padding: 1.2rem 1.6rem;
+  color: var(--color-primary-700);
+  border-radius: 0.6rem;
+  padding: 0 1.6rem;
   caret-color: var(--color-caret);
 
   font-family: var(--c1-font-family);

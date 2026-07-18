@@ -8,21 +8,21 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-family: var(--p1-font-family);
-  font-weight: var(--p1-font-weight);
-  font-size: var(--p1-font-size);
-  line-height: var(--p1-font-line-height);
-  letter-spacing: var(--p1-font-letter-spacing);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-font-line-height);
+  letter-spacing: var(--button-font-letter-spacing);
   color: var(--color-primary-400);
 }
 
 .tablist :global(button).tab.active,
 .tablist button.tab.active {
-  color: var(--color-primary-800);
+  color: var(--color-primary-700);
 }
 
 .tab[aria-selected="true"] {
-  color: var(--color-primary-800);
+  color: var(--color-primary-700);
   position: relative;
 }
 
@@ -33,7 +33,7 @@
   right: 0;
   bottom: -8px;
   height: 2px;
-  background: var(--color-primary-800);
+  background: var(--color-primary-700);
 }
 
 @media (max-width: 768px) {

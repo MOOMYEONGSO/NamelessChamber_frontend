@@ -6,7 +6,7 @@
   list-style: none;
   height: 6.4rem;
   border-radius: 0.8rem;
-  background: rgba(217, 217, 217, 0.06);
+  background: var(--color-primary-200);
   position: relative;
   overflow: hidden;
 }
@@ -18,7 +18,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.6),
     transparent
   );
   animation: shimmer 1.1s infinite;
@@ -32,7 +32,7 @@
 .line {
   height: 1.6rem;
   border-radius: 0.4rem;
-  background: rgba(217, 217, 217, 0.08);
+  background: var(--color-primary-200);
   position: relative;
   overflow: hidden;
 }
@@ -49,7 +49,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.6),
     transparent
   );
   animation: shimmer 1.1s infinite;

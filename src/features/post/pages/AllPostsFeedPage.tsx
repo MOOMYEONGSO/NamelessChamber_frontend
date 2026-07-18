@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Card from "../components/card/Card";
 import classes from "./AllPostsFeedPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { postApi } from "../api/post";
+import { fetchRandomPosts } from "../api/randomPost";
 import Modal from "../../../components/modal/Modal";
 import Button from "../../../components/button/Button";
 
@@ -47,15 +47,24 @@ const AllPostsFeedPage: React.FC = () => {
   // React Query를 활용한 무한 스크롤(커서) 데이터 페칭
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ["posts", "all", "canvas"],
-      queryFn: ({ pageParam = null }: { pageParam?: string | null }) =>
-        postApi.getAll(undefined, pageParam, 20),
-      getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
-      initialPageParam: null as string | null,
+      queryKey: ["posts", "random", "canvas"],
+      // 전체 포스트 피드는 /posts/random 사용 (reroll 인덱스를 페이지로 활용)
+      queryFn: ({ pageParam }: { pageParam: number }) =>
+        fetchRandomPosts(20, [], pageParam),
+      getNextPageParam: (lastPage, allPages) =>
+        lastPage.posts.length > 0 ? allPages.length : undefined,
+      initialPageParam: 0,
     });
 
-  // 받아온 2차원 페이지 배열을 1차원 배열로 평탄화(Flatten)
-  const posts = data?.pages.flatMap((page) => page.posts) ?? [];
+  // 페이지 배열을 평탄화하고 postId 기준으로 중복 제거(랜덤이라 페이지 간 중복 가능)
+  const posts = useMemo(() => {
+    const seen = new Set<string>();
+    return (data?.pages.flatMap((page) => page.posts) ?? []).filter((p) => {
+      if (seen.has(p.postId)) return false;
+      seen.add(p.postId);
+      return true;
+    });
+  }, [data]);
   const coin = data?.pages[0]?.coin ?? 0;
 
   const [pendingId, setPendingId] = useState<string | null>(null);

@@ -22,8 +22,9 @@
   /* 전역 #root의 text-align: center 상속을 끊어 글이 왼쪽에서 시작하도록 함 */
   text-align: left;
   font-family: 'Pretendard Variable', Pretendard, sans-serif;
-  font-size: 1.8rem;
-  line-height: 1.8;
+  font-size: var(--c1-font-size);
+  font-weight: var(--c1-font-weight);
+  line-height: var(--c1-font-line-height);
   color: #2a2827;
   letter-spacing: 0.04em;
 }

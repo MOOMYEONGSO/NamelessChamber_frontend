@@ -69,15 +69,17 @@
 
 .cardTitle {
   margin: 0.4rem 0 0;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-primary-800);
+  font-size: var(--t2-font-size);
+  font-weight: var(--t2-font-weight);
+  line-height: var(--t2-font-line-height);
+  color: var(--color-primary-700);
 }
 
 .cardDesc {
   margin: 0;
-  font-size: 1.4rem;
-  line-height: 1.6;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
   color: var(--color-primary-500);
 }
 

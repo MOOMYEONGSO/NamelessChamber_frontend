@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import classes from "./PostSubmitPage.module.css";
-import FullscreenToggleButton from "../../../components/fullsrceen/FullscreenToggleButton";
 import { PATHS } from "../../../constants/path";
 import { isUiType, type UiType } from "../types/typeMap";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
@@ -82,9 +81,6 @@ function PostSubmitPage() {
       aria-live="polite"
       aria-busy="true"
     >
-      <div className={classes.fullscreenBtn}>
-        <FullscreenToggleButton alwaysHoverStyle targetRef={wrapRef} />
-      </div>
       <p className={classes.message}>{message}</p>
     </main>
   );

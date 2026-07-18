@@ -1,4 +1,6 @@
 .card {
+  /* 줄노트 한 줄 높이: 노트 줄 간격 · 본문 line-height · JS LINE_HEIGHT를 이 값으로 동기화 */
+  --card-line: 28px;
   position: relative;
   width: 100%;
   background-color: var(--color-primary-100);
@@ -48,18 +50,19 @@
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
-    transparent 31px,
-    var(--color-primary-200) 31px,
-    var(--color-primary-200) 32px
+    transparent calc(var(--card-line) - 1px),
+    var(--color-primary-200) calc(var(--card-line) - 1px),
+    var(--color-primary-200) var(--card-line)
   );
 }
 
 .title {
   margin: 0;
   font-family: var(--p1-font-family);
-  font-size: 1.6rem;
+  font-size: var(--p1-font-size);
   font-weight: var(--p1-font-weight);
-  line-height: 32px;
+  /* 노트 줄 간격에 맞춰 각 줄이 노트선 위에 앉도록 고정 */
+  line-height: var(--card-line);
   letter-spacing: 0.01em;
   color: var(--color-primary-700);
   overflow: hidden;
@@ -78,8 +81,9 @@
     var(--color-primary-100) 35%
   );
   font-family: var(--p1-font-family);
-  font-size: 1.4rem;
-  line-height: 32px;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
   color: var(--color-primary-500);
 }
 
@@ -115,7 +119,7 @@
   max-width: 320px;
   overflow: hidden;
   border-radius: 0.8rem;
-  background: var(--color-primary-800);
+  background: var(--color-primary-700);
   box-shadow: 0 2px 12px rgba(64, 61, 44, 0.12);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

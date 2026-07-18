@@ -46,7 +46,9 @@
   color: #fff;
   padding: 0.8rem 1.8rem;
   border-radius: 30px;
-  font-size: 0.95rem;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
   z-index: 100;
   pointer-events: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -61,7 +63,9 @@
   color: #fff;
   padding: 0.8rem 1.5rem;
   border-radius: 30px;
-  font-size: 0.95rem;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
   z-index: 999;
   cursor: pointer;
   border: none;

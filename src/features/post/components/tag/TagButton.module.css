@@ -49,19 +49,20 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--color-primary-800);
+  color: var(--color-primary-700);
 }
 
 .title {
-  font-size: var(--p1-font-size);
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--color-primary-800);
+  font-size: var(--t2-font-size);
+  font-weight: var(--t2-font-weight);
+  line-height: var(--t2-font-line-height);
+  color: var(--color-primary-700);
 }
 
 .subtitle {
-  font-size: 16px;
-  line-height: 1.2;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
   color: var(--color-primary-500);
 }
 

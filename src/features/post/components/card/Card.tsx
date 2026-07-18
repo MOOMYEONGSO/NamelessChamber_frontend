@@ -13,7 +13,8 @@ type CardProps = ComponentPropsWithoutRef<"article"> & {
   size?: "sm" | "lg";
 };
 
-const LINE_HEIGHT = 32;
+// CSS --card-line(28px)과 반드시 동일하게 유지 (줄노트 줄 높이)
+const LINE_HEIGHT = 28;
 
 const Card = ({
   contentPreview,
