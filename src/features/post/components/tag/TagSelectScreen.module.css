@@ -1,0 +1,110 @@
+.screen {
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem 2rem 4rem;
+  background: var(--background-color);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.4rem;
+}
+
+.back {
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-primary-400);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.done {
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  color: var(--color-primary);
+}
+.done:disabled {
+  color: var(--color-primary-300);
+  cursor: default;
+}
+
+.title {
+  margin: 2rem 0 3.2rem;
+  font-family: var(--t1-font-family);
+  font-weight: var(--t1-font-weight);
+  font-size: var(--t1-font-size);
+  line-height: 1.45;
+  letter-spacing: var(--t1-font-letter-spacing);
+  color: var(--color-primary-700);
+  white-space: pre-line;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 1.6rem;
+  background: var(--color-primary-100);
+  border: 1px solid transparent;
+  border-radius: 1.2rem;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.row.on {
+  border-color: var(--color-primary-700);
+}
+
+.icon {
+  display: block;
+  width: 4rem; /* 40px */
+  height: 4rem; /* 40px */
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.textGroup {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.tagTitle {
+  font-family: var(--t3-font-family);
+  font-weight: var(--t3-font-weight);
+  font-size: var(--t3-font-size);
+  color: var(--color-primary-700);
+}
+.tagSub {
+  font-size: var(--p1-font-size);
+  color: var(--color-primary-400);
+  word-break: keep-all;
+}
+

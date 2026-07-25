@@ -28,11 +28,12 @@ const CardList = ({ posts, onClickCard }: CardListProps) => {
           <li key={post.postId}>
             <Card
               onClick={() => onClickCard(post.postId)}
-              contentPreview={post.contentPreview ?? ""}
+              to={post.to}
+              from={post.from}
+              createdAt={post.createdAt}
+              contentLength={post.contentLength}
               isAuthor={isAuthor}
               tags={post.tags}
-              views={post.views}
-              commentCount={post.commentCount}
               thumbnailUrl={post.thumbnailUrl}
               size={cardSizeFromId(post.postId)}
             />

@@ -1,89 +1,230 @@
-.write {
+.page {
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  height: 100dvh; /* 키보드 열리면 visualViewport 높이로 인라인 override */
   display: flex;
   flex-direction: column;
+  background: var(--background-color);
+  overflow: hidden;
+}
+
+/* 상단바: 햄버거 / 접수 */
+.topbar {
+  display: flex;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  justify-content: space-between;
+  height: 5.6rem;
+  padding: 0 1.2rem;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
   background: transparent;
-  padding: 6rem 0;
-  gap: 4rem;
-}
-
-.title {
-  font-family: var(--p1-font-family);
-  font-weight: var(--t1-font-weight);
-  font-size: var(--t1-font-size);
-  line-height: var(--t1-font-line-height);
-  letter-spacing: var(--p1-font-letter-spacing);
-  color: var(--color-gray-3);
-}
-
-.write form {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  border: none;
+  color: var(--color-primary-700);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 92%;
 }
 
-.write form:focus-within {
+.receipt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+}
+.receipt:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.receiptIcon {
+  width: 2.8rem;
+  height: 2.8rem;
+  object-fit: contain;
+}
+
+/* 서브타이틀 */
+.subtitleArea {
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+}
+.subtitle {
+  margin: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  font-family: var(--t2-font-family);
+  font-weight: var(--t2-font-weight);
+  font-size: var(--t2-font-size);
+  line-height: 1.4;
+  color: var(--color-primary-500);
+  text-align: center;
+  white-space: pre-line;
+}
+.subShown {
+  opacity: 1;
+}
+
+/* 편지지 영역 */
+.cardWrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.6rem 2rem;
+}
+
+/* Letter의 .to/.from 줄 위에 입력을 flex로 배치 */
+.lineRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.prefixLabel {
+  flex-shrink: 0;
+}
+.inlineInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
   outline: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
 }
 
-.footer {
+/* 본문: Letter의 .body 위에 textarea */
+.bodyRow {
+  position: relative;
+}
+.inlineBody {
+  display: block;
+  width: 100%;
+  min-height: calc(var(--letter-line) * 5);
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  word-break: break-word;
+}
+
+/* 웹/웹앱 모두 텍스트 선택·복사·붙여넣기 허용 */
+.inlineInput,
+.inlineBody {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+.inlineInput::placeholder,
+.inlineBody::placeholder {
+  font-family: var(--p1-font-family);
+  font-weight: var(--p1-font-weight);
+  font-size: var(--p1-font-size);
+  letter-spacing: var(--p1-font-letter-spacing);
+  color: var(--color-primary-300);
+}
+
+.nextBtn {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 0.6rem;
+  color: var(--color-primary-100);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bodyNext {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+/* 모바일 키보드 바로 위 액세서리 바 */
+.kbBar {
+  flex-shrink: 0;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.6rem;
-  padding-top: 1.2rem;
+  gap: 0.8rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--background-color);
+  border-top: 1px solid var(--color-primary-200);
 }
 
-.timeDisplay {
-  font-size: var(--p1-font-size);
-  font-weight: var(--p1-font-weight);
-  line-height: var(--p1-font-line-height);
-  color: var(--text-secondary-color);
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.charCount {
-  font-size: var(--p1-font-size);
-  font-weight: var(--p1-font-weight);
-  line-height: var(--p1-font-line-height);
-  color: var(--text-secondary-color);
-  flex-shrink: 0;
-}
-
-.revealWrap {
+.kbCamera {
+  width: 4.4rem;
+  height: 3.6rem;
+  padding: 0;
   display: inline-flex;
   align-items: center;
-  opacity: 0;
-  filter: blur(6px);
-  pointer-events: none;
-  transition:
-    opacity 320ms ease 80ms,
-    filter 360ms ease 200ms;
+  justify-content: center;
+  background: var(--color-primary-100);
+  border: 1px solid var(--color-primary-200);
+  border-radius: 0.8rem;
+  color: var(--color-primary-500);
+  cursor: pointer;
 }
 
-.revealWrap[data-ready="true"] {
-  opacity: 1;
-  filter: none;
-  pointer-events: auto;
+.kbNav {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.kbBtn {
+  width: 4.4rem;
+  height: 3.6rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-400);
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+.kbBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.kbIcon {
+  width: 2rem;
+  height: auto;
+  display: block;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .revealWrap {
+  .cardShift {
     transition: none;
   }
-}
-
-@media (max-width: 768px) {
-  .write form {
-    max-width: 92%;
-    height: auto;
+  .subtitle {
+    transition: none;
   }
 }

@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import Form from "../../../components/form/Form";
 import Input from "../../../components/input/Input";
-import Paragraph from "../../../components/paragraph/Paragraph";
+import Text from "../../../components/text/Text";
 import classes from "./SignupPage.module.css";
 import { useSignup } from "../hooks/useAuth";
 import { PATHS } from "../../../constants/path";
@@ -18,7 +18,10 @@ import { firstError, hasError } from "../validation/validationHelpers";
 import Button from "../../../components/button/Button";
 import LoadingDots from "../../../components/loading/LoadingDots";
 import { VISIT_MOTIVES, type VisitMotive } from "../constants/signup";
+import MotiveOption from "../components/MotiveOption";
+import BackArrow from "../../../assets/icons/BackArrow";
 import PinInput from "../../../components/input/PinInput";
+import Letter from "../../post/components/letter/Letter";
 import { getSignupCompleteLetter } from "../constants/messages";
 
 type Step = "visitMotive" | "nickname" | "pw" | "pwc" | "email" | "complete";
@@ -201,6 +204,15 @@ function SignupPage() {
     else if (step === "nickname") setStep("visitMotive");
   }
 
+  // 이전 버튼: 첫 단계(마음)에선 회원가입을 빠져나가고, 이후 단계에선 한 단계씩 되돌립니다.
+  function handleBack() {
+    if (step === "visitMotive") {
+      navigate(-1);
+      return;
+    }
+    goPrev();
+  }
+
   // X 버튼 클릭 시 이전 화면으로 되돌아갑니다. (또는 PATHS.HOME 등으로 변경 가능)
   function handleClose() {
     navigate(-1);
@@ -232,23 +244,25 @@ function SignupPage() {
       case "email":
         return "편지 받을 이메일";
       case "complete":
-        return "무명소의 시작, 진심을 담아 전합니다.";
+        return "무명소에서 보낸,\n첫번째 편지가 도착했어요.";
       default:
         return "회원가입";
     }
   };
 
+  const letter = getSignupCompleteLetter(trimmedNickname);
+
   return (
     <section className={classes.signup}>
       <header className={classes.topBar}>
-        {step !== "visitMotive" && step !== "complete" ? (
+        {step !== "complete" ? (
           <button
             type="button"
-            onClick={goPrev}
+            onClick={handleBack}
             className={classes.iconBtn}
-            aria-label="이전 단계"
+            aria-label="이전"
           >
-            &lt;
+            <BackArrow />
           </button>
         ) : (
           <div />
@@ -265,7 +279,11 @@ function SignupPage() {
         )}
       </header>
 
-      <Paragraph>{getTitle()}</Paragraph>
+      {step === "complete" ? (
+        <h1 className={classes.completeTitle}>{getTitle()}</h1>
+      ) : (
+        <Text variant="t1">{getTitle()}</Text>
+      )}
 
       <Form
         onSave={goNextOrSubmit}
@@ -275,18 +293,15 @@ function SignupPage() {
         {step === "visitMotive" && (
           <div className={classes.fieldGroup} style={{ gap: "0.8rem" }}>
             {VISIT_MOTIVES.map((m) => (
-              <Button
+              <MotiveOption
                 key={m.value}
-                type="button"
-                variant={visitMotive === m.value ? "main" : "sub"}
-                state="active"
-                onClick={() => {
+                label={m.label}
+                selected={visitMotive === m.value}
+                onSelect={() => {
                   if (serverError) setServerError("");
                   setVisitMotive(m.value);
                 }}
-              >
-                {m.label}
-              </Button>
+              />
             ))}
           </div>
         )}
@@ -399,6 +414,10 @@ function SignupPage() {
               <InputMessage type="error" aria-live="polite">
                 {emailError}
               </InputMessage>
+            ) : serverError ? (
+              <InputMessage type="error" aria-live="polite">
+                {serverError}
+              </InputMessage>
             ) : (
               <InputMessage />
             )}
@@ -408,23 +427,15 @@ function SignupPage() {
         {/* Step 6. 완료 (편지) */}
         {step === "complete" && (
           <div className={classes.fieldGroup}>
-            <div
-              style={{
-                textAlign: "center",
-                lineHeight: "1.8",
-                color: "var(--color-gray-700, #4a4a4a)",
-                marginTop: "2rem",
-                marginBottom: "2rem",
-                whiteSpace: "pre-wrap",
-                fontSize: "1rem",
-              }}
-            >
-              {getSignupCompleteLetter(nickname)}
-            </div>
+            <Letter to={letter.to} from={letter.from}>
+              {letter.body}
+            </Letter>
           </div>
         )}
 
-        {serverError ? (
+        {/* 이메일 단계 서버 에러는 입력란 바로 아래(필드 슬롯)에 표시하므로 여기선 중복 제외.
+            그 외 단계에선 공용 에러 슬롯으로 노출하고, 비어 있을 땐 간격용 스페이서로 유지 */}
+        {serverError && step !== "email" ? (
           <InputMessage type="error" aria-live="polite">
             {serverError}
           </InputMessage>
@@ -449,7 +460,7 @@ function SignupPage() {
                 "가입하기"
               )
             ) : step === "complete" ? (
-              "확인했습니다"
+              "완료"
             ) : (
               "다음"
             )}

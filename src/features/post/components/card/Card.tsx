@@ -1,92 +1,71 @@
-import { useEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, CSSProperties } from "react";
 import classes from "./Card.module.css";
-import View from "../label/view/View";
-import CommentCount from "../label/commentCount/commentcount";
+import { formatLetterMeta } from "../../../../lib/post/formatLetterMeta";
+import { TAG_COVER_COLOR, DARK_COVER_TAGS } from "../../constants/postTags";
+import type { tags as PostTag } from "../../types/tags";
 
 type CardProps = ComponentPropsWithoutRef<"article"> & {
-  contentPreview: string;
-  tags?: string[];
+  to?: string;
+  from?: string;
+  createdAt?: string;
+  contentLength?: number;
+  tags?: PostTag[];
   isAuthor?: boolean;
-  views?: number;
-  commentCount?: number;
   thumbnailUrl?: string | null;
   size?: "sm" | "lg";
 };
 
-// CSS --card-line(28px)과 반드시 동일하게 유지 (줄노트 줄 높이)
-const LINE_HEIGHT = 28;
-
 const Card = ({
-  contentPreview,
+  to,
+  from,
+  createdAt,
+  contentLength = 0,
   isAuthor,
   className,
   tags: tagIds = [],
-  views = 0,
-  commentCount,
   thumbnailUrl,
   size = "lg",
+  style,
   ...props
 }: CardProps) => {
-  const isPhoto = !!thumbnailUrl;
-  const lineClamp = size === "sm" ? 4 : 6;
-  const titleRef = useRef<HTMLParagraphElement>(null);
-  const [isClamped, setIsClamped] = useState(false);
-
-  useEffect(() => {
-    if (isPhoto) return;
-    const el = titleRef.current;
-    if (!el) return;
-    setIsClamped(el.scrollHeight > el.clientHeight);
-  }, [contentPreview, size, isPhoto]);
-
-  if (isPhoto) {
-    return (
-      <article
-        className={`${classes.photoCard} ${className ?? ""}`}
-        data-tags={tagIds.join(",")}
-        {...props}
-      >
-        <div className={classes.photoGrid}>
-          <img
-            src={thumbnailUrl ?? ""}
-            alt="사진"
-            className={classes.photoImg}
-          />
-        </div>
-        <div className={classes.photoFooter}>
-          {commentCount !== undefined && commentCount > 0 && (
-            <CommentCount>{commentCount}</CommentCount>
-          )}
-          <View>{views}</View>
-        </div>
-      </article>
-    );
-  }
+  const meta = createdAt ? formatLetterMeta(createdAt) : null;
+  // 첫 번째 태그로 편지 커버 색상 결정 (없으면 기본 흰색)
+  const cover = tagIds.length > 0 ? TAG_COVER_COLOR[tagIds[0]] : undefined;
+  const darkCover = tagIds.length > 0 && DARK_COVER_TAGS.includes(tagIds[0]);
 
   return (
     <article
-      className={`${classes.card} ${classes[size]} ${isAuthor ? classes.self : classes.other} ${className ?? ""}`}
+      className={`${classes.card} ${classes[size]} ${
+        isAuthor ? classes.self : classes.other
+      } ${className ?? ""}`}
       data-tags={tagIds.join(",")}
+      data-cover={darkCover ? "dark" : "light"}
+      style={{
+        ...(cover ? { backgroundColor: cover } : {}),
+        ...(style as CSSProperties),
+      }}
       {...props}
     >
-      <div className={`${classes.tape} ${isAuthor ? classes.tapeAuthor : ""}`} />
-      <div className={classes.content}>
-        <p
-          ref={titleRef}
-          className={classes.title}
-          style={{ maxHeight: LINE_HEIGHT * lineClamp }}
-        >
-          {contentPreview}
-        </p>
-        {isClamped && <span className={classes.readMore}>...자세히 보기</span>}
-      </div>
-      <div className={classes.footer}>
-        <div className={classes.metaRight}>
-          {commentCount !== undefined && commentCount > 0 && (
-            <CommentCount>{commentCount}</CommentCount>
-          )}
-          <View>{views}</View>
+      <div className={classes.head}>
+        <div className={classes.addr}>
+          {to != null && <p className={classes.to}>To. {to}</p>}
+          {from != null && <p className={classes.from}>From. {from}</p>}
         </div>
+        <img src="/stamp.png" alt="우편물 스티커" className={classes.stamp} />
+      </div>
+
+      {thumbnailUrl && (
+        <div className={classes.thumb}>
+          <img src={thumbnailUrl} alt="사진" className={classes.thumbImg} />
+        </div>
+      )}
+
+      <div className={classes.meta}>
+        <p className={classes.metaRow}>DATE: {meta?.date ?? "----.--.--"}</p>
+        <p className={classes.metaRow}>
+          WRITING_TIME: {meta?.time ?? "--:-- KST"}
+        </p>
+        <p className={classes.metaRow}>CHARACTER_COUNT: {contentLength}</p>
       </div>
     </article>
   );

@@ -11,7 +11,7 @@
   justify-content: center;
   cursor: pointer;
   --button-pad-y: 1.5rem;
-  --button-calc-size: var(--p1-font-size);
+  --button-calc-size: var(--button-font-size);
   --button-line: var(--p1-font-line-height);
 
   min-height: calc(

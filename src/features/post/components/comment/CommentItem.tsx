@@ -2,7 +2,7 @@ import { getRandomUserOverlayUrl } from "../../utils/overlayImages";
 import { useMemo } from "react";
 import classes from "./CommentSection.module.css";
 import type { Comment } from "../../types/types";
-import deleteIcon from "../../../../assets/icons/icon_delete.svg";
+import DeleteIcon from "../../../../assets/icons/DeleteIcon";
 
 function CommentItem({
   comment,
@@ -29,8 +29,9 @@ function CommentItem({
         <button
           className={classes.deleteButton}
           onClick={() => onDelete(comment.commentId)}
+          aria-label="삭제"
         >
-          <img src={deleteIcon} alt="삭제" />
+          <DeleteIcon />
         </button>
       )}
     </li>

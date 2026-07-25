@@ -29,27 +29,22 @@ export default function CommentForm({ postId }: Props) {
 
   return (
     <div className={classes.form}>
-      <div className={classes.formHeader}>
-        <p className={classes.formTitle}>
-          <Text variant="p1" color="gray-2">
-            일기가 인상깊으셨다면, 공감과 격려의 한마디 부탁드려요.
-          </Text>
-        </p>
-        <p className={classes.formSubtitle}>
-          <Text variant="c1" color="gray-3">
-            1회만 남길 수 있으니 신중하게 남겨주세요.
-          </Text>
-        </p>
-      </div>
+      <p className={classes.formTitle}>
+        <Text variant="t2">
+          {"일기가 인상깊으셨다면,\n공감과 격려의 한마디 부탁드려요."}
+        </Text>
+      </p>
 
-      <TextArea
-        value={content}
-        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-          setContent(e.target.value)
-        }
-        placeholder="작성하신 한마디는 소중하게 전달이 됩니다"
-        disabled={isPending}
-      />
+      <div className={classes.inputBox}>
+        <TextArea
+          value={content}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setContent(e.target.value)
+          }
+          placeholder="작성하신 한마디는 소중하게 전달이 됩니다"
+          disabled={isPending}
+        />
+      </div>
 
       <Button
         onClick={handleSubmit}

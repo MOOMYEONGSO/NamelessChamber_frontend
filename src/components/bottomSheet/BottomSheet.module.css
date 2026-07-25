@@ -1,0 +1,62 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* 하단 시트: 앱 너비(480px) 기준, 안쪽 패딩 24px */
+.sheet {
+  width: 100%;
+  max-width: var(--app-max-width);
+  padding: 24px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  border-radius: 20px 20px 0 0;
+  background: #eeeef1;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: sheet-up 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 타이틀: t2, primary-700 */
+.title {
+  margin: 0;
+  color: var(--color-primary-700);
+  font-family: var(--t2-font-family);
+  font-weight: var(--t2-font-weight);
+  font-size: var(--t2-font-size);
+  line-height: var(--t2-font-line-height);
+  letter-spacing: var(--t2-font-letter-spacing);
+}
+
+/* 액션 버튼: 세로 스택 */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.actions > * {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    animation: none;
+  }
+}

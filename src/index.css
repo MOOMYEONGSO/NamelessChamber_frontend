@@ -15,10 +15,22 @@ html {
 }
 
 :root {
-  font-family: "Pretendard Variable", Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
-    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-family:
+    "Pretendard Variable",
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    sans-serif;
 
   /* Text */
   --text-color: var(--color-primary-700);
@@ -43,6 +55,11 @@ html {
   --color-green: #556028;
   --color-yellow: #f2d899;
   --color-red: #f04248;
+  --color-letter-line: #bc4741; /* 편지지 가로줄 */
+
+  /* Card Meta Data */
+  --font-mono:
+    "SFMono-Regular", ui-monospace, Menlo, Consolas, "D2Coding", monospace;
   --color-gray-2: #d9d9d9;
   --color-gray-3: #878787;
   --color-gray-4: #302e2d;
@@ -138,7 +155,6 @@ body {
   position: relative;
 }
 
-
 #root,
 .app {
   position: relative;
@@ -161,6 +177,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* 회원가입: 콘텐츠를 헤더 바로 아래(상단)에 정렬 */
+.main-top {
+  align-items: flex-start;
 }
 
 .container {

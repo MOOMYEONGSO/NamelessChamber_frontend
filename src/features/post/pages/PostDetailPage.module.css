@@ -1,45 +1,34 @@
 .post.detail {
   display: flex;
   flex-direction: column;
-  gap: 6rem;
+  /* 편지지 ↔ 댓글 영역 간격 45px */
+  gap: 4.5rem;
   min-height: 70vh;
   overflow: auto;
 }
 
-.intro {
-  align-self: flex-start;
-  margin-top: 0;
-  margin-bottom: 0;
-  text-align: left;
-  width: 100%;
-}
-
-.lines {
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 3.2rem;
-  flex: 1 1 auto;
-  background-color: var(--color-primary-100);
-  padding: 2.4rem 3.2rem;
-  min-height: 300px;
-}
-
-.paragraph {
-  white-space: pre-line;
-  text-align: left;
-  text-align-last: left;
-
-  word-break: keep-all;
-  line-break: loose;
-  overflow-wrap: anywhere;
-
-  font-size: var(--c1-font-size);
+/* 편지지 To 제목: 가운데 정렬, #BC4741(--color-letter-line), c1 스케일 */
+.to {
+  margin: 0 0 2.4rem;
+  text-align: center;
+  color: var(--color-letter-line);
+  font-family: var(--c1-font-family);
   font-weight: var(--c1-font-weight);
+  font-size: var(--c1-font-size);
   line-height: var(--c1-font-line-height);
-  letter-spacing: 0.01em;
-  color: var(--color-primary-700);
+  letter-spacing: var(--c1-font-letter-spacing);
+  word-break: keep-all;
+}
+
+/* From: 본문과 한 줄 간격, 줄노트에 맞춰 정렬, 연회색 */
+.from {
+  margin: var(--letter-line, 2.8rem) 0 0;
+  font-family: var(--t3-font-family);
+  font-weight: var(--t3-font-weight);
+  font-size: var(--t3-font-size);
+  line-height: var(--letter-line, 2.8rem);
+  color: var(--color-primary-400);
+  word-break: keep-all;
 }
 
 .paragraphSkeleton {
@@ -96,16 +85,4 @@
   display: flex;
   justify-content: center;
   padding-bottom: 2.4rem;
-}
-
-@media (max-width: 768px) {
-  .lines {
-    width: 100%;
-    gap: 2.4rem;
-  }
-  .paragraph {
-    font-size: var(--c1-font-size);
-    font-weight: var(--c1-font-weight);
-    line-height: var(--c1-font-line-height);
-  }
 }

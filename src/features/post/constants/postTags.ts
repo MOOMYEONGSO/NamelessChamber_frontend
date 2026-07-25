@@ -1,12 +1,25 @@
 import type { tags } from "../types/tags";
-import iconPeople from "../../../assets/tags/people-icon.png";
-import iconThoughts from "../../../assets/tags/thoughts-icon.png";
-import iconHappy from "../../../assets/tags/happy-icon.png";
-import iconFriends from "../../../assets/tags/friends-icon.png";
-import iconGratitude from "../../../assets/tags/gratitude-icon.png";
-import iconOther from "../../../assets/tags/other-icon.png";
+import iconPeople from "../../../assets/tags/people-icon.svg";
+import iconThoughts from "../../../assets/tags/thoughts-icon.svg";
+import iconHappy from "../../../assets/tags/happy-icon.svg";
+import iconFriends from "../../../assets/tags/friends-icon.svg";
+import iconGratitude from "../../../assets/tags/gratitude-icon.svg";
+import iconOther from "../../../assets/tags/other-icon.svg";
 
-import iconTime from "../../../assets/tags/time-icon.png";
+import iconTime from "../../../assets/tags/time-icon.svg";
+
+// 태그별 편지 커버(카드) 색상
+export const TAG_COVER_COLOR: Record<tags, string> = {
+  PEOPLE: "#FFFFFF",
+  FRIENDSHIP: "#96BDA7",
+  THOUGHTS: "#3C2A38",
+  HAPPY: "#F9D75B",
+  GRATITUDE: "#EB5A5D",
+  TIME: "#4A6E7A",
+  OTHER: "#F29009",
+};
+
+export const DARK_COVER_TAGS: readonly tags[] = ["THOUGHTS", "TIME"];
 
 export const CARD_TAG_LABEL: Record<tags, string> = {
   PEOPLE: "사람",
