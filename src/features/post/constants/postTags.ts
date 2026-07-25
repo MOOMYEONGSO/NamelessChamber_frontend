@@ -1,12 +1,12 @@
 import type { tags } from "../types/tags";
-import iconPeople from "../../../assets/tags/people-icon.png";
-import iconThoughts from "../../../assets/tags/thoughts-icon.png";
-import iconHappy from "../../../assets/tags/happy-icon.png";
-import iconFriends from "../../../assets/tags/friends-icon.png";
-import iconGratitude from "../../../assets/tags/gratitude-icon.png";
-import iconOther from "../../../assets/tags/other-icon.png";
+import iconPeople from "../../../assets/tags/people-icon.svg";
+import iconThoughts from "../../../assets/tags/thoughts-icon.svg";
+import iconHappy from "../../../assets/tags/happy-icon.svg";
+import iconFriends from "../../../assets/tags/friends-icon.svg";
+import iconGratitude from "../../../assets/tags/gratitude-icon.svg";
+import iconOther from "../../../assets/tags/other-icon.svg";
 
-import iconTime from "../../../assets/tags/time-icon.png";
+import iconTime from "../../../assets/tags/time-icon.svg";
 
 // 태그별 편지 커버(카드) 색상
 export const TAG_COVER_COLOR: Record<tags, string> = {
@@ -19,7 +19,6 @@ export const TAG_COVER_COLOR: Record<tags, string> = {
   OTHER: "#F29009",
 };
 
-// 커버가 어두워 글씨를 밝게(primary-100) 써야 하는 태그
 export const DARK_COVER_TAGS: readonly tags[] = ["THOUGHTS", "TIME"];
 
 export const CARD_TAG_LABEL: Record<tags, string> = {

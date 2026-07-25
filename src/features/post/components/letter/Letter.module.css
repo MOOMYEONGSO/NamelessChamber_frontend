@@ -17,8 +17,9 @@
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
-    transparent calc(var(--letter-line) - 1px),
-    var(--color-letter-line) calc(var(--letter-line) - 1px),
+    transparent calc(var(--letter-line) - var(--letter-line-weight, 1px)),
+    var(--color-letter-line)
+      calc(var(--letter-line) - var(--letter-line-weight, 1px)),
     var(--color-letter-line) var(--letter-line)
   );
   /* 줄선을 위로 올려 글씨가 줄 위에 앉고, 글씨 위 공간이 생기도록 함 */

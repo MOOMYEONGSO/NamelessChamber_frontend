@@ -1,6 +1,3 @@
-// 편지 카드 메타(작성 날짜/시간)를 Asia/Seoul(KST) 기준으로 포맷합니다.
-// createdAt(ISO UTC) → { date: "2026.06.20", time: "23:14 KST" }
-
 const KST = "Asia/Seoul";
 
 const dateFmt = new Intl.DateTimeFormat("en-CA", {

@@ -41,34 +41,16 @@ function PostSubmitPage() {
     if (shouldRedirect) return;
 
     const t = setTimeout(() => {
-      if (state.showCalendar) {
-        nav(PATHS.POST_STREAK_TYPE(routeType), {
-          replace: true,
-          state: {
-            ...state.streakState,
-            tags: state.tags,
-          },
-        });
-      } else {
-        // 캘린더가 없어도 랜덤 리롤 페이지로 이동
-        nav(PATHS.POST_REROLL_TYPE(routeType), {
-          replace: true,
-          state: {
-            tags: state.tags,
-          },
-        });
-      }
+      // 스트릭(streak) 화면 연결 해제 → 항상 랜덤 리롤 페이지로 이동
+      nav(PATHS.POST_REROLL_TYPE(routeType), {
+        replace: true,
+        state: {
+          tags: state.tags,
+        },
+      });
     }, stayMs);
     return () => clearTimeout(t);
-  }, [
-    nav,
-    routeType,
-    shouldRedirect,
-    stayMs,
-    state.showCalendar,
-    state.streakState,
-    state.tags,
-  ]);
+  }, [nav, routeType, shouldRedirect, stayMs, state.tags]);
 
   if (shouldRedirect) {
     return <Navigate to={PATHS.POST_ALL} replace />;
