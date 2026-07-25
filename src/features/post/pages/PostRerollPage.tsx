@@ -10,6 +10,7 @@ import { isUiType } from "../types/typeMap";
 import { PATHS } from "../../../constants/path";
 import Card from "../components/card/Card";
 import Button from "../../../components/button/Button";
+import BottomSheet from "../../../components/bottomSheet/BottomSheet";
 import LoadingDots from "../../../components/loading/LoadingDots";
 import { TAG_COVER_COLOR } from "../constants/postTags";
 import type { PostPreview } from "../types/types";
@@ -53,6 +54,7 @@ function PostRerollPage() {
 
   const [index, setIndex] = useState(0);
   const [exiting, setExiting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const animatingRef = useRef(false);
   useEffect(() => {
     setIndex(0);
@@ -77,8 +79,14 @@ function PostRerollPage() {
       }, EXIT_MS + 40);
     }, EXIT_MS);
   };
+  // 선택하기: 하단 시트에서 열람 확인
   const handleSelect = () => {
-    if (front) navigate(PATHS.POST_DETAIL_ID(front.postId));
+    if (front) setConfirmOpen(true);
+  };
+  const handleConfirmRead = () => {
+    if (!front) return;
+    setConfirmOpen(false);
+    navigate(PATHS.POST_DETAIL_ID(front.postId));
   };
   // 새로 불러오기: 랜덤 7개 새로 받아 처음부터 (중복 탭 방지)
   const handleReload = () => {
@@ -171,6 +179,34 @@ function PostRerollPage() {
           새로 불러오기
         </button>
       </div>
+
+      <BottomSheet
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        aria-labelledby="reroll-confirm-title"
+      >
+        <BottomSheet.Title id="reroll-confirm-title">
+          선택하신 편지를 열어볼까요?
+        </BottomSheet.Title>
+        <BottomSheet.Actions>
+          <Button
+            type="button"
+            variant="main"
+            state="active"
+            onClick={handleConfirmRead}
+          >
+            열람하기
+          </Button>
+          <Button
+            type="button"
+            variant="sub"
+            state="default"
+            onClick={() => setConfirmOpen(false)}
+          >
+            닫기
+          </Button>
+        </BottomSheet.Actions>
+      </BottomSheet>
     </div>
   );
 }

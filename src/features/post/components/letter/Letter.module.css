@@ -1,8 +1,8 @@
 .paper {
-  --letter-line: 2.8rem;
-  /* 줄선을 글씨 baseline 쪽으로 올려 글씨가 줄 위에 앉게 함.
-     값을 줄이면 줄선이 아래로 내려가 글씨 밑 공간이 늘어남 (모든 줄에 동일 적용) */
-  --letter-line-shift: 0.4rem;
+  /* 편지지 줄 간격은 전 화면 통일 (작성/상세/회원가입 편지 동일) */
+  --letter-line: 4rem;
+  --letter-line-shift: 1rem;
+  --letter-line-weight: 0.5px;
 
   width: 100%;
   background-color: var(--color-primary-100);

@@ -345,7 +345,7 @@ function PostWritePage() {
       <div className={classes.cardWrap} ref={cardWrapRef}>
         {/* 편지지 양식은 Letter.module.css(줄노트/타이포/여백) 재활용 */}
         <div className={letter.paper}>
-          <div className={`${letter.sheet} ${classes.wideSheet}`}>
+          <div className={letter.sheet}>
             <p className={`${letter.to} ${classes.lineRow}`}>
               <span className={classes.prefixLabel}>To.</span>
               <input

@@ -5,29 +5,40 @@
   gap: 2rem;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 2rem;
+  /* 댓글 영역 상단 빈 여백 40px */
+  padding-top: 4rem;
 }
 
-/* Form */
+/* Form: 타이틀 → 24px → 입력창 */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.formHeader {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  align-items: flex-start;
+  gap: 2.4rem;
 }
 
 .formTitle {
   margin: 0;
+  white-space: pre-line;
+  text-align: left;
+  color: var(--color-primary-700);
 }
 
-.formSubtitle {
-  margin: 0;
+/* 답글 입력창: 높이 120px, radius 8px */
+.inputBox {
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 입력창 placeholder: c1 스케일, primary-400 */
+.inputBox textarea::placeholder {
+  font-family: var(--c1-font-family);
+  font-weight: var(--c1-font-weight);
+  font-size: var(--c1-font-size);
+  line-height: var(--c1-font-line-height);
+  letter-spacing: var(--c1-font-letter-spacing);
+  color: var(--color-primary-400);
+  opacity: 1;
 }
 
 .submitButton {
@@ -53,7 +64,7 @@
   justify-content: space-between;
   align-items: flex-start;
   padding-top: 2.4rem;
-  border-top: 1px solid var(--color-gray-4-1);
+  border-top: 1px solid var(--color-primary-300);
 }
 
 .itemMain {
@@ -77,10 +88,12 @@
 }
 
 .content {
-  font-size: var(--button-font-size);
-  font-weight: var(--button-font-weight);
-  line-height: var(--button-font-line-height);
-  color: var(--gray-1);
+  font-family: var(--p1-font-family);
+  font-weight: var(--p1-font-weight);
+  font-size: var(--p1-font-size);
+  line-height: var(--p1-font-line-height);
+  letter-spacing: var(--p1-font-letter-spacing);
+  color: var(--color-primary-500);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -90,7 +103,7 @@
   border: none;
   padding: 4px;
   cursor: pointer;
-  color: var(--gray-2);
+  color: var(--color-primary-300);
   transition: color 0.2s;
   display: flex;
   align-items: center;

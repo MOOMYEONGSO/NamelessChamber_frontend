@@ -88,13 +88,6 @@
   padding: 1.6rem 2rem;
 }
 
-/* 작성 화면 편지지 줄 간격 */
-.wideSheet {
-  --letter-line: 5rem;
-  --letter-line-shift: 1.2rem;
-  --letter-line-weight: 0.5px;
-}
-
 /* Letter의 .to/.from 줄 위에 입력을 flex로 배치 */
 .lineRow {
   display: flex;
