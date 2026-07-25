@@ -14,6 +14,19 @@
   margin: 0 auto;
 }
 
+/* 완료(편지) 단계 타이틀: 2줄 중앙 정렬 */
+.completeTitle {
+  margin: 0;
+  font-family: var(--t1-font-family);
+  font-weight: var(--t1-font-weight);
+  font-size: var(--t1-font-size);
+  line-height: var(--t1-font-line-height);
+  letter-spacing: var(--t1-font-letter-spacing);
+  color: var(--color-primary-700);
+  text-align: center;
+  white-space: pre-line;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -63,29 +76,35 @@
   min-width: 0;
 }
 
+/* 헤더 자리에 고정: 왼쪽 이전, 오른쪽 닫기 (Header와 동일한 위치/크기) */
 .topBar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--z-header) + 1);
+
   display: flex;
   justify-content: space-between; /* 이전 버튼은 왼쪽, 닫기 버튼은 오른쪽으로 배치 */
   align-items: center;
+
   width: 100%;
-  margin-bottom: 1.5rem;
+  max-width: var(--app-max-width);
+  height: var(--header-height);
+  padding: 0 2rem;
 }
 
 .iconBtn {
+  width: 4.4rem; /* 햄버거 버튼(menuButton)과 동일한 크기 */
+  height: 4.4rem;
+  padding: 0;
   background: transparent;
   border: none;
-  font-size: var(--t3-font-size);
-  font-weight: var(--t3-font-weight);
-  line-height: var(--t3-font-line-height);
-  color: var(--color-gray-2, #888);
+  font-size: 2.6rem; /* × 기호 확대 (뒤로가기 아이콘 크기와 균형) */
+  line-height: 1;
+  color: var(--color-primary-400); /* 햄버거보다 낮은 중요도의 그레이 */
   cursor: pointer;
-  padding: 0.5rem; /* 클릭 영역 확보 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease;
-}
-
-.iconBtn:hover {
-  color: var(--color-gray-1, #333);
 }

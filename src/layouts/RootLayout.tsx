@@ -11,6 +11,11 @@ function RootLayout() {
   const { showToast } = useToast();
   const firedRef = useRef(false);
 
+  // 회원가입/로그인: 콘텐츠를 헤더 바로 아래(상단)에 정렬
+  const isTopAligned = [PATHS.SIGN_UP, PATHS.LOGIN].some(
+    (p) => p === location.pathname
+  );
+
   useEffect(() => {
     const onAuthExpired = () => {
       if (firedRef.current) return;
@@ -42,7 +47,7 @@ function RootLayout() {
   return (
     <div className="app">
       <Header />
-      <main className="main">
+      <main className={`main${isTopAligned ? " main-top" : ""}`}>
         <div className="container">
           <Outlet />
         </div>

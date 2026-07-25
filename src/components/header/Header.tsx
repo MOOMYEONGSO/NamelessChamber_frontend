@@ -41,19 +41,22 @@ const Header = () => {
     PATHS.PROFILE,
   ] as const;
   const shouldHideButton = hiddenPaths.some((p) => p === location.pathname);
+  const shouldHideMenu = location.pathname === PATHS.SIGN_UP;
 
   return (
     <>
       <header className={classes.header}>
-        <button
-          type="button"
-          className={classes.menuButton}
-          onClick={() => setIsDrawerOpen(true)}
-          aria-label="메뉴 열기"
-          aria-expanded={isDrawerOpen}
-        >
-          <Menu />
-        </button>
+        {!shouldHideMenu && (
+          <button
+            type="button"
+            className={classes.menuButton}
+            onClick={() => setIsDrawerOpen(true)}
+            aria-label="메뉴 열기"
+            aria-expanded={isDrawerOpen}
+          >
+            <Menu />
+          </button>
+        )}
 
         {!shouldHideButton &&
           (loggedIn ? (

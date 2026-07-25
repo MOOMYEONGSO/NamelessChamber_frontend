@@ -3,7 +3,6 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import Button from "../../../components/button/Button";
 import Form from "../../../components/form/Form";
 import Input from "../../../components/input/Input";
-import Paragraph from "../../../components/paragraph/Paragraph";
 import classes from "./LoginPage.module.css";
 import { PATHS } from "../../../constants/path";
 import { useLogin } from "../hooks/useAuth";
@@ -138,8 +137,6 @@ function LoginPage() {
 
   return (
     <section className={classes.login}>
-      <Paragraph>로그인</Paragraph>
-
       <Form
         onSave={goNextOrSubmit}
         className={`${classes.form} ${classes.controlWidth}`}

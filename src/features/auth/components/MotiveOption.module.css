@@ -1,0 +1,16 @@
+.option {
+  width: 100%;
+}
+
+.inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.check {
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+  opacity: 0.6;
+}

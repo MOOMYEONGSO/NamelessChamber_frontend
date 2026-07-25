@@ -43,6 +43,7 @@ html {
   --color-green: #556028;
   --color-yellow: #f2d899;
   --color-red: #f04248;
+  --color-letter-line: #bc4741; /* 편지지 가로줄 */
   --color-gray-2: #d9d9d9;
   --color-gray-3: #878787;
   --color-gray-4: #302e2d;
@@ -161,6 +162,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* 회원가입: 콘텐츠를 헤더 바로 아래(상단)에 정렬 */
+.main-top {
+  align-items: flex-start;
 }
 
 .container {
