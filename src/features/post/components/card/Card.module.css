@@ -1,16 +1,17 @@
 .card {
-  /* 줄노트 한 줄 높이: 노트 줄 간격 · 본문 line-height · JS LINE_HEIGHT를 이 값으로 동기화 */
-  --card-line: 28px;
   position: relative;
   width: 100%;
-  background-color: var(--color-primary-100);
-  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.1);
-  padding: 3.6rem 2.4rem 1.6rem;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+  background-color: var(--color-primary-100);
+  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.1);
+  padding: 2.4rem;
   cursor: pointer;
-  overflow: visible;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -22,167 +23,107 @@
   transform: translateY(-1px);
 }
 
+/* 크기 변형 마커 (패딩은 24px로 통일) */
 .sm {
-  height: 248px;
+  --card-size: sm;
 }
-
 .lg {
-  height: 320px;
+  --card-size: lg;
 }
 
-/* 테이프 */
-.tape {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 72px;
-  height: 26px;
-  background: #7ec8c0;
-  border-radius: 3px;
-  opacity: 0.75;
+/* 작성자/타인 구분 (필요 시 확장) */
+.self {
+  --card-owner: self;
+}
+.other {
+  --card-owner: other;
 }
 
-/* 줄노트 내용 영역 */
-.content {
-  flex: 1;
-  overflow: hidden;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc(var(--card-line) - 1px),
-    var(--color-primary-200) calc(var(--card-line) - 1px),
-    var(--color-primary-200) var(--card-line)
-  );
+/* 상단: To/From + 로고 */
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.2rem;
 }
 
-.title {
+.addr {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.to {
   margin: 0;
-  font-family: var(--p1-font-family);
-  font-size: var(--p1-font-size);
-  font-weight: var(--p1-font-weight);
-  /* 노트 줄 간격에 맞춰 각 줄이 노트선 위에 앉도록 고정 */
-  line-height: var(--card-line);
-  letter-spacing: 0.01em;
+  font-family: var(--t2-font-family);
+  font-weight: var(--t2-font-weight);
+  font-size: var(--t2-font-size);
+  line-height: var(--t2-font-line-height);
   color: var(--color-primary-700);
-  overflow: hidden;
   word-break: keep-all;
 }
 
-/* ...자세히 보기 - 마지막 줄 우측에 겹쳐서 표시 */
-.readMore {
-  position: absolute;
-  bottom: 5.2rem;
-  right: 2.4rem;
-  padding-left: 3rem;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-primary-100) 35%
-  );
+.from {
+  margin: 0;
   font-family: var(--p1-font-family);
-  font-size: var(--p1-font-size);
-  font-weight: var(--p1-font-weight);
+  font-weight: 500; /* Pretendard Medium */
+  font-size: 1.2rem;
   line-height: var(--p1-font-line-height);
-  color: var(--color-primary-500);
+  color: var(--color-primary-700);
+  word-break: keep-all;
 }
 
-/* 본인 글 테이프 색상 */
-.tapeAuthor {
-  background: var(--color-primary-400);
+.stamp {
+  width: 4.3rem;
+  height: 4.9rem;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
-/* 하단 */
-.footer {
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--color-primary-200);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.metaLeft {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
-.metaRight {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-}
-
-/* ── 사진 카드 ── */
-.photoCard {
+/* 사진 게시글 썸네일 */
+.thumb {
   width: 100%;
-  max-width: 320px;
-  overflow: hidden;
   border-radius: 0.8rem;
-  background: var(--color-primary-700);
-  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.12);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
-
-.photoCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(64, 61, 44, 0.18);
-}
-
-/* 이미지 그리드 */
-.photoGrid {
+.thumbImg {
   width: 100%;
-  display: grid;
-  gap: 2px;
-}
-
-.photoGrid1 {
-  grid-template-columns: 1fr;
-}
-
-.photoGrid2 {
-  grid-template-columns: 1fr 1fr;
-}
-
-.photoGrid3 {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-}
-
-.photoGrid3 .photoImg:first-child {
-  grid-column: 1 / -1;
-}
-
-.photoGrid4 {
-  grid-template-columns: 1fr 1fr;
-}
-
-.photoImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  aspect-ratio: 1 / 1;
-}
-
-/* 1장일 때만 자연 비율 유지 */
-.photoGrid1 .photoImg {
-  aspect-ratio: unset;
   height: auto;
+  display: block;
 }
 
-.photoFooter {
-  padding: 1rem 1.2rem;
+/* 메타 블록: DATE / WRITING_TIME / CHARACTER_COUNT */
+.meta {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.8rem;
-  align-items: center;
+  flex-direction: column;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--color-primary-700);
+}
+
+.metaRow {
+  margin: 0;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-primary-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 어두운 커버(THOUGHTS·TIME): 글씨를 밝게 */
+.card[data-cover="dark"] .to,
+.card[data-cover="dark"] .from,
+.card[data-cover="dark"] .meta {
+  color: var(--color-primary-100);
+}
+.card[data-cover="dark"] .metaRow {
+  border-bottom-color: rgba(255, 255, 255, 0.25);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .photoCard {
+  .card {
     transition: none;
   }
 }

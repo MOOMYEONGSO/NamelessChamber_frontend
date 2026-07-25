@@ -183,6 +183,17 @@ function PostWritePage() {
     <section className={classes.write} ref={containerRef}>
       <h2 className={classes.title}>{TITLE}</h2>
 
+      <div className={classes.imageEntry}>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => navigate(PATHS.POST_NEW_IMAGE)}
+          disabled={submitting}
+        >
+          이미지 등록
+        </Button>
+      </div>
+
       <Form id={FORM_ID} onSave={handleSave} ref={formRef}>
         {isDraftReady && (
           <RichEditor

@@ -8,6 +8,20 @@ import iconOther from "../../../assets/tags/other-icon.png";
 
 import iconTime from "../../../assets/tags/time-icon.png";
 
+// 태그별 편지 커버(카드) 색상
+export const TAG_COVER_COLOR: Record<tags, string> = {
+  PEOPLE: "#FFFFFF",
+  FRIENDSHIP: "#96BDA7",
+  THOUGHTS: "#3C2A38",
+  HAPPY: "#F9D75B",
+  GRATITUDE: "#EB5A5D",
+  TIME: "#4A6E7A",
+  OTHER: "#F29009",
+};
+
+// 커버가 어두워 글씨를 밝게(primary-100) 써야 하는 태그
+export const DARK_COVER_TAGS: readonly tags[] = ["THOUGHTS", "TIME"];
+
 export const CARD_TAG_LABEL: Record<tags, string> = {
   PEOPLE: "사람",
   FRIENDSHIP: "친구",

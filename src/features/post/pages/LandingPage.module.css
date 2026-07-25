@@ -1,173 +1,86 @@
 .landing {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 60px;
-}
-
-.landing .link {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-}
-
-.content {
-  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4rem;
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 1.2rem;
-}
-
-/* 작성방식 선택 카드 */
-.cardGroup {
-  display: flex;
-  gap: 2.4rem;
   width: 100%;
-  max-width: 84rem;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.2rem 6rem;
 }
 
-.methodCard {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 1.6rem 1.6rem 2rem;
-  background-color: var(--color-primary-100);
-  border: none;
-  border-radius: 1.6rem;
-  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.methodCard:hover {
-  transform: translateY(-0.4rem);
-  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.12);
-}
-
-.methodCard:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.cardImage {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 1rem;
-  background-color: var(--color-primary-200);
-  display: block;
-}
-
-.cardTitle {
-  margin: 0.4rem 0 0;
-  font-size: var(--t2-font-size);
-  font-weight: var(--t2-font-weight);
-  line-height: var(--t2-font-line-height);
-  color: var(--color-primary-700);
-}
-
-.cardDesc {
+.title {
   margin: 0;
-  font-size: var(--button-font-size);
-  font-weight: var(--button-font-weight);
-  line-height: var(--button-font-line-height);
-  color: var(--color-primary-500);
-}
-
-.content .title {
-  display: flex;
-  flex-direction: column;
-}
-
-.guide {
+  font-family: var(--t1-font-family);
+  font-weight: var(--t1-font-weight);
+  font-size: var(--t1-font-size);
+  line-height: 1.5;
+  letter-spacing: var(--t1-font-letter-spacing);
+  color: var(--color-primary-700);
   text-align: center;
+  white-space: pre-line;
 }
 
-.textGroup {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.stackArea {
   width: 100%;
-  max-width: 1100px;
-  gap: 6rem;
-  text-align: center;
-}
-
-.slot {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 3rem;
+  /* 뒤 스택이 위로 삐져나오는 공간 확보 */
+  padding-top: 4rem;
 }
 
-.placeholder {
-  display: block;
-  height: 3rem;
+.stack {
+  position: relative;
   width: 100%;
-  max-width: 320px;
-}
-
-.left {
-  justify-content: flex-start;
-}
-.center {
-  justify-content: center;
-}
-.right {
-  justify-content: flex-end;
-}
-
-.hidden {
-  opacity: 0;
+  /* 홈은 고정 화면: 카드 스택은 클릭/호버 등 인터랙션 차단 */
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 
-.fade-in {
-  opacity: 1;
-  transition: opacity 0.3s ease;
+.frontCard {
+  position: relative;
+  z-index: 1;
 }
 
-/* ✅ 모바일: 1열로 변경 */
-@media (max-width: 640px) {
-  .landing {
-    align-items: flex-start;
-    padding-top: 50px;
-  }
+/* 뒤에 파스텔 편지들이 쌓인 장식 스택 */
+.decor {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  z-index: 0;
+  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.08);
+}
+.decor0 {
+  transform: translateY(-8px) scale(0.96);
+  background: #e0a9a9; /* pink */
+}
+.decor1 {
+  transform: translateY(-16px) scale(0.92);
+  background: #f2d899; /* yellow */
+}
+.decor2 {
+  transform: translateY(-24px) scale(0.88);
+  background: #3d3c43; /* dark */
+}
+.decor3 {
+  transform: translateY(-32px) scale(0.84);
+  background: #a9c6de; /* blue */
+}
+.decor4 {
+  transform: translateY(-40px) scale(0.8);
+  background: #9dbf9e; /* green */
+}
 
-  .textGroup {
-    grid-template-columns: 1fr; /* 세로 1열 */
-    gap: 4rem;
-    justify-items: center;
-  }
+.actions {
+  width: 100%;
+  display: grid;
+}
 
-  /* 작성방식 카드: 모바일에서 세로 정렬 */
-  .cardGroup {
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 42rem;
-  }
+.writeBtn {
+  width: 100%;
+}
 
-  .slot {
-    justify-content: center;
-    min-height: 3rem;
-  }
-
-  .left,
-  .center,
-  .right {
-    justify-content: center;
-  }
-
-  .placeholder {
-    max-width: 100%;
+@media (prefers-reduced-motion: reduce) {
+  .decor {
+    transition: none;
   }
 }

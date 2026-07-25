@@ -313,12 +313,12 @@ const AllPostsFeedPage: React.FC = () => {
               }}
             >
               <Card
-                contentPreview={post.contentPreview ?? ""}
+                to={post.to}
+                from={post.from}
+                createdAt={post.createdAt}
+                contentLength={post.contentLength}
                 tags={post.tags}
-                views={post.views}
-                commentCount={post.commentCount}
                 thumbnailUrl={post.thumbnailUrl}
-
                 isAuthor={false}
                 size={cardSizeFromId(post.postId)}
               />

@@ -15,10 +15,22 @@ html {
 }
 
 :root {
-  font-family: "Pretendard Variable", Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
-    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-family:
+    "Pretendard Variable",
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    sans-serif;
 
   /* Text */
   --text-color: var(--color-primary-700);
@@ -44,6 +56,10 @@ html {
   --color-yellow: #f2d899;
   --color-red: #f04248;
   --color-letter-line: #bc4741; /* 편지지 가로줄 */
+
+  /* Card Meta Data */
+  --font-mono:
+    "SFMono-Regular", ui-monospace, Menlo, Consolas, "D2Coding", monospace;
   --color-gray-2: #d9d9d9;
   --color-gray-3: #878787;
   --color-gray-4: #302e2d;
@@ -138,7 +154,6 @@ body {
   min-height: 100svh;
   position: relative;
 }
-
 
 #root,
 .app {

@@ -18,6 +18,14 @@
   color: var(--color-gray-3);
 }
 
+/* 이미지 등록 진입 버튼 */
+.imageEntry {
+  width: 92%;
+  margin-top: -2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .write form {
   flex: 1;
   display: flex;
