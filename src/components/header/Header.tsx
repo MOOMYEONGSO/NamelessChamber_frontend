@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../button/Button";
 import Menu from "../../assets/icons/Menu";
@@ -58,20 +58,13 @@ const Header = () => {
           </button>
         )}
 
-        {!shouldHideButton &&
-          (loggedIn ? (
-            isAdmin && (
-              <div className={classes.userArea}>
-                <Button alwaysHoverStyle onClick={handleAdmin}>
-                  관리자
-                </Button>
-              </div>
-            )
-          ) : (
-            <Link to={PATHS.LOGIN}>
-              <Button alwaysHoverStyle>로그인하기</Button>
-            </Link>
-          ))}
+        {!shouldHideButton && loggedIn && isAdmin && (
+          <div className={classes.userArea}>
+            <Button alwaysHoverStyle onClick={handleAdmin}>
+              관리자
+            </Button>
+          </div>
+        )}
       </header>
 
       <SideDrawer
