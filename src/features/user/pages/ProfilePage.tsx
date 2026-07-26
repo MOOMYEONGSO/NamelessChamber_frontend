@@ -12,8 +12,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import CardListContainer from "../../post/components/card/CardListContainer";
 import { useWrittenPosts } from "../hooks/useWrittenPosts";
 import ProfileSkeleton from "../components/ProfileSkeleton";
-import { useLogout } from "../../auth/hooks/useAuth";
-import LoadingDots from "../../../components/loading/LoadingDots";
 import { useToast } from "../../../contexts/ToastContext";
 import { ApiError } from "../../../api/types";
 
@@ -59,17 +57,6 @@ function ProfilePage() {
 
   const isEmpty = !isListLoading && (posts?.length ?? 0) === 0;
 
-  const { mutate: logout, isPending: isLoggingOut } = useLogout();
-
-  function handleLogout() {
-    logout(undefined, {
-      onSettled: () => {
-        //브라우저 레벨에서 홈으로 즉시 새로고침하여 앱 상태를 완전히 초기화
-        window.location.replace(PATHS.HOME);
-      },
-    });
-  }
-
   function handleProfileEditClick() {
     showToast("준비 중인 기능입니다.", "info");
   }
@@ -89,20 +76,21 @@ function ProfilePage() {
           <ProfileSkeleton />
         ) : (
           <>
-            <UserInfo nickname={me.nickname} />
-            <CoinInfo coin={me.coin} onClick={handleCoinClick} />
-            <Button alwaysHoverStyle onClick={handleProfileEditClick}>
-              프로필 편집
-            </Button>
+            <UserInfo
+              nickname={me.nickname}
+              postCount={writtenData?.length ?? 0}
+            />
+            <div className={classes.actions}>
+              <Button
+                alwaysHoverStyle
+                className={classes.actionBtn}
+                onClick={handleProfileEditClick}
+              >
+                프로필 편집
+              </Button>
+              <CoinInfo coin={me.coin} onClick={handleCoinClick} />
+            </div>
             <FeedbackCard />
-            <button
-              className={classes.logout}
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              aria-busy={isLoggingOut}
-            >
-              {isLoggingOut ? <LoadingDots /> : "로그아웃"}
-            </button>
           </>
         )}
       </div>

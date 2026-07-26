@@ -2,16 +2,29 @@
   display: flex;
   width: 100%;
   text-align: left;
-
+  align-items: center;
   justify-content: space-between;
   padding: 2.4rem;
   border-radius: 0.8rem;
-  background-color: var(--color-primary-200);
+  background-color: var(--color-primary-100);
   font-family: var(--button-font-family);
-  font-weight: var(--button-font-weight);
-  font-size: var(--button-font-size);
+  font-weight: 500;
+  font-size: 1.6rem;
   line-height: var(--button-font-line-height);
-  letter-spacing: var(--button-font-letter-spacing);
+  color: var(--color-primary-700);
+}
+
+/* 화살표: 배경 없음, 색상은 텍스트(primary-700)와 통일 */
+.arrowBtn {
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 767px) {

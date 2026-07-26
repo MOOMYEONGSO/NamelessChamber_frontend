@@ -1,10 +1,13 @@
 .tablist {
   display: flex;
-  justify-content: flex-start;
+  width: 100%;
 }
 
+/* 각 탭이 폰 너비의 절반씩 차지 */
 .tab {
-  padding: 0.5rem 4rem;
+  flex: 1;
+  padding: 0.75rem;
+  text-align: center;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -14,11 +17,6 @@
   line-height: var(--button-font-line-height);
   letter-spacing: var(--button-font-letter-spacing);
   color: var(--color-primary-400);
-}
-
-.tablist :global(button).tab.active,
-.tablist button.tab.active {
-  color: var(--color-primary-700);
 }
 
 .tab[aria-selected="true"] {
@@ -34,17 +32,4 @@
   bottom: -8px;
   height: 2px;
   background: var(--color-primary-700);
-}
-
-@media (max-width: 768px) {
-  .tablist {
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .tab {
-    flex: 1;
-    padding: 0.75rem;
-    text-align: center;
-  }
 }
