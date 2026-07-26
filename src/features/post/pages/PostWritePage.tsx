@@ -13,6 +13,7 @@ import TagSelectScreen from "../components/tag/TagSelectScreen";
 import iconUp from "../../../assets/icons/icon_up.svg";
 import iconDown from "../../../assets/icons/icon_down.svg";
 import iconMailman from "../../../assets/icons/icon_mailman.svg";
+import { getCaretOffsetTop } from "../utils/textareaCaret";
 
 type Step = "to" | "body" | "from";
 
@@ -154,6 +155,27 @@ function PostWritePage() {
     );
   }
 
+  // 본문 캐럿(커서)이 가시 영역에 보이도록 cardWrap을 스크롤.
+  // 자동 확장 textarea는 내부 스크롤이 없어 바깥 컨테이너를 캐럿에 맞춘다.
+  function scrollCaretIntoView() {
+    const ta = bodyRef.current;
+    const wrap = cardWrapRef.current;
+    if (!ta || !wrap) return;
+
+    const lineH = parseFloat(window.getComputedStyle(ta).lineHeight) || 40;
+    const caretY = getCaretOffsetTop(ta);
+    const taTop = ta.getBoundingClientRect().top;
+    const wrapRect = wrap.getBoundingClientRect();
+    const caretTop = taTop + caretY;
+    const caretBottom = caretTop + lineH;
+
+    if (caretBottom > wrapRect.bottom - lineH) {
+      wrap.scrollTop += caretBottom - (wrapRect.bottom - lineH);
+    } else if (caretTop < wrapRect.top + lineH) {
+      wrap.scrollTop -= wrapRect.top + lineH - caretTop;
+    }
+  }
+
   // 진입 안내 서브타이틀 1회 재생 (2단계). 이미 본 필드면 재생 안 함
   function playIntro(field: "to" | "body") {
     if (introDoneRef.current[field]) {
@@ -183,13 +205,12 @@ function PostWritePage() {
   function onFocusField(field: Step) {
     setStep(field);
     setFocused(true);
-    const el =
-      field === "to"
-        ? toRef.current
-        : field === "body"
-          ? bodyRef.current
-          : fromRef.current;
-    revealField(el);
+    if (field === "body") {
+      // 본문은 캐럿 위치 기준으로 스크롤 (전체 중앙 정렬 시 캐럿이 가려질 수 있음)
+      requestAnimationFrame(scrollCaretIntoView);
+    } else {
+      revealField(field === "to" ? toRef.current : fromRef.current);
+    }
     if (field === "from") hideSubtitle();
     else playIntro(field);
   }
@@ -199,7 +220,10 @@ function PostWritePage() {
     if (!ta) return;
     ta.focus();
     const p = Math.max(0, Math.min(pos, ta.value.length));
-    requestAnimationFrame(() => ta.setSelectionRange(p, p));
+    requestAnimationFrame(() => {
+      ta.setSelectionRange(p, p);
+      scrollCaretIntoView();
+    });
   }
 
   // 위/아래 버튼: 커서를 한 줄 위/아래로 이동 (편집은 커서 위치에서).
@@ -235,6 +259,7 @@ function PostWritePage() {
       const prevStart = val.lastIndexOf("\n", lineStart - 2) + 1;
       const newPos = Math.min(prevStart + col, lineStart - 1);
       ta.setSelectionRange(newPos, newPos);
+      requestAnimationFrame(scrollCaretIntoView);
     } else {
       const lineEnd = val.indexOf("\n", pos);
       if (lineEnd === -1) {
@@ -250,6 +275,7 @@ function PostWritePage() {
       const nextEnd = nextNl === -1 ? val.length : nextNl;
       const newPos = Math.min(nextStart + col, nextEnd);
       ta.setSelectionRange(newPos, newPos);
+      requestAnimationFrame(scrollCaretIntoView);
     }
   }
 
@@ -269,11 +295,8 @@ function PostWritePage() {
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
     hideSubtitle();
-    // 최신 입력 줄이 보이도록 아래로 스크롤
-    requestAnimationFrame(() => {
-      const wrap = cardWrapRef.current;
-      if (wrap) wrap.scrollTop = wrap.scrollHeight;
-    });
+    // 입력 중인 캐럿 줄이 보이도록 스크롤
+    requestAnimationFrame(scrollCaretIntoView);
   }
 
   function handleSubmit(tag: PostTag) {
