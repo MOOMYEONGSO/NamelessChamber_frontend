@@ -17,7 +17,7 @@
   flex: 1;
   min-width: 0;
   box-sizing: border-box;
-  height: 5.6rem;
+  height: 6rem;
   background-color: var(--color-primary-100);
   border: 1px solid transparent;
   border-radius: 8px;
@@ -32,6 +32,10 @@
 .pinBox:focus {
   outline: none;
   border-color: var(--color-caret);
+}
+
+.pinBox.valid {
+  border-color: var(--color-success);
 }
 
 .pinBox.error {

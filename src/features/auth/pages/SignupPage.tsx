@@ -42,6 +42,7 @@ function SignupPage() {
   const pwRef = useRef<HTMLInputElement>(null);
   const pwcRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const motiveTimerRef = useRef<number | null>(null);
 
   // ====== signup mutation ======
   const { mutate: signup, isPending } = useSignup({
@@ -101,6 +102,24 @@ function SignupPage() {
   const canGoNextPwc = showPwcSuccess && !isPending;
 
   // ====== handlers ======
+  // 마음 선택 시: 다음 버튼 없이 0.5초 뒤 자동으로 닉네임 단계로
+  function handleSelectMotive(value: VisitMotive) {
+    if (serverError) setServerError("");
+    setVisitMotive(value);
+    if (motiveTimerRef.current) clearTimeout(motiveTimerRef.current);
+    motiveTimerRef.current = window.setTimeout(() => {
+      setStep("nickname");
+    }, 500);
+  }
+
+  // 언마운트 시 자동 전환 타이머 정리
+  useEffect(
+    () => () => {
+      if (motiveTimerRef.current) clearTimeout(motiveTimerRef.current);
+    },
+    [],
+  );
+
   function goNextOrSubmit() {
     if (isPending) return;
 
@@ -297,10 +316,7 @@ function SignupPage() {
                 key={m.value}
                 label={m.label}
                 selected={visitMotive === m.value}
-                onSelect={() => {
-                  if (serverError) setServerError("");
-                  setVisitMotive(m.value);
-                }}
+                onSelect={() => handleSelectMotive(m.value)}
               />
             ))}
           </div>
@@ -322,6 +338,7 @@ function SignupPage() {
               autoComplete="off"
               enterKeyHint="next"
               aria-invalid={!!showNicknameError || !!serverError}
+              data-valid={(showNicknameSuccess && !serverError) || undefined}
             />
             {showNicknameError ? (
               <InputMessage type="error" aria-live="polite">
@@ -350,6 +367,7 @@ function SignupPage() {
               }}
               onKeyDown={handlePwKeyDown}
               aria-invalid={!!showPwError}
+              isValid={showPwSuccess}
             />
             {showPwError ? (
               <InputMessage type="error" aria-live="polite">
@@ -378,6 +396,7 @@ function SignupPage() {
               }}
               onKeyDown={handlePwcKeyDown}
               aria-invalid={!!showPwcError}
+              isValid={showPwcSuccess}
             />
             {showPwcError ? (
               <InputMessage type="error" aria-live="polite">
@@ -443,29 +462,32 @@ function SignupPage() {
           <InputMessage />
         )}
 
-        <div className={classes.btn}>
-          <Button
-            type="button"
-            onClick={goNextOrSubmit}
-            disabled={!isEnabled || isPending}
-            aria-disabled={!isEnabled}
-            variant="sub"
-            state={isPending || isEnabled ? "active" : "default"}
-            data-busy={isPending ? "true" : "false"}
-          >
-            {step === "email" ? (
-              isPending ? (
-                <LoadingDots />
+        {/* 마음 선택 단계는 버튼 없이 항목 선택 시 자동 전환 */}
+        {step !== "visitMotive" && (
+          <div className={classes.btn}>
+            <Button
+              type="button"
+              onClick={goNextOrSubmit}
+              disabled={!isEnabled || isPending}
+              aria-disabled={!isEnabled}
+              variant="sub"
+              state={isPending || isEnabled ? "active" : "default"}
+              data-busy={isPending ? "true" : "false"}
+            >
+              {step === "email" ? (
+                isPending ? (
+                  <LoadingDots />
+                ) : (
+                  "가입하기"
+                )
+              ) : step === "complete" ? (
+                "완료"
               ) : (
-                "가입하기"
-              )
-            ) : step === "complete" ? (
-              "완료"
-            ) : (
-              "다음"
-            )}
-          </Button>
-        </div>
+                "다음"
+              )}
+            </Button>
+          </div>
+        )}
       </Form>
     </section>
   );

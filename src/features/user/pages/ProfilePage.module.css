@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  padding-top: 2.4rem;
 }
 
 .profileSection {
@@ -37,7 +36,6 @@
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  min-height: 50vh;
 }
 
 @media (max-width: 767px) {

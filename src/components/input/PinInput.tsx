@@ -11,10 +11,11 @@ interface PinInputProps {
   onChange: (val: string) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   "aria-invalid"?: boolean;
+  isValid?: boolean;
 }
 
 const PinInput = forwardRef<HTMLInputElement, PinInputProps>(
-  ({ value, onChange, onKeyDown, "aria-invalid": isInvalid }, ref) => {
+  ({ value, onChange, onKeyDown, "aria-invalid": isInvalid, isValid }, ref) => {
     const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
     useImperativeHandle(
@@ -50,10 +51,12 @@ const PinInput = forwardRef<HTMLInputElement, PinInputProps>(
               ref={(el) => {
                 inputsRef.current[i] = el;
               }}
-              className={`${classes.pinBox} ${isInvalid ? classes.error : ""}`}
-              type="password"
+              className={`${classes.pinBox} ${isInvalid ? classes.error : ""} ${
+                isValid ? classes.valid : ""
+              }`}
+              type="text"
               inputMode="numeric"
-              value={value[i] || ""}
+              value={value[i] ? "*" : ""}
               onChange={(e) => handleChange(i, e.target.value)}
               onKeyDown={(e) => handleKeyDown(i, e)}
               autoComplete="new-password"

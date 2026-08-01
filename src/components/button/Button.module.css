@@ -1,5 +1,5 @@
 .button {
-  border-radius: 0.6rem;
+  border-radius: 0.8rem;
   font-family: var(--p1-font-family);
   font-weight: var(--p1-font-weight);
   font-size: var(--button-font-size);
@@ -10,13 +10,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  --button-pad-y: 1.5rem;
-  --button-calc-size: var(--button-font-size);
-  --button-line: var(--p1-font-line-height);
 
-  min-height: calc(
-    (var(--button-calc-size) * var(--button-line)) + (var(--button-pad-y) * 2)
-  );
+  min-height: 6rem;
 
   --reveal-delay: 0ms;
   --reveal-duration: 800ms;
@@ -107,7 +102,7 @@
 .button:focus-visible {
   outline: 0.2rem solid color-mix(in oklab, var(--text-color) 60%, transparent);
   outline-offset: 0.2rem;
-  border-radius: 0.6rem;
+  border-radius: 0.8rem;
 }
 
 .button:disabled {
