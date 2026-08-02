@@ -14,13 +14,20 @@ import iconUp from "../../../assets/icons/icon_up.svg";
 import iconDown from "../../../assets/icons/icon_down.svg";
 import iconMailman from "../../../assets/icons/icon_mailman.svg";
 import { getCaretOffsetTop } from "../utils/textareaCaret";
+import { useVisualViewport } from "../../../hooks/useVisualViewport";
 
 type Step = "to" | "body" | "from";
 
 // 각 필드 첫 진입 시 1회만 재생되는 2단계 안내 서브타이틀
 const INTRO: Record<"to" | "body", [string, string]> = {
-  to: ["편지를 받을 사람을\n먼저 적어주세요", "이 편지는 누구에게 닿으면 좋을까요?"],
-  body: ["전하고 싶은 말을\n천천히 적어주세요", "문장이 정리되지 않아도 괜찮아요"],
+  to: [
+    "편지를 받을 사람을\n먼저 적어주세요",
+    "이 편지는 누구에게 닿으면 좋을까요?",
+  ],
+  body: [
+    "전하고 싶은 말을\n천천히 적어주세요",
+    "문장이 정리되지 않아도 괜찮아요",
+  ],
 };
 const INTRO_DELAY = 300; // 첫 문구 등장 지연
 const INTRO_FADE = 300; // 페이드 시간
@@ -41,7 +48,8 @@ function PostWritePage() {
   const [showTagScreen, setShowTagScreen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [vh, setVh] = useState(0); // 키보드 위 가시 영역 높이 (visualViewport)
+  // 키보드 위 가시 영역(높이/상단 오프셋) 추적
+  const { height: vh, offsetTop: vtop } = useVisualViewport();
 
   const [subtitle, setSubtitle] = useState("");
   const [subShown, setSubShown] = useState(false);
@@ -110,26 +118,12 @@ function PostWritePage() {
     return () => clearTimeout(id);
   }, [to, body, from]);
 
-  // 진입 시 To 자동 포커스 (onFocus에서 안내 재생)
+  // 진입 시 To 자동 포커스
   useEffect(() => {
     if (shouldRedirect) return;
     const t = window.setTimeout(() => toRef.current?.focus(), 60);
     return () => clearTimeout(t);
   }, [shouldRedirect]);
-
-  // 키보드 위 가시 영역 높이 추적 → 레이아웃을 자판 위로 맞춤
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const update = () => setVh(vv.height);
-    update();
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-    return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
-    };
-  }, []);
 
   // 언마운트 시 타이머 정리
   useEffect(
@@ -176,7 +170,7 @@ function PostWritePage() {
     }
   }
 
-  // 진입 안내 서브타이틀 1회 재생 (2단계). 이미 본 필드면 재생 안 함
+  // 진입 안내 서브타이틀 1회 재생
   function playIntro(field: "to" | "body") {
     if (introDoneRef.current[field]) {
       hideSubtitle();
@@ -195,10 +189,13 @@ function PostWritePage() {
       window.setTimeout(() => setSubShown(false), INTRO_DELAY + INTRO_HOLD),
     );
     timersRef.current.push(
-      window.setTimeout(() => {
-        setSubtitle(m1);
-        setSubShown(true);
-      }, INTRO_DELAY + INTRO_HOLD + INTRO_FADE),
+      window.setTimeout(
+        () => {
+          setSubtitle(m1);
+          setSubShown(true);
+        },
+        INTRO_DELAY + INTRO_HOLD + INTRO_FADE,
+      ),
     );
   }
 
@@ -226,8 +223,8 @@ function PostWritePage() {
     });
   }
 
-  // 위/아래 버튼: 커서를 한 줄 위/아래로 이동 (편집은 커서 위치에서).
-  // 본문 줄 사이 이동, 첫/끝 줄을 넘으면 To/From으로 (콘텐츠 범위 안에서만)
+  // 위/아래 버튼: 커서를 한 줄 위/아래로 이동
+  // 본문 줄 사이 이동, 첫/끝 줄을 넘으면 To/From으로
   function moveCaret(dir: -1 | 1) {
     const active = document.activeElement;
 
@@ -283,7 +280,9 @@ function PostWritePage() {
     window.setTimeout(() => {
       const el = document.activeElement;
       const inFields =
-        el === toRef.current || el === bodyRef.current || el === fromRef.current;
+        el === toRef.current ||
+        el === bodyRef.current ||
+        el === fromRef.current;
       if (!inFields) setFocused(false);
     }, 0);
   }
@@ -328,7 +327,7 @@ function PostWritePage() {
   return (
     <div
       className={classes.page}
-      style={vh ? { height: `${vh}px` } : undefined}
+      style={vh ? { top: `${vtop}px`, height: `${vh}px` } : undefined}
     >
       <header className={classes.topbar}>
         <button
@@ -354,7 +353,10 @@ function PostWritePage() {
         )}
       </header>
 
-      <SideDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <SideDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
 
       <div className={classes.subtitleArea}>
         <p
