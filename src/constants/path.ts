@@ -2,6 +2,15 @@ type PostRouteType = "text" | "image";
 
 export const PATHS = {
   HOME: "/",
+  LANDING_INSTA: "/insta",
+  LANDING_BLIND: "/blind",
+  LANDING_THREAD: "/thread",
+  DIARY_ALL: "/diary",
+  DIARY_LIST: "/diary/:type",
+  DIARY_SUBMIT: "/diary/submit/:type",
+  DIARY_NEW: "/diary/new/:type",
+  DIARY_DETAIL: "/diary/v/:id",
+  DIARY_STREAK: "/diary/streak/:type",
   POST_ALL: "/post",
   POST_LIST: "/post/:type",
   POST_SUBMIT: "/post/submit/:type",
