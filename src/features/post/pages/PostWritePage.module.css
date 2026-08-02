@@ -94,6 +94,15 @@
   padding: 1.6rem 2rem;
 }
 
+/* 본문 글자수 */
+.charCount {
+  margin: 0.8rem 0.2rem 0;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--color-primary-400);
+}
+
 /* Letter의 .to/.from 줄 위에 입력을 flex로 배치 */
 .lineRow {
   display: flex;
@@ -170,60 +179,6 @@
   position: absolute;
   right: 0;
   bottom: 0;
-}
-
-/* 모바일 키보드 바로 위 액세서리 바 */
-.kbBar {
-  flex-shrink: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
-  padding: 0.8rem 1.2rem;
-  background: var(--background-color);
-  border-top: 1px solid var(--color-primary-200);
-}
-
-.kbCamera {
-  width: 4.4rem;
-  height: 3.6rem;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-primary-100);
-  border: 1px solid var(--color-primary-200);
-  border-radius: 0.8rem;
-  color: var(--color-primary-500);
-  cursor: pointer;
-}
-
-.kbNav {
-  display: flex;
-  gap: 0.8rem;
-}
-
-.kbBtn {
-  width: 4.4rem;
-  height: 3.6rem;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-primary-400);
-  border: none;
-  border-radius: 0.8rem;
-  cursor: pointer;
-}
-.kbBtn:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-.kbIcon {
-  width: 2rem;
-  height: auto;
-  display: block;
 }
 
 @media (prefers-reduced-motion: reduce) {
