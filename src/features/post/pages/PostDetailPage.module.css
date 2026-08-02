@@ -81,7 +81,9 @@
 
 /* StoryPrompt 하단 배치 및 위계 낮추기 */
 .storyPromptWrapper {
-  margin-top: auto;
+  /* '위 간격'은 StoryPrompt 자체 상단 패딩(large=8rem=80px)만 두기 위해
+     섹션 gap(4.5rem)을 상쇄하고, 하단 고정(auto)은 제거 */
+  margin-top: -4.5rem;
   display: flex;
   justify-content: center;
   padding-bottom: 2.4rem;

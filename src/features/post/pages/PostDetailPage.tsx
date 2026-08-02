@@ -81,7 +81,7 @@ function DetailContent({
         <StoryPrompt
           lines={[
             "또 하나의 고백을 만나기 위해,",
-            "당신의 이야기를 한 번 더 흘려보내주세요",
+            "당신의 이야기를 작성해보세요",
           ]}
           to={PATHS.HOME}
           paddingSize="large"

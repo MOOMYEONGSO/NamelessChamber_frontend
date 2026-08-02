@@ -6,34 +6,19 @@ import { PATHS } from "../../../constants/path";
 import { useCreatePost } from "../hooks/useCreatePost";
 import { SUBMIT_LOADING_MESSAGE } from "../../../constants/messages";
 import type { tags as PostTag } from "../types/tags";
-import Camera from "../../../assets/icons/Camera";
 import Menu from "../../../assets/icons/Menu";
 import SideDrawer from "../../../components/drawer/SideDrawer";
 import TagSelectScreen from "../components/tag/TagSelectScreen";
-import iconUp from "../../../assets/icons/icon_up.svg";
-import iconDown from "../../../assets/icons/icon_down.svg";
 import iconMailman from "../../../assets/icons/icon_mailman.svg";
 import { getCaretOffsetTop } from "../utils/textareaCaret";
 import { useVisualViewport } from "../../../hooks/useVisualViewport";
+import { useLetterDraft } from "../hooks/useLetterDraft";
+import { useFieldIntro } from "../hooks/useFieldIntro";
+import KeyboardAccessoryBar from "../components/write/KeyboardAccessoryBar";
 
 type Step = "to" | "body" | "from";
 
-// 각 필드 첫 진입 시 1회만 재생되는 2단계 안내 서브타이틀
-const INTRO: Record<"to" | "body", [string, string]> = {
-  to: [
-    "편지를 받을 사람을\n먼저 적어주세요",
-    "이 편지는 누구에게 닿으면 좋을까요?",
-  ],
-  body: [
-    "전하고 싶은 말을\n천천히 적어주세요",
-    "문장이 정리되지 않아도 괜찮아요",
-  ],
-};
-const INTRO_DELAY = 300; // 첫 문구 등장 지연
-const INTRO_FADE = 300; // 페이드 시간
-const INTRO_HOLD = 1500; // 첫 문구 유지 후 두 번째로 전환
-
-const DRAFT_KEY = "draft:post-write:text";
+const BODY_MIN = 30; // 본문 최소 글자수 (이상이어야 접수 가능)
 
 function PostWritePage() {
   const navigate = useNavigate();
@@ -41,9 +26,12 @@ function PostWritePage() {
   const shouldRedirect = Boolean(type && type !== "text");
   const routeType = "text" as const;
 
-  const [to, setTo] = useState("");
-  const [body, setBody] = useState("");
-  const [from, setFrom] = useState("");
+  // 초안(to/body/from) 상태 + localStorage 자동 저장/복원
+  const { to, setTo, body, setBody, from, setFrom, clearDraft } =
+    useLetterDraft();
+  // 필드 진입 안내 서브타이틀
+  const { subtitle, subShown, playIntro, hideSubtitle } = useFieldIntro();
+
   const [step, setStep] = useState<Step>("to");
   const [showTagScreen, setShowTagScreen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -51,22 +39,14 @@ function PostWritePage() {
   // 키보드 위 가시 영역(높이/상단 오프셋) 추적
   const { height: vh, offsetTop: vtop } = useVisualViewport();
 
-  const [subtitle, setSubtitle] = useState("");
-  const [subShown, setSubShown] = useState(false);
-
   const toRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const fromRef = useRef<HTMLInputElement>(null);
   const cardWrapRef = useRef<HTMLDivElement>(null);
-  const introDoneRef = useRef<{ to: boolean; body: boolean }>({
-    to: false,
-    body: false,
-  });
-  const timersRef = useRef<number[]>([]);
 
   const { mutateAsync, isPending } = useCreatePost({
     onSuccess: (data, vars) => {
-      localStorage.removeItem(DRAFT_KEY);
+      clearDraft();
       navigate(PATHS.POST_SUBMIT_TYPE(routeType), {
         replace: true,
         state: {
@@ -90,56 +70,12 @@ function PostWritePage() {
     },
   });
 
-  // 초안 불러오기
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(DRAFT_KEY);
-      if (!raw) return;
-      const p = JSON.parse(raw) as Partial<
-        Record<"to" | "body" | "from", string>
-      >;
-      if (typeof p.to === "string") setTo(p.to);
-      if (typeof p.body === "string") setBody(p.body);
-      if (typeof p.from === "string") setFrom(p.from);
-    } catch {
-      // ignore
-    }
-  }, []);
-
-  // 초안 자동 저장 (디바운스)
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify({ to, body, from }));
-      } catch {
-        // ignore
-      }
-    }, 350);
-    return () => clearTimeout(id);
-  }, [to, body, from]);
-
   // 진입 시 To 자동 포커스
   useEffect(() => {
     if (shouldRedirect) return;
     const t = window.setTimeout(() => toRef.current?.focus(), 60);
     return () => clearTimeout(t);
   }, [shouldRedirect]);
-
-  // 언마운트 시 타이머 정리
-  useEffect(
-    () => () => timersRef.current.forEach((id) => clearTimeout(id)),
-    [],
-  );
-
-  function clearIntroTimers() {
-    timersRef.current.forEach((id) => clearTimeout(id));
-    timersRef.current = [];
-  }
-
-  function hideSubtitle() {
-    clearIntroTimers();
-    setSubShown(false);
-  }
 
   // 해당 필드를 키보드 위 영역에 보이도록 스크롤 (편지 위치 조정)
   function revealField(el: HTMLElement | null) {
@@ -168,35 +104,6 @@ function PostWritePage() {
     } else if (caretTop < wrapRect.top + lineH) {
       wrap.scrollTop -= wrapRect.top + lineH - caretTop;
     }
-  }
-
-  // 진입 안내 서브타이틀 1회 재생
-  function playIntro(field: "to" | "body") {
-    if (introDoneRef.current[field]) {
-      hideSubtitle();
-      return;
-    }
-    introDoneRef.current[field] = true;
-    const [m0, m1] = INTRO[field];
-    clearIntroTimers();
-    timersRef.current.push(
-      window.setTimeout(() => {
-        setSubtitle(m0);
-        setSubShown(true);
-      }, INTRO_DELAY),
-    );
-    timersRef.current.push(
-      window.setTimeout(() => setSubShown(false), INTRO_DELAY + INTRO_HOLD),
-    );
-    timersRef.current.push(
-      window.setTimeout(
-        () => {
-          setSubtitle(m1);
-          setSubShown(true);
-        },
-        INTRO_DELAY + INTRO_HOLD + INTRO_FADE,
-      ),
-    );
   }
 
   function onFocusField(field: Step) {
@@ -322,6 +229,11 @@ function PostWritePage() {
     );
   }
 
+  const bodyCount = body.trim().length;
+  const bodyOk = bodyCount >= BODY_MIN; // 30자 이상이어야 접수 가능
+  const bodyRemaining = BODY_MIN - bodyCount;
+  const bodyCountLabel =
+    bodyRemaining > 0 ? `${bodyRemaining}자 남음` : `${-bodyRemaining}자 넘음`;
   const showReceipt = from.trim().length > 0;
 
   return (
@@ -345,7 +257,7 @@ function PostWritePage() {
             type="button"
             className={classes.receipt}
             onClick={() => setShowTagScreen(true)}
-            disabled={isPending}
+            disabled={isPending || !bodyOk}
           >
             <img src={iconMailman} alt="" className={classes.receiptIcon} />
             <span>접수</span>
@@ -353,10 +265,7 @@ function PostWritePage() {
         )}
       </header>
 
-      <SideDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-      />
+      <SideDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       <div className={classes.subtitleArea}>
         <p
@@ -417,47 +326,21 @@ function PostWritePage() {
             </p>
           </div>
         </div>
+
+        {/* 본문 글자수: 30자 남음 → 0자 넘음 → 1자 넘음 ... */}
+        <p className={classes.charCount} aria-live="polite">
+          {bodyCountLabel}
+        </p>
       </div>
 
       {focused && (
-        <div className={classes.kbBar}>
-          <button
-            type="button"
-            className={classes.kbCamera}
-            onPointerDown={(e) => e.preventDefault()}
-            onClick={() => navigate(PATHS.POST_NEW_IMAGE)}
-            aria-label="이미지 등록"
-          >
-            <Camera />
-          </button>
-
-          <div className={classes.kbNav}>
-            <button
-              type="button"
-              className={classes.kbBtn}
-              onPointerDown={(e) => {
-                e.preventDefault();
-                moveCaret(-1);
-              }}
-              disabled={step === "to"}
-              aria-label="커서 한 줄 위로"
-            >
-              <img src={iconUp} alt="" className={classes.kbIcon} />
-            </button>
-            <button
-              type="button"
-              className={classes.kbBtn}
-              onPointerDown={(e) => {
-                e.preventDefault();
-                moveCaret(1);
-              }}
-              disabled={step === "from"}
-              aria-label="커서 한 줄 아래로"
-            >
-              <img src={iconDown} alt="" className={classes.kbIcon} />
-            </button>
-          </div>
-        </div>
+        <KeyboardAccessoryBar
+          onCamera={() => navigate(PATHS.POST_NEW_IMAGE)}
+          onUp={() => moveCaret(-1)}
+          onDown={() => moveCaret(1)}
+          upDisabled={step === "to"}
+          downDisabled={step === "from"}
+        />
       )}
     </div>
   );

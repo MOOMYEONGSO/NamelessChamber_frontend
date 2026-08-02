@@ -6,6 +6,15 @@
   gap: 2.4rem;
 }
 
+/* 안내 문구: c1 스케일 (공용 Paragraph의 p1 오버라이드) */
+.lines p {
+  font-family: var(--c1-font-family);
+  font-weight: var(--c1-font-weight);
+  font-size: var(--c1-font-size);
+  line-height: var(--c1-font-line-height);
+  letter-spacing: var(--c1-font-letter-spacing);
+}
+
 .largePadding {
   padding: 8rem 0;
 }
