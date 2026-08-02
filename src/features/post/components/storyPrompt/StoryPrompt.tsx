@@ -13,7 +13,7 @@ type StoryPromptProps = {
 export default function StoryPrompt({
   lines,
   to,
-  buttonLabel = "한 번 더 흘려보내기",
+  buttonLabel = "작성하기",
   paddingSize = "small",
 }: StoryPromptProps) {
   return (
@@ -21,7 +21,7 @@ export default function StoryPrompt({
       className={classes.closing}
       style={{ padding: paddingSize === "large" ? "8rem 0" : "4rem 0" }}
     >
-      <div>
+      <div className={classes.lines}>
         <Paragraph>{lines[0]}</Paragraph>
         <Paragraph>{lines[1]}</Paragraph>
       </div>
