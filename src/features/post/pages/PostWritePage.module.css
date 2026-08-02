@@ -103,6 +103,64 @@
   color: var(--color-primary-400);
 }
 
+/* 이미지 첨부 파일 피커 (숨김) */
+.hiddenFileInput {
+  display: none;
+}
+
+/* 이미지 편지 모드: To(가운데·로즈) / 이미지 / From(밑줄), 화면 채움 */
+.imageLetter {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 0.8rem 0;
+}
+.imgTo {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: var(--color-letter-line);
+  font-family: var(--c1-font-family);
+  font-weight: var(--c1-font-weight);
+  font-size: var(--c1-font-size);
+  letter-spacing: var(--c1-font-letter-spacing);
+}
+.imgToLabel {
+  flex-shrink: 0;
+}
+.imgToInput {
+  min-width: 0;
+  max-width: 70%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+.imgToInput::placeholder {
+  color: var(--color-letter-line);
+  opacity: 0.5;
+}
+.imgArea {
+  flex: 1;
+  min-height: 24rem;
+  display: flex;
+}
+/* From: 좌측 정렬 + 로즈 밑줄 */
+.imgFrom {
+  margin: 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-letter-line);
+  font-family: var(--t3-font-family);
+  font-weight: var(--t3-font-weight);
+  font-size: 1.5rem;
+  color: var(--color-primary-700);
+}
+
 /* Letter의 .to/.from 줄 위에 입력을 flex로 배치 */
 .lineRow {
   display: flex;

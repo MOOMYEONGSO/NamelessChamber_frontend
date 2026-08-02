@@ -6,10 +6,10 @@ export const MAX_TOTAL_BYTES = 300 * 1024 * 1024;
 export const ACCEPTED_IMAGE_INPUT =
   ".jpg,.jpeg,.png,.webp,.heic,.heif,image/jpeg,image/png,image/webp,image/heic,image/heif";
 
-// 업로드 전 클라이언트 압축
+// 업로드 전 클라이언트 압축 (서버 업로드 한도 대응으로 강하게)
 const COMPRESS_OPTIONS = {
-  maxSizeMB: 1,
-  maxWidthOrHeight: 1920,
+  maxSizeMB: 0.5,
+  maxWidthOrHeight: 1600,
   useWebWorker: true,
 };
 
