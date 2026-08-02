@@ -29,6 +29,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: PATHS.HOME, element: <LandingPage /> },
+      { path: PATHS.LANDING_INSTA, element: <LandingPage /> },
+      { path: PATHS.LANDING_BLIND, element: <LandingPage /> },
+      { path: PATHS.LANDING_THREAD, element: <LandingPage /> },
       {
         path: PATHS.POST_REROLL,
         element: <PostRerollPage />,
