@@ -9,6 +9,7 @@ type Props = {
   onDown: () => void;
   upDisabled?: boolean;
   downDisabled?: boolean;
+  cameraDisabled?: boolean;
 };
 
 /** 모바일 키보드 바로 위 액세서리 바 (이미지 등록 / 커서 위·아래 이동) */
@@ -18,6 +19,7 @@ export default function KeyboardAccessoryBar({
   onDown,
   upDisabled,
   downDisabled,
+  cameraDisabled,
 }: Props) {
   return (
     <div className={classes.bar}>
@@ -26,6 +28,7 @@ export default function KeyboardAccessoryBar({
         className={classes.camera}
         onPointerDown={(e) => e.preventDefault()}
         onClick={onCamera}
+        disabled={cameraDisabled}
         aria-label="이미지 등록"
       >
         <Camera />

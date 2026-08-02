@@ -24,6 +24,10 @@
   color: var(--color-primary-500);
   cursor: pointer;
 }
+.camera:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
 
 .nav {
   display: flex;
