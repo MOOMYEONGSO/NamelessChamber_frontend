@@ -60,7 +60,15 @@ export function validateNickname(nickname: string): ValidationResult {
     return issues;
   }
 
-  if (trimmed.length > 16) {
+  // 서버 규칙과 동일: 2자 이상 10자 이하
+  if (trimmed.length < 2) {
+    issues.push({
+      key: "nickname.minLength",
+      message: getMsg("nickname.minLength"),
+    });
+  }
+
+  if (trimmed.length > 10) {
     issues.push({
       key: "nickname.maxLength",
       message: getMsg("nickname.maxLength"),

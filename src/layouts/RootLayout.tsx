@@ -11,8 +11,8 @@ function RootLayout() {
   const { showToast } = useToast();
   const firedRef = useRef(false);
 
-  // 회원가입/로그인: 콘텐츠를 헤더 바로 아래(상단)에 정렬
-  const isTopAligned = [PATHS.SIGN_UP, PATHS.LOGIN].some(
+  // 회원가입/로그인/마이페이지: 콘텐츠를 헤더 바로 아래(상단)에 정렬
+  const isTopAligned = [PATHS.SIGN_UP, PATHS.LOGIN, PATHS.PROFILE].some(
     (p) => p === location.pathname
   );
 

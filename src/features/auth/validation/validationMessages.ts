@@ -6,6 +6,7 @@ export type MsgKey =
   | "pw.repeat3"
   | "pw.confirm.mismatch"
   | "nickname.required"
+  | "nickname.minLength"
   | "nickname.maxLength";
 
 const MESSAGES: Record<MsgKey, string> = {
@@ -16,7 +17,8 @@ const MESSAGES: Record<MsgKey, string> = {
   "pw.repeat3": "동일한 숫자 3개 이상 연속 사용 불가",
   "pw.confirm.mismatch": "동일한 비밀번호를 입력",
   "nickname.required": "닉네임을 입력해주세요.",
-  "nickname.maxLength": "닉네임은 최대 16자까지 가능합니다.",
+  "nickname.minLength": "닉네임은 2자 이상 10자 이하로 작성해주세요.",
+  "nickname.maxLength": "닉네임은 2자 이상 10자 이하로 작성해주세요.",
 };
 
 export function getMsg(key: MsgKey) {

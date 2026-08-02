@@ -3,14 +3,13 @@ import classes from "./CoinInfo.module.css";
 
 type CoinInfoProps = {
   coin: number;
-} & ComponentPropsWithoutRef<"div">;
+} & ComponentPropsWithoutRef<"button">;
 
 const CoinInfo = ({ coin, ...rest }: CoinInfoProps) => {
   return (
-    <div className={classes.coin} {...rest}>
-      <p>열람권</p>
-      <p>{coin}개</p>
-    </div>
+    <button type="button" className={classes.coin} {...rest}>
+      열람권 : {coin}
+    </button>
   );
 };
 

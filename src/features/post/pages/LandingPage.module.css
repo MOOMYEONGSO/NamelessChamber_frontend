@@ -25,14 +25,13 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  /* 뒤 스택이 위로 삐져나오는 공간 확보 */
-  padding-top: 4rem;
+  padding-top: 10rem;
 }
 
 .stack {
   position: relative;
-  width: 100%;
-  /* 홈은 고정 화면: 카드 스택은 클릭/호버 등 인터랙션 차단 */
+  width: 358px; /* 기준 너비 */
+  max-width: 100%;
   pointer-events: none;
 }
 
@@ -49,24 +48,35 @@
   z-index: 0;
   box-shadow: 0 2px 12px rgba(64, 61, 44, 0.08);
 }
+/* 뒤로 갈수록 세로 간격 40→28→20→16→12 */
 .decor0 {
-  transform: translateY(-8px) scale(0.96);
+  transform: translateY(-40px);
+  left: 16px;
+  right: 16px;
   background: #e0a9a9; /* pink */
 }
 .decor1 {
-  transform: translateY(-16px) scale(0.92);
+  transform: translateY(-68px);
+  left: 32px;
+  right: 32px;
   background: #f2d899; /* yellow */
 }
 .decor2 {
-  transform: translateY(-24px) scale(0.88);
+  transform: translateY(-88px);
+  left: 48px;
+  right: 48px;
   background: #3d3c43; /* dark */
 }
 .decor3 {
-  transform: translateY(-32px) scale(0.84);
+  transform: translateY(-104px);
+  left: 64px;
+  right: 64px;
   background: #a9c6de; /* blue */
 }
 .decor4 {
-  transform: translateY(-40px) scale(0.8);
+  transform: translateY(-116px);
+  left: 80px;
+  right: 80px;
   background: #9dbf9e; /* green */
 }
 

@@ -53,9 +53,10 @@ html {
 
   /* Palette */
   --color-green: #556028;
+  --color-success: #25c195;
   --color-yellow: #f2d899;
   --color-red: #f04248;
-  --color-letter-line: #bc4741; /* 편지지 가로줄 */
+  --color-letter-line: #bc4741;
 
   /* Card Meta Data */
   --font-mono:
