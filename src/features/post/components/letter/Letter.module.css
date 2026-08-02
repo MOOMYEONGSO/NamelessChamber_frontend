@@ -1,5 +1,4 @@
 .paper {
-  /* 편지지 줄 간격은 전 화면 통일 (작성/상세/회원가입 편지 동일) */
   --letter-line: 4rem;
   --letter-line-shift: 1rem;
   --letter-line-weight: 0.5px;
@@ -10,9 +9,8 @@
   padding: 3.2rem 2.4rem;
 }
 
-/* 줄노트 영역: 가로줄. 세로 padding 0으로 두어 각 줄이 줄 위에 정렬되도록 함 */
+/* 줄노트 영역 */
 .sheet {
-  /* #root의 text-align: center 상속을 끊어 왼쪽 정렬 */
   text-align: left;
   background-image: repeating-linear-gradient(
     to bottom,
@@ -22,7 +20,6 @@
       calc(var(--letter-line) - var(--letter-line-weight, 1px)),
     var(--color-letter-line) var(--letter-line)
   );
-  /* 줄선을 위로 올려 글씨가 줄 위에 앉고, 글씨 위 공간이 생기도록 함 */
   background-position: 0 calc(-1 * var(--letter-line-shift));
 }
 
@@ -30,9 +27,8 @@
 .from,
 .body {
   margin: 0;
-  /* Pretendard SemiBold (t3: 1.4rem / weight 600) */
   font-family: var(--t3-font-family);
-  font-size: var(--t3-font-size);
+  font-size: 1.5rem;
   font-weight: var(--t3-font-weight);
   line-height: var(--letter-line);
   letter-spacing: var(--t3-font-letter-spacing);
@@ -41,7 +37,6 @@
 }
 
 .body {
-  /* 개행·빈 줄을 그대로 유지 */
   white-space: pre-line;
 }
 

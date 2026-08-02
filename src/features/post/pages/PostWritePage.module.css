@@ -1,8 +1,14 @@
 .page {
+  /* visual viewport에 고정 → iOS 문서 스크롤에도 하단바가 키보드 바로 위에 유지.
+     top/height는 visualViewport 값으로 인라인 override */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   width: 100%;
   max-width: var(--app-max-width);
-  margin: 0 auto;
-  height: 100dvh; /* 키보드 열리면 visualViewport 높이로 인라인 override */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--background-color);
@@ -141,7 +147,7 @@
 .inlineBody::placeholder {
   font-family: var(--p1-font-family);
   font-weight: var(--p1-font-weight);
-  font-size: var(--p1-font-size);
+  font-size: 1.5rem;
   letter-spacing: var(--p1-font-letter-spacing);
   color: var(--color-primary-300);
 }
