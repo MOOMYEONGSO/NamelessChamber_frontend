@@ -6,21 +6,17 @@ import UserInfo from "../components/UserInfo";
 import { useUserMe } from "../hooks/useUser";
 import classes from "./ProfilePage.module.css";
 import { PATHS } from "../../../constants/path";
-import DiaryTabs from "../components/DiaryTabs";
-import { useReadDiaries } from "../hooks/useReadDiaries";
+import PostTabs from "../components/PostTabs";
+import { useReadPosts } from "../hooks/useReadPosts";
 import { useEffect, useMemo, useRef, useState } from "react";
-import CardListContainer from "../../diary/components/card/CardListContainer";
-import { useWrittenDiaries } from "../hooks/useWrittenDiaries";
+import CardListContainer from "../../post/components/card/CardListContainer";
+import { useWrittenPosts } from "../hooks/useWrittenPosts";
 import ProfileSkeleton from "../components/ProfileSkeleton";
-import { useLogout } from "../../auth/hooks/useAuth";
-import LoadingDots from "../../../components/loading/LoadingDots";
 import { useToast } from "../../../contexts/ToastContext";
 import { ApiError } from "../../../api/types";
 
 function ProfilePage() {
-  const [currentTab, setCurrentTab] = useState<
-    "written" | "read" | "community"
-  >("written");
+  const [currentTab, setCurrentTab] = useState<"written" | "read">("written");
   const { data: me, isLoading: isMeLoading, error, isError } = useUserMe();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -45,39 +41,21 @@ function ProfilePage() {
     }
   }, [isError, error, navigate, showToast]);
 
-  const { data: readData, isLoading: isReadLoading } = useReadDiaries(
-    "read",
+  const { data: readData, isLoading: isReadLoading } = useReadPosts(
     currentTab === "read",
   );
-  const { data: communityData, isLoading: isCommunityLoading } =
-    useReadDiaries("community", currentTab === "community");
   const { data: writtenData, isLoading: isWrittenLoading } =
-    useWrittenDiaries();
+    useWrittenPosts();
 
-  const diaries = useMemo(() => {
+  const posts = useMemo(() => {
     if (currentTab === "read") return readData?.posts ?? [];
-    if (currentTab === "community") return communityData?.posts ?? [];
     return writtenData ?? [];
-  }, [currentTab, readData, communityData, writtenData]);
+  }, [currentTab, readData, writtenData]);
 
   const isListLoading =
-    currentTab === "read"
-      ? isReadLoading
-      : currentTab === "community"
-        ? isCommunityLoading
-        : isWrittenLoading;
+    currentTab === "read" ? isReadLoading : isWrittenLoading;
 
-  const isEmpty = !isListLoading && (diaries?.length ?? 0) === 0;
-
-  const { mutate: logout, isPending: isLoggingOut } = useLogout();
-
-  function handleLogout() {
-    logout(undefined, {
-      onSettled: () => {
-        navigate(PATHS.HOME);
-      },
-    });
-  }
+  const isEmpty = !isListLoading && (posts?.length ?? 0) === 0;
 
   function handleProfileEditClick() {
     showToast("준비 중인 기능입니다.", "info");
@@ -87,7 +65,7 @@ function ProfilePage() {
     if (!me?.coin) {
       showToast("열람권이 없어요! 글을 작성하고 열람권을 받아보세요.", "info");
     } else {
-      navigate(PATHS.DIARY_ALL);
+      navigate(PATHS.POST_ALL);
     }
   }
 
@@ -98,42 +76,39 @@ function ProfilePage() {
           <ProfileSkeleton />
         ) : (
           <>
-            <UserInfo nickname={me.nickname} />
-            <CoinInfo coin={me.coin} onClick={handleCoinClick} />
-            <Button alwaysHoverStyle onClick={handleProfileEditClick}>
-              프로필 편집
-            </Button>
+            <UserInfo
+              nickname={me.nickname}
+              postCount={writtenData?.length ?? 0}
+            />
+            <div className={classes.actions}>
+              <Button
+                alwaysHoverStyle
+                className={classes.actionBtn}
+                onClick={handleProfileEditClick}
+              >
+                프로필 편집
+              </Button>
+              <CoinInfo coin={me.coin} onClick={handleCoinClick} />
+            </div>
             <FeedbackCard />
-            <button
-              className={classes.logout}
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              aria-busy={isLoggingOut}
-            >
-              {isLoggingOut ? <LoadingDots /> : "로그아웃"}
-            </button>
           </>
         )}
       </div>
 
       <div className={classes.listSection}>
-        <DiaryTabs
-          onChange={(id) =>
-            setCurrentTab(id as "written" | "read" | "community")
-          }
+        <PostTabs
+          onChange={(id) => setCurrentTab(id as "written" | "read")}
         />
         <CardListContainer
-          diaries={diaries}
+          posts={posts}
           isLoading={isListLoading}
           isEmpty={isEmpty}
           coin={me?.coin ?? 0}
-          type="public"
+          type="text"
           emptyMessage={
             currentTab === "read"
               ? "아직 열람한 글이 없어요."
-              : currentTab === "community"
-                ? "아직 열람한 커뮤니티 글이 없어요."
-                : "아직 작성한 글이 없어요."
+              : "아직 작성한 글이 없어요."
           }
           interactionMode="direct"
         />

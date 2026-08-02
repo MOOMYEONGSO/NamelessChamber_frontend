@@ -1,0 +1,13 @@
+.tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  opacity: 1;
+  background-color: #333130;
+  color: #878787;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+}

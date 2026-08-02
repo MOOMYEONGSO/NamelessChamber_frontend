@@ -1,0 +1,128 @@
+.card {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  background-color: var(--color-primary-100);
+  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.1);
+  padding: 2.4rem;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(64, 61, 44, 0.15);
+}
+
+.card:active {
+  transform: translateY(-1px);
+}
+
+/* 크기 변형 마커 (패딩은 24px로 통일) */
+.sm {
+  --card-size: sm;
+}
+.lg {
+  --card-size: lg;
+}
+
+/* 작성자/타인 구분 (필요 시 확장) */
+.self {
+  --card-owner: self;
+}
+.other {
+  --card-owner: other;
+}
+
+/* 상단: To/From + 로고 */
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.2rem;
+}
+
+.addr {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.to {
+  margin: 0;
+  font-family: var(--t2-font-family);
+  font-weight: var(--t2-font-weight);
+  font-size: var(--t2-font-size);
+  line-height: var(--t2-font-line-height);
+  color: var(--color-primary-700);
+  word-break: keep-all;
+}
+
+.from {
+  margin: 0;
+  font-family: var(--p1-font-family);
+  font-weight: 500; /* Pretendard Medium */
+  font-size: 1.2rem;
+  line-height: var(--p1-font-line-height);
+  color: var(--color-primary-700);
+  word-break: keep-all;
+}
+
+.stamp {
+  width: 4.3rem;
+  height: 4.9rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* 사진 게시글 썸네일 */
+.thumb {
+  width: 100%;
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+.thumbImg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 메타 블록: DATE / WRITING_TIME / CHARACTER_COUNT */
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--color-primary-700);
+}
+
+.metaRow {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 어두운 커버(THOUGHTS·TIME): 글씨를 밝게 */
+.card[data-cover="dark"] .to,
+.card[data-cover="dark"] .from,
+.card[data-cover="dark"] .meta {
+  color: var(--color-primary-100);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

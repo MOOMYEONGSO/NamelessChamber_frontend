@@ -9,18 +9,11 @@
   gap: 4rem;
 }
 
-.topActions {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 2rem;
-}
-
 .feedback h2 {
   font-family: var(--p1-font-family);
-  font-weight: var(--p1-font-weight);
-  font-size: var(--p1-font-size);
-  line-height: var(--p1-font-line-height);
+  font-weight: var(--t1-font-weight);
+  font-size: var(--t1-font-size);
+  line-height: var(--t1-font-line-height);
   letter-spacing: var(--p1-font-letter-spacing);
 }
 
@@ -43,10 +36,6 @@
 }
 
 @media (max-width: 768px) {
-  .topActions {
-    padding-right: 1rem;
-  }
-
   .feedback form {
     max-width: 92%;
     height: auto;

@@ -3,7 +3,6 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import Button from "../../../components/button/Button";
 import Form from "../../../components/form/Form";
 import Input from "../../../components/input/Input";
-import Paragraph from "../../../components/paragraph/Paragraph";
 import classes from "./LoginPage.module.css";
 import { PATHS } from "../../../constants/path";
 import { useLogin } from "../hooks/useAuth";
@@ -13,6 +12,7 @@ import InputMessage from "../../../components/input/InputMessage";
 import LoadingDots from "../../../components/loading/LoadingDots";
 import { validateEmail } from "../validation/validators";
 import { firstError, hasError } from "../validation/validationHelpers";
+import PinInput from "../../../components/input/PinInput";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ function LoginPage() {
 
   const emailIssues = useMemo(
     () => validateEmail(trimmedEmail),
-    [trimmedEmail]
+    [trimmedEmail],
   );
   const emailValid = !hasError(emailIssues);
   const emailError = firstError(emailIssues);
@@ -137,8 +137,6 @@ function LoginPage() {
 
   return (
     <section className={classes.login}>
-      <Paragraph>로그인</Paragraph>
-
       <Form
         onSave={goNextOrSubmit}
         className={`${classes.form} ${classes.controlWidth}`}
@@ -160,7 +158,7 @@ function LoginPage() {
           />
           {showEmailError ? (
             <InputMessage type="error" aria-live="polite">
-              {emailError ?? "올바른 이메일 형식을 입력해주세요"}
+              {emailError}
             </InputMessage>
           ) : (
             <InputMessage />
@@ -173,18 +171,15 @@ function LoginPage() {
           }`}
           aria-hidden={step !== "password"}
         >
-          <Input
+          <PinInput
             ref={passwordRef}
-            type="password"
-            placeholder="비밀번호 (영문, 숫자 포함 8-15자)"
             value={password}
-            onChange={(e) => {
+            onChange={(val) => {
               if (serverError) setServerError("");
-              setPassword(e.target.value);
+              setPassword(val);
               setPwTried(false); // 입력 재시작 시 에러 숨김
             }}
             onKeyDown={handlePwKeyDown}
-            autoComplete="current-password"
             aria-invalid={!!showPwError}
           />
           {showPwError ? (
@@ -206,7 +201,7 @@ function LoginPage() {
             onClick={goNextOrSubmit}
             disabled={isPending}
             aria-disabled={!isButtonEnabled}
-            variant={isButtonEnabled ? "main" : "sub"}
+            variant={isButtonEnabled ? "main" : "main"}
             state={isButtonEnabled ? "active" : "default"}
             className={classes.submit}
           >

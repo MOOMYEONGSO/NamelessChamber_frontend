@@ -1,0 +1,249 @@
+.page {
+  /* visual viewport에 고정 → iOS 문서 스크롤에도 하단바가 키보드 바로 위에 유지.
+     top/height는 visualViewport 값으로 인라인 override */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--app-max-width);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-color);
+  overflow: hidden;
+}
+
+/* 상단바: 햄버거 / 접수 */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.6rem;
+  padding: 0 1.2rem;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-primary-700);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.receipt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+}
+.receipt:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.receiptIcon {
+  width: 2.8rem;
+  height: 2.8rem;
+  object-fit: contain;
+}
+
+/* 서브타이틀 */
+.subtitleArea {
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+}
+.subtitle {
+  margin: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  font-family: var(--t2-font-family);
+  font-weight: var(--t2-font-weight);
+  font-size: var(--t2-font-size);
+  line-height: 1.4;
+  color: var(--color-primary-500);
+  text-align: center;
+  white-space: pre-line;
+}
+.subShown {
+  opacity: 1;
+}
+
+/* 편지지 영역 */
+.cardWrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.6rem 2rem;
+}
+
+/* 본문 글자수 */
+.charCount {
+  margin: 0.8rem 0.2rem 0;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--color-primary-400);
+}
+
+/* 이미지 첨부 파일 피커 (숨김) */
+.hiddenFileInput {
+  display: none;
+}
+
+/* 이미지 편지 모드: To(가운데·로즈) / 이미지 / From(밑줄), 화면 채움 */
+.imageLetter {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 0.8rem 0;
+}
+.imgTo {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: var(--color-letter-line);
+  font-family: var(--c1-font-family);
+  font-weight: var(--c1-font-weight);
+  font-size: var(--c1-font-size);
+  letter-spacing: var(--c1-font-letter-spacing);
+}
+.imgToLabel {
+  flex-shrink: 0;
+}
+.imgToInput {
+  min-width: 0;
+  max-width: 70%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+.imgToInput::placeholder {
+  color: var(--color-letter-line);
+  opacity: 0.5;
+}
+.imgArea {
+  flex: 1;
+  min-height: 24rem;
+  display: flex;
+}
+/* From: 좌측 정렬 + 로즈 밑줄 */
+.imgFrom {
+  margin: 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-letter-line);
+  font-family: var(--t3-font-family);
+  font-weight: var(--t3-font-weight);
+  font-size: 1.5rem;
+  color: var(--color-primary-700);
+}
+
+/* Letter의 .to/.from 줄 위에 입력을 flex로 배치 */
+.lineRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.prefixLabel {
+  flex-shrink: 0;
+}
+.inlineInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+/* 본문: Letter의 .body 위에 textarea */
+.bodyRow {
+  position: relative;
+}
+.inlineBody {
+  display: block;
+  width: 100%;
+  min-height: calc(var(--letter-line) * 5);
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  word-break: break-word;
+}
+
+/* 웹/웹앱 모두 텍스트 선택·복사·붙여넣기 허용 */
+.inlineInput,
+.inlineBody {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+.inlineInput::placeholder,
+.inlineBody::placeholder {
+  font-family: var(--p1-font-family);
+  font-weight: var(--p1-font-weight);
+  font-size: 1.5rem;
+  letter-spacing: var(--p1-font-letter-spacing);
+  color: var(--color-primary-300);
+}
+
+.nextBtn {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 0.6rem;
+  color: var(--color-primary-100);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bodyNext {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardShift {
+    transition: none;
+  }
+  .subtitle {
+    transition: none;
+  }
+}

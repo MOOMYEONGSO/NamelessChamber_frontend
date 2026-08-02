@@ -1,5 +1,6 @@
 .header {
   width: 100%;
+  max-width: var(--app-max-width);
   height: var(--header-height);
   display: flex;
   align-items: center;
@@ -7,36 +8,22 @@
   padding: 0 2rem;
   position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: var(--z-header);
 
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
 }
 
-.header::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: calc(100% + 16px);
-  z-index: -1;
-  pointer-events: none;
-
-  background: linear-gradient(
-    180deg,
-    rgba(38, 37, 36, 0.8) 75%,
-    rgba(38, 37, 36, 0) 100%
-  );
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.logoLink {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
+.menuButton {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-primary-700);
   cursor: pointer;
 }
 

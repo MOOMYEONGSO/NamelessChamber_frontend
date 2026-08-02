@@ -1,8 +1,8 @@
 .message {
   font-family: var(--p1-font-family, Pretendard, sans-serif);
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: normal;
+  font-weight: var(--p1-font-weight);
+  font-size: var(--p1-font-size);
+  line-height: var(--p1-font-line-height);
   letter-spacing: 0;
   text-align: left;
 
@@ -31,5 +31,5 @@
 }
 
 .success {
-  color: var(--color-yellow);
+  color: var(--color-success);
 }

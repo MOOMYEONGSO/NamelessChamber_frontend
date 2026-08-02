@@ -1,3 +1,5 @@
+type PostRouteType = "text" | "image";
+
 export const PATHS = {
   HOME: "/",
   LANDING_INSTA: "/insta",
@@ -9,23 +11,28 @@ export const PATHS = {
   DIARY_NEW: "/diary/new/:type",
   DIARY_DETAIL: "/diary/v/:id",
   DIARY_STREAK: "/diary/streak/:type",
+  POST_ALL: "/post",
+  POST_LIST: "/post/:type",
+  POST_SUBMIT: "/post/submit/:type",
+  POST_NEW: "/post/new/:type",
+  POST_DETAIL: "/post/v/:id",
+  POST_STREAK: "/post/streak/:type",
   LOGIN: "/login",
-  ADMIN_DIARIES: "/admin/diaries",
+  ADMIN_POSTS: "/admin/posts",
   SIGN_UP: "/signup",
   NICKNAME: "/signup/nickname",
   ERROR: "/error",
   PROFILE: "/profile",
   FEEDBACK: "/feedback",
-  DIARY_REROLL: "/diary/reroll/:type",
+  POST_REROLL: "/post/reroll/:type",
+  POST_NEW_IMAGE: "/post/new/image",
 
-  ADMIN_DIARIES_BY_TYPE: (type: string) => `/admin/diaries/${type}`,
-  ADMIN_DIARY_DETAIL: (postId: string) => `/admin/diaries/post/${postId}`,
-  DIARY_LIST_TYPE: (type: "today" | "public" | "mind") => `/diary/${type}`,
-  DIARY_SUBMIT_TYPE: (type: "today" | "public" | "mind") =>
-    `/diary/submit/${type}`,
-  DIARY_DETAIL_ID: (id: string) => `/diary/v/${id}`,
-  DIARY_NEW_TYPE: (type: "today" | "public" | "mind") => `/diary/new/${type}`,
-  DIARY_STREAK_TYPE: (type: "today" | "public" | "mind") =>
-    `/diary/streak/${type}`,
-  DIARY_REROLL_TYPE: (type: string) => `/diary/reroll/${type}`,
+  ADMIN_POSTS_BY_TYPE: (type: string) => `/admin/posts/${type}`,
+  ADMIN_POST_DETAIL: (postId: string) => `/admin/posts/v/${postId}`,
+  POST_LIST_TYPE: (type: PostRouteType) => `/post/${type}`,
+  POST_SUBMIT_TYPE: (type: PostRouteType) => `/post/submit/${type}`,
+  POST_DETAIL_ID: (id: string) => `/post/v/${id}`,
+  POST_NEW_TYPE: (type: PostRouteType) => `/post/new/${type}`,
+  POST_STREAK_TYPE: (type: PostRouteType) => `/post/streak/${type}`,
+  POST_REROLL_TYPE: (type: PostRouteType) => `/post/reroll/${type}`,
 } as const;

@@ -7,9 +7,9 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--color-gray-4) 25%,
-    var(--color-gray-4) 37%,
-    var(--color-gray-4) 63%
+    var(--color-primary-200) 25%,
+    var(--color-primary-100) 50%,
+    var(--color-primary-200) 75%
   );
   background-size: 400% 100%;
   border-radius: 8px;

@@ -1,6 +1,6 @@
 .textarea {
-  background-color: var(--color-gray-4);
-  color: var(--color-gray-2);
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-700);
   width: 100%;
   height: 100%;
   padding: 1rem;
@@ -14,7 +14,7 @@
   caret-color: var(--color-caret);
 
   color-scheme: dark;
-  scrollbar-color: rgba(255, 255, 255, 0.35) var(--color-gray-4);
+  scrollbar-color: rgba(255, 255, 255, 0.35) var(--color-primary-100);
   scrollbar-width: thin;
 }
 
@@ -23,15 +23,15 @@
 }
 
 .textarea::-webkit-scrollbar-track {
-  background: var(--color-gray-4);
+  background: var(--color-primary-100);
 }
 
 .textarea::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.35);
   border-radius: 8px;
-  border: 2px solid var(--color-gray-4);
+  border: 2px solid var(--color-primary-100);
 }
 
 .textarea::-webkit-scrollbar-corner {
-  background: var(--color-gray-4);
+  background: var(--color-primary-100);
 }

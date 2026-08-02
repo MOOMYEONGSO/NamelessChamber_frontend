@@ -1,0 +1,48 @@
+.paper {
+  --letter-line: 4rem;
+  --letter-line-shift: 1rem;
+  --letter-line-weight: 0.5px;
+
+  width: 100%;
+  background-color: var(--color-primary-100);
+  box-shadow: 0 2px 12px rgba(64, 61, 44, 0.1);
+  padding: 3.2rem 2.4rem;
+}
+
+/* 줄노트 영역 */
+.sheet {
+  text-align: left;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--letter-line) - var(--letter-line-weight, 1px)),
+    var(--color-letter-line)
+      calc(var(--letter-line) - var(--letter-line-weight, 1px)),
+    var(--color-letter-line) var(--letter-line)
+  );
+  background-position: 0 calc(-1 * var(--letter-line-shift));
+}
+
+.to,
+.from,
+.body {
+  margin: 0;
+  font-family: var(--t3-font-family);
+  font-size: 1.5rem;
+  font-weight: var(--t3-font-weight);
+  line-height: var(--letter-line);
+  letter-spacing: var(--t3-font-letter-spacing);
+  color: var(--color-primary-700);
+  word-break: keep-all;
+}
+
+.body {
+  white-space: pre-line;
+}
+
+/* To 다음 한 줄, 본문 끝(=From 앞) 한 줄 띄움. 줄 간격과 동일해 줄노트 정렬 유지 */
+.to + .body,
+.to + .from,
+.body + .from {
+  margin-top: var(--letter-line);
+}

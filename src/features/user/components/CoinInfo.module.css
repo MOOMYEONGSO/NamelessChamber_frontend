@@ -1,18 +1,18 @@
+/* 열람권 조회: 높이 50px, radius 8px, Button 스케일 텍스트 */
 .coin {
   width: 100%;
-  font-family: var(--c1-font-family);
-  font-weight: var(--c1-font-weight);
-  font-size: var(--c1-font-size);
-  line-height: var(--c1-font-line-height);
-  letter-spacing: var(--c1-font-letter-spacing);
-  text-align: left;
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary-700);
+  color: var(--color-primary-100);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-font-line-height);
+  letter-spacing: var(--button-font-letter-spacing);
   cursor: pointer;
-}
-
-.coin p:first-of-type {
-  color: var(--color-gray-3);
-}
-
-.coin p:nth-of-type(2) {
-  color: var(--color-gray-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

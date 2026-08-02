@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { adminDiaryApi } from "../../diary/api/diary.admin";
+import { adminPostApi } from "../../post/api/post.admin";
 
 export function useTodayMetrics() {
   return useQuery({
     queryKey: ["admin", "metrics", "today"],
-    queryFn: () => adminDiaryApi.getTodayMetrics(),
+    queryFn: () => adminPostApi.getTodayMetrics(),
     staleTime: 1000 * 60,
   });
 }

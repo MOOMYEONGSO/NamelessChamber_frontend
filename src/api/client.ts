@@ -25,7 +25,7 @@ const PUBLIC_PATHS = [
   "/auth/login",
   "/auth/signup",
   "/auth/reissue",
-  "/auth/anonymous",
+  // "/auth/anonymous", // 익명 로그인 비활성화
 ];
 
 function isPublicRequest(config: AxiosRequestConfig) {
@@ -66,7 +66,7 @@ let __lastRedirectAt = 0;
 function handleAuthExpired(reason: string, redirectTo?: string) {
   clearAuth();
   window.dispatchEvent(
-    new CustomEvent("auth:expired", { detail: { reason, status: 401 } })
+    new CustomEvent("auth:expired", { detail: { reason, status: 401 } }),
   );
   notifyAuthUpdate();
 
@@ -162,17 +162,14 @@ client.interceptors.response.use(
     }
 
     // 서버 에러코드 기반 빠른 종료 분기(선택) — 정책 유지
-    const codeNum: number | undefined =
-      (error?.response as any)?.data?.errorCode;
+    const codeNum: number | undefined = (error?.response as any)?.data
+      ?.errorCode;
 
     const hasRefresh = !!getRefreshToken();
 
     if (codeNum === 1012 || codeNum === 1017) {
       if (!hasRefresh) {
-        handleAuthExpired(
-          codeNum === 1012 ? "invalid_token" : "no_token",
-          "/"
-        );
+        handleAuthExpired(codeNum === 1012 ? "invalid_token" : "no_token", "/");
         return Promise.reject(error);
       }
     }
@@ -204,7 +201,7 @@ client.interceptors.response.use(
 
     if (isRefreshing) {
       return new Promise((resolve, reject) =>
-        enqueue({ resolve, reject, originalRequest })
+        enqueue({ resolve, reject, originalRequest }),
       );
     }
 
@@ -221,5 +218,5 @@ client.interceptors.response.use(
       handleAuthExpired("refresh_failed", "/");
       return Promise.reject(e);
     }
-  }
+  },
 );

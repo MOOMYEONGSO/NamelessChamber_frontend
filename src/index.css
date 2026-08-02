@@ -1,4 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;700&display=swap");
 
 /* Reset */
 * {
@@ -10,28 +11,56 @@
 /* Root & HTML */
 html {
   font-size: 62.5%;
-  background: #262524;
+  background: #eeeef1;
 }
 
 :root {
-  font-family: "Pretendard Variable", Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
-    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-family:
+    "Pretendard Variable",
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    sans-serif;
 
   /* Text */
-  --text-color: rgba(217, 217, 217, 0.8);
-  --text-secondary-color: rgba(217, 217, 217, 0.4);
+  --text-color: var(--color-primary-700);
+  --text-secondary-color: var(--color-primary-400);
 
   /* Surfaces */
-  --background-color: #262524;
+  --background-color: #eeeef1;
   --background-secondary-color: rgba(217, 217, 217, 0.04);
   --border-color: rgba(217, 217, 217, 0.08);
 
+  /* Palette - Primary */
+  --color-primary: #be4d47;
+  --color-primary-100: #fefeff;
+  --color-primary-200: #dfe1e5;
+  --color-primary-300: #bbbdc3;
+  --color-primary-400: #7e808a;
+  --color-primary-500: #3d3c43;
+  --color-primary-600: #29292e;
+  --color-primary-700: #18181a;
+
   /* Palette */
   --color-green: #556028;
+  --color-success: #25c195;
   --color-yellow: #f2d899;
   --color-red: #f04248;
+  --color-letter-line: #bc4741;
+
+  /* Card Meta Data */
+  --font-mono:
+    "SFMono-Regular", ui-monospace, Menlo, Consolas, "D2Coding", monospace;
   --color-gray-2: #d9d9d9;
   --color-gray-3: #878787;
   --color-gray-4: #302e2d;
@@ -42,48 +71,65 @@ html {
   --letter-spacing-default: 0.04em;
 
   --p1-font-family: Pretendard, sans-serif;
-  --p1-font-weight: 400;
-  --p1-font-size: 18px;
-  --p1-font-line-height: 1.8;
+  --p1-font-weight: 500;
+  --p1-font-size: 1.4rem;
+  --p1-font-line-height: 1.3;
   --p1-font-letter-spacing: var(--letter-spacing-default);
 
   --t1-font-family: Pretendard, sans-serif;
-  --t1-font-weight: 400;
-  --t1-font-size: 28px;
-  --t1-line-height: 1.6;
-  --t1-letter-spacing: var(--letter-spacing-default);
+  --t1-font-weight: 600;
+  --t1-font-size: 2.4rem;
+  --t1-font-line-height: 1.3;
+  --t1-font-letter-spacing: var(--letter-spacing-default);
 
   --t2-font-family: Pretendard, sans-serif;
-  --t2-font-weight: 500;
-  --t2-font-size: 24px;
-  --t2-line-height: 1.5;
-  --t2-letter-spacing: var(--letter-spacing-default);
+  --t2-font-weight: 600;
+  --t2-font-size: 1.8rem;
+  --t2-font-line-height: 1.3;
+  --t2-font-letter-spacing: var(--letter-spacing-default);
+
+  --t3-font-family: Pretendard, sans-serif;
+  --t3-font-weight: 600;
+  --t3-font-size: 1.4rem;
+  --t3-font-line-height: 1.3;
+  --t3-font-letter-spacing: var(--letter-spacing-default);
 
   --c1-font-family: Pretendard, sans-serif;
   --c1-font-weight: 500;
-  --c1-font-size: 16px;
-  --c1-line-height: normal;
-  --c1-letter-spacing: var(--letter-spacing-default);
+  --c1-font-size: 1.6rem;
+  --c1-font-line-height: 1.3;
+  --c1-font-letter-spacing: var(--letter-spacing-default);
 
+  /* Button scale: 18px / medium(500) / 130% */
+  --button-font-family: Pretendard, sans-serif;
+  --button-font-weight: 500;
+  --button-font-size: 1.8rem;
+  --button-font-line-height: 1.3;
+  --button-font-letter-spacing: var(--letter-spacing-default);
+  --button-padding-x: 1.2rem;
+  --button-padding-y: 0.8rem;
+
+  /* warning scale: 14px / regular(400) / normal */
+  --warning-font-family: Pretendard, sans-serif;
+  --warning-font-weight: 400;
+  --warning-font-size: 1.4rem;
+  --warning-font-line-height: normal;
+  --warning-font-letter-spacing: var(--letter-spacing-default);
+
+  /* legacy (스케일 외): 소셜 로그인 버튼 전용 */
   --body1-font-family: Pretendard, sans-serif;
   --body1-font-weight: 700;
-  --body1-font-size: 16px;
+  --body1-font-size: 1.6rem;
   --body1-line-height: 140%;
   --body1-letter-spacing: var(--letter-spacing-default);
 
-  --btn-font-family: Pretendard, sans-serif;
-  --btn-font-weight: 700;
-  --btn-font-size: 18px;
-  --btn-line-height: 1.8;
-  --btn-letter-spacing: var(--letter-spacing-default);
-  --btn-padding-x: 1.2rem;
-  --btn-padding-y: 0.8rem;
-
   /* Layout */
   --header-height: 12rem;
+  --app-max-width: 480px;
 
   /* Effects */
   --blur-radius: 2px;
+  --border-radius: 0.2rem;
 
   /* Layers */
   --z-bg: 0;
@@ -110,42 +156,6 @@ body {
   position: relative;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-bg);
-  pointer-events: none;
-
-  background:
-    /* 작은 노이즈 */ url("/noise-light.png") repeat 0 0 / 30px
-      30px,
-    /* 큰 노이즈 */ url("/noise-light.png") repeat 0 0 / 240px 240px,
-    /* 그라디언트 */
-      linear-gradient(
-        108deg,
-        #2a2928 0%,
-        #262524 45%,
-        #242322 55%,
-        #262524 100%
-      ),
-    repeating-linear-gradient(
-      108deg,
-      rgba(0, 0, 0, 0.015) 0px,
-      rgba(0, 0, 0, 0.015) 1px,
-      rgba(255, 255, 255, 0.015) 1px,
-      rgba(255, 255, 255, 0.015) 2px
-    );
-  background-repeat: repeat, repeat, no-repeat, repeat;
-  background-size: 30px 30px, 240px 240px, cover, auto;
-  opacity: 0.7;
-
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  contain: paint;
-}
-
 #root,
 .app {
   position: relative;
@@ -154,6 +164,9 @@ body::before {
 
 .app {
   min-height: 100%;
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   padding-top: var(--header-height);
@@ -167,9 +180,13 @@ body::before {
   align-items: center;
 }
 
+/* 회원가입: 콘텐츠를 헤더 바로 아래(상단)에 정렬 */
+.main-top {
+  align-items: flex-start;
+}
+
 .container {
   width: 100%;
-  max-width: 1280px;
   margin: 0 auto;
   padding-inline: 16px;
 }

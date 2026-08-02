@@ -1,0 +1,81 @@
+.container {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  height: calc(100vh - var(--header-height));
+  min-height: 600px;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+
+.container:active {
+  cursor: grabbing;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.cardWrapper {
+  position: absolute;
+  width: 360px;
+  transform: translate(20px, 20px);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.cardWrapper:hover {
+  z-index: 10;
+  transform: translate(20px, 16px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.loadingBadge {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 30, 0.85);
+  color: #fff;
+  padding: 0.8rem 1.8rem;
+  border-radius: 30px;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.returnButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #333;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+  z-index: 999;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.returnButton:hover {
+  transform: translateY(-3px);
+  background: #444;
+}

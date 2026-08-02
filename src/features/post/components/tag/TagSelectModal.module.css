@@ -1,0 +1,26 @@
+.tagContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 24px 0;
+  min-height: 0;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tagContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.activeSubmitButton {
+  background-color: var(--color-primary-700) !important;
+  border-color: var(--color-primary-700) !important;
+  color: var(--color-primary-100) !important;
+}
+
+@media (max-width: 640px) {
+  .tagContainer {
+    grid-template-columns: 1fr;
+  }
+}

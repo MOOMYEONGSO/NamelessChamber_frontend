@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  padding-top: 2.4rem;
 }
 
 .profileSection {
@@ -14,16 +13,22 @@
   gap: 2rem;
 }
 
-.logout {
-  color: var(--color-gray-3);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: var(--p1-font-family);
-  font-weight: var(--p1-font-weight);
-  font-size: var(--p1-font-size);
-  line-height: var(--p1-font-line-height);
-  letter-spacing: var(--p1-font-letter-spacing);
+/* 프로필 편집 + 열람권: 한 줄 배치 */
+.actions {
+  width: 100%;
+  display: flex;
+  gap: 1.2rem;
+}
+.actions > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 프로필 편집 버튼: 높이 50px, radius 8px (Button 기본 min-height 오버라이드) */
+.actions .actionBtn {
+  height: 50px;
+  min-height: 50px;
+  border-radius: 8px;
 }
 
 .listSection {
@@ -31,11 +36,6 @@
   display: flex;
   flex-direction: column;
   gap: 4rem;
-}
-
-.listSection :global(.tablist) {
-  display: flex;
-  justify-content: flex-start;
 }
 
 @media (max-width: 767px) {

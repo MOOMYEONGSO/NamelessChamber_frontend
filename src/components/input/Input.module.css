@@ -1,10 +1,11 @@
 .input {
   width: 100%;
-  background-color: var(--color-gray-4);
+  min-height: 6rem;
+  background-color: var(--color-primary-100);
   border: none;
-  color: var(--color-gray-2);
-  border-radius: 8px;
-  padding: 1.2rem 1.6rem;
+  color: var(--color-primary-700);
+  border-radius: 0.8rem;
+  padding: 0 1.6rem;
   caret-color: var(--color-caret);
 
   font-family: var(--c1-font-family);
@@ -14,6 +15,22 @@
   letter-spacing: var(--c1-font-letter-spacing);
 }
 
+.input::placeholder {
+  color: var(--color-primary-400);
+}
+
+/* 브라우저 자동완성(autofill) 배경(파란/노란색) 제거 → 흰색 유지 */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-primary-100) inset;
+  box-shadow: 0 0 0 1000px var(--color-primary-100) inset;
+  -webkit-text-fill-color: var(--color-primary-700);
+  caret-color: var(--color-caret);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
 input:focus {
   outline: none;
   border: none;
@@ -21,4 +38,8 @@ input:focus {
 
 input[aria-invalid="true"] {
   border: 0.5px solid var(--color-red);
+}
+
+input[data-valid="true"] {
+  border: 0.5px solid var(--color-success);
 }

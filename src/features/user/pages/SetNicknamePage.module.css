@@ -10,9 +10,9 @@
 
 .description {
   font-family: "Inter", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: normal;
+  font-weight: var(--p1-font-weight);
+  font-size: var(--p1-font-size);
+  line-height: var(--p1-font-line-height);
   letter-spacing: 0;
   color: var(--color-gray-3);
 }

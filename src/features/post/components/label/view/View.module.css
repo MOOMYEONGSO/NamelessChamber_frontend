@@ -1,0 +1,16 @@
+.view {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-primary-500);
+  font-family: var(--c1-font-family);
+  font-weight: var(--p1-font-weight);
+  font-size: var(--p1-font-size);
+  line-height: var(--p1-font-line-height);
+  letter-spacing: var(--c1-font-letter-spacing);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

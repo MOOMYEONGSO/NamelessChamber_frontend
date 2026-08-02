@@ -26,17 +26,11 @@ export function validateEmail(email: string): ValidationResult {
 
 export function validatePassword(pw: string): ValidationResult {
   const issues: ValidationResult = [];
-  if (pw.length < 8 || pw.length > 15) {
+  if (pw.length !== 4) {
     issues.push({ key: "pw.length", message: getMsg("pw.length") });
   }
   if (!/^[A-Za-z\d]+$/.test(pw)) {
     issues.push({ key: "pw.chars", message: getMsg("pw.chars") });
-  }
-  // 영문·숫자 2종류 이상
-  const hasAlpha = /[A-Za-z]/.test(pw);
-  const hasDigit = /\d/.test(pw);
-  if (!(hasAlpha && hasDigit)) {
-    issues.push({ key: "pw.mixed", message: getMsg("pw.mixed") });
   }
   // 동일 숫자 3연속 금지
   if (/(\d)\1\1/.test(pw)) {
@@ -47,7 +41,7 @@ export function validatePassword(pw: string): ValidationResult {
 
 export function validatePasswordConfirm(
   pw: string,
-  pwc: string
+  pwc: string,
 ): ValidationResult {
   return pw === pwc
     ? []
@@ -66,7 +60,15 @@ export function validateNickname(nickname: string): ValidationResult {
     return issues;
   }
 
-  if (trimmed.length > 16) {
+  // 서버 규칙과 동일: 2자 이상 10자 이하
+  if (trimmed.length < 2) {
+    issues.push({
+      key: "nickname.minLength",
+      message: getMsg("nickname.minLength"),
+    });
+  }
+
+  if (trimmed.length > 10) {
     issues.push({
       key: "nickname.maxLength",
       message: getMsg("nickname.maxLength"),

@@ -1,0 +1,8 @@
+.count {
+  color: var(--color-gray-3);
+  font-family: var(--c1-font-family);
+  font-weight: var(--p1-font-weight);
+  font-size: var(--p1-font-size);
+  line-height: var(--p1-font-line-height);
+  letter-spacing: var(--c1-font-letter-spacing);
+}

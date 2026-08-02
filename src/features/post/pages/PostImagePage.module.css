@@ -1,0 +1,264 @@
+.page {
+  display: flex;
+  min-height: 100dvh;
+  padding: 2.4rem 1.6rem;
+}
+
+.inner {
+  margin: auto;
+  width: 100%;
+  max-width: 64rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+/* 헤더 */
+.heading {
+  font-size: var(--t1-font-size);
+  font-weight: var(--t1-font-weight);
+  line-height: var(--t1-font-line-height);
+  color: var(--color-primary-700);
+  margin: 0;
+}
+
+.count {
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
+  color: var(--color-primary-400);
+}
+
+/* 드롭존 (빈 상태) */
+.dropzone {
+  width: 100%;
+  min-height: 34rem;
+  background-color: var(--color-primary-100);
+  border: 2px dashed var(--color-primary-300);
+  border-radius: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.dropzone:hover {
+  background-color: var(--color-primary-200);
+}
+
+/* 드롭존 (파일 있는 상태) */
+.dropzoneFilled {
+  width: 100%;
+  background-color: var(--color-primary-100);
+  border: 2px dashed var(--color-primary-300);
+  border-radius: 1.2rem;
+  padding: 1.6rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* 드래그 오버 강조 */
+.dragging {
+  background-color: var(--color-primary-200);
+  border-color: var(--color-primary-500);
+}
+
+/* 드롭존 안쪽 안내 패널 */
+.dropInner {
+  width: 100%;
+  max-width: 42rem;
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 1rem;
+  padding: 3.2rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: center;
+}
+
+.cloudIcon {
+  width: 6.4rem;
+  height: auto;
+  color: var(--color-primary-300);
+}
+
+.dropTitle {
+  margin: 0;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
+  color: var(--color-primary-600);
+}
+
+.browseBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 2rem;
+  border-radius: 2rem;
+  background-color: var(--color-primary-500);
+  color: var(--color-primary-100);
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+  transition: background-color 0.2s ease;
+}
+
+.dropzone:hover .browseBtn {
+  background-color: var(--color-primary-600);
+}
+
+.dropHint {
+  margin: 0;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
+  color: var(--color-primary-400);
+}
+
+/* 프리뷰 그리드 */
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.previewItem {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  background: var(--color-primary-200);
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: var(--t3-font-line-height);
+}
+
+.addMore {
+  aspect-ratio: 1 / 1;
+  border-radius: 0.8rem;
+  background-color: var(--color-primary-100);
+  border: 2px dashed var(--color-primary-300);
+  font-size: var(--t1-font-size);
+  font-weight: var(--t1-font-weight);
+  line-height: var(--t1-font-line-height);
+  color: var(--color-primary-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.addMore:hover {
+  background-color: var(--color-primary-200);
+}
+
+/* 푸터: 제약 안내 + 작성완료 */
+.footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.constraints {
+  list-style: disc;
+  padding-left: 1.8rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: var(--p1-font-size);
+  font-weight: var(--p1-font-weight);
+  line-height: var(--p1-font-line-height);
+  color: var(--color-primary-600);
+}
+
+.submitBtn {
+  flex-shrink: 0;
+  min-width: 12rem;
+}
+
+/* 숨겨진 파일 입력 */
+.hiddenInput {
+  display: none;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .page {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .heading {
+    font-size: var(--t1-font-size);
+    font-weight: var(--t1-font-weight);
+    line-height: var(--t1-font-line-height);
+  }
+
+  .count {
+    font-size: var(--p1-font-size);
+    font-weight: var(--p1-font-weight);
+    line-height: var(--p1-font-line-height);
+  }
+
+  .dropzone {
+    min-height: 24rem;
+    padding: 1.6rem;
+  }
+
+  .dropInner {
+    padding: 2.4rem 1.6rem;
+  }
+
+  .cloudIcon {
+    width: 5.2rem;
+  }
+
+  .dropTitle {
+    font-size: var(--button-font-size);
+    font-weight: var(--button-font-weight);
+    line-height: var(--button-font-line-height);
+  }
+
+  .previewGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+  }
+
+  .submitBtn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,120 @@
+.toolbar {
+  border-top: 1px solid var(--color-primary-500);
+  background: var(--color-primary-200);
+  padding: 1rem 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* 드롭다운 */
+.selectWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
+  color: #5a524a;
+  cursor: pointer;
+  padding: 0.4rem 2.4rem 0.4rem 0.8rem;
+  border-radius: var(--border-radius);
+  outline: none;
+  transition: background-color 0.15s;
+}
+
+.select:hover {
+  background-color: #ddd8d0;
+}
+
+.selectArrow {
+  position: absolute;
+  right: 0.6rem;
+  pointer-events: none;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+  color: #7a7268;
+}
+
+/* 구분선 */
+.separator {
+  width: 1px;
+  height: 1.8rem;
+  background: #cdc6bc;
+  margin: 0 0.4rem;
+  flex-shrink: 0;
+}
+
+/* 서식 버튼 공통 */
+.formatBtn,
+.alignBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--border-radius);
+  color: #5a524a;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-font-line-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+}
+
+.formatBtn:hover,
+.alignBtn:hover {
+  background-color: #ddd8d0;
+}
+
+.formatBtn.active,
+.alignBtn.active {
+  background-color: var(--color-primary-300);
+  color: #1e1c1a;
+}
+
+/* 색상 피커 */
+.colorLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--border-radius);
+  transition: background-color 0.15s;
+}
+
+.colorLabel:hover {
+  background-color: #ddd8d0;
+}
+
+.colorSwatch {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 0.2rem;
+  border: 1px solid #a89f96;
+  flex-shrink: 0;
+}
+
+.colorArrow {
+  pointer-events: none;
+  font-size: var(--t3-font-size);
+  font-weight: var(--t3-font-weight);
+  line-height: var(--t3-font-line-height);
+  color: #7a7268;
+}
+
+.colorInput {
+  display: none;
+}

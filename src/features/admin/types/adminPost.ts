@@ -1,14 +1,18 @@
-export type AdminPostType = "MOOMYEONGSO" | "DIARY" | "TODAY";
+import type { PostImage, PostType } from "../../post/types/types";
+
+export type AdminPostStatus = "ACTIVE" | "PENDING" | "DELETED" | string;
 
 export type AdminPostResponse = {
   postId: string;
-  title: string;
   content: string;
   userId: string;
-  type: AdminPostType;
-  isDeleted: boolean;
+  type: PostType;
+  from: string;
+  to: string;
+  status: AdminPostStatus;
+  commentCount: number;
   views: number;
   likes: number;
+  images: PostImage[];
   createdAt: string;
-  tags?: string[];
 };

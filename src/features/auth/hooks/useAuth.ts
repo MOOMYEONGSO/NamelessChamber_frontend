@@ -8,6 +8,7 @@ import {
   getEmail,
 } from "../api/tokenStore";
 import { queryClient } from "../../../lib/query";
+import type { VisitMotive } from "../constants/signup";
 
 type CommonOpts = {
   onSuccess?: (data: AuthResponse) => void;
@@ -15,7 +16,7 @@ type CommonOpts = {
 };
 
 export function useLogin(
-  opts: CommonOpts = {}
+  opts: CommonOpts = {},
 ): UseMutationResult<
   AuthResponse,
   unknown,
@@ -31,15 +32,18 @@ export function useLogin(
   });
 }
 
-export function useSignup(
-  opts: CommonOpts = {}
-): UseMutationResult<
+export function useSignup(opts: CommonOpts = {}): UseMutationResult<
   AuthResponse,
   unknown,
-  { email: string; password: string }
+  {
+    visitMotive: VisitMotive;
+    nickname: string;
+    email: string;
+    password: string;
+  }
 > {
   return useMutation({
-    mutationFn: ({ email, password }) => authApi.signup(email, password),
+    mutationFn: (payload) => authApi.signup(payload),
     onSuccess: (data, variables) => {
       persistAuth({ ...data, email: variables.email });
       opts.onSuccess?.(data);
@@ -48,16 +52,17 @@ export function useSignup(
   });
 }
 
-export function useAnonymousLogin(opts: CommonOpts = {}) {
-  return useMutation<AuthResponse, unknown, void>({
-    mutationFn: () => authApi.anonymousLogin(),
-    onSuccess: (data) => {
-      persistAuth(data);
-      opts.onSuccess?.(data);
-    },
-    onError: (err) => opts.onError?.(err),
-  });
-}
+// 익명 로그인 비활성화
+// export function useAnonymousLogin(opts: CommonOpts = {}) {
+//   return useMutation<AuthResponse, unknown, void>({
+//     mutationFn: () => authApi.anonymousLogin(),
+//     onSuccess: (data) => {
+//       persistAuth(data);
+//       opts.onSuccess?.(data);
+//     },
+//     onError: (err) => opts.onError?.(err),
+//   });
+// }
 
 export function useLogout(): UseMutationResult<void, unknown, void> {
   return useMutation({

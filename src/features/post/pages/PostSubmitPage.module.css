@@ -1,0 +1,24 @@
+.wrap {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: rgba(217, 217, 217, 0.72);
+  gap: 2rem;
+}
+
+.message {
+  color: var(--color-primary-700);
+  font-family: var(--button-font-family);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-font-line-height);
+  letter-spacing: var(--button-font-letter-spacing);
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    padding: 0 4rem;
+  }
+}
