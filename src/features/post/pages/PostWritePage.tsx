@@ -15,7 +15,11 @@ import Button from "../../../components/button/Button";
 import BottomSheet from "../../../components/bottomSheet/BottomSheet";
 import iconMailman from "../../../assets/icons/icon_mailman.svg";
 import { getCaretOffsetTop } from "../utils/textareaCaret";
-import { ACCEPTED_IMAGE_INPUT, compressForUpload } from "../utils/imageUpload";
+import {
+  ACCEPTED_IMAGE_INPUT,
+  MAX_IMAGES,
+  compressForUpload,
+} from "../utils/imageUpload";
 import { useVisualViewport } from "../../../hooks/useVisualViewport";
 import { useLetterDraft } from "../hooks/useLetterDraft";
 import { useFieldIntro } from "../hooks/useFieldIntro";
@@ -479,14 +483,17 @@ function PostWritePage() {
         onChange={handleFileChange}
       />
 
-      {focused && (
+      {/* 이미지 모드에선 포커스가 없어도 바를 유지해 카메라로 추가 가능 */}
+      {(focused || hasImages) && (
         <KeyboardAccessoryBar
           onCamera={handleCameraClick}
           onUp={() => moveCaret(-1)}
           onDown={() => moveCaret(1)}
-          upDisabled={step === "to"}
-          downDisabled={step === "from"}
-          cameraDisabled={step !== "body"}
+          upDisabled={hasImages || step === "to"}
+          downDisabled={hasImages || step === "from"}
+          cameraDisabled={
+            hasImages ? images.length >= MAX_IMAGES : step !== "body"
+          }
         />
       )}
 
