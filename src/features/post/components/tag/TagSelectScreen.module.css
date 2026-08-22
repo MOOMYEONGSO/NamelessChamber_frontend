@@ -46,11 +46,11 @@
 
 .title {
   margin: 2rem 0 3.2rem;
-  font-family: var(--t1-font-family);
-  font-weight: var(--t1-font-weight);
-  font-size: var(--t1-font-size);
+  font-family: var(--t2-font-family);
+  font-weight: var(--t2-font-weight);
+  font-size: var(--t2-font-size);
   line-height: 1.45;
-  letter-spacing: var(--t1-font-letter-spacing);
+  letter-spacing: var(--t2-font-letter-spacing);
   color: var(--color-primary-700);
   white-space: pre-line;
 }

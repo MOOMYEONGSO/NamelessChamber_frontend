@@ -22,6 +22,10 @@
   z-index: 1;
 }
 
+.field[aria-invalid="true"] {
+  border: none;
+}
+
 /* 시각용 박스 (입력은 위의 투명 input이 담당) */
 .boxes {
   display: flex;
@@ -53,10 +57,10 @@
   border-color: var(--color-success);
 }
 
-.pinBox.error {
-  border: 0.5px solid var(--color-red);
-}
-
 .pinBox.active {
   border-color: var(--color-primary-700);
+}
+
+.pinBox.error {
+  border: 0.5px solid var(--color-red);
 }
