@@ -1,5 +1,6 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import Button from "../../../components/button/Button";
+import BackArrow from "../../../assets/icons/BackArrow";
 import Form, { type FormHandle } from "../../../components/form/Form";
 import TextArea from "../../../components/textarea/TextArea";
 import classes from "./FeedbackPage.module.css";
@@ -32,7 +33,7 @@ function FeedbackPage() {
       setContent("");
       showToast("소중한 피드백 감사합니다. 빠르게 살펴볼게요!", "check");
       navigate(PATHS.PROFILE);
-    } catch (e) {
+    } catch {
       showToast(
         "제출 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
         "cancel"
@@ -42,6 +43,17 @@ function FeedbackPage() {
 
   return (
     <section className={classes.feedback} ref={containerRef}>
+      <header className={classes.topbar}>
+        <button
+          type="button"
+          className={classes.back}
+          onClick={() => navigate(-1)}
+          aria-label="뒤로"
+        >
+          <BackArrow />
+        </button>
+      </header>
+
       <h2>솔직한 피드백이 좋아요!</h2>
 
       <Form id={FORM_ID} onSave={handleSave} ref={formRef}>

@@ -9,6 +9,26 @@
   gap: 4rem;
 }
 
+.topbar {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding-inline: 2rem;
+}
+
+.back {
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-primary-400);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .feedback h2 {
   font-family: var(--p1-font-family);
   font-weight: var(--t1-font-weight);
