@@ -16,6 +16,18 @@ export type AppError = {
   raw?: unknown;
 };
 
+const APP_ERROR_CODES = new Set<AppErrorCode>([
+  "INVALID_ACCESS",
+  "TOKEN_EXPIRED",
+  "UNAUTHORIZED",
+  "NO_COIN",
+  "FORBIDDEN",
+  "NOT_FOUND",
+  "SERVER_ERROR",
+  "NETWORK",
+  "UNKNOWN",
+]);
+
 const mapErrorCode = (n?: number): AppErrorCode => {
   switch (n) {
     case 1011:
@@ -31,24 +43,25 @@ const mapErrorCode = (n?: number): AppErrorCode => {
   }
 };
 
+function isRecord(x: unknown): x is Record<string, unknown> {
+  return typeof x === "object" && x !== null;
+}
+
 function isAppError(x: unknown): x is AppError {
   return (
-    typeof x === "object" &&
-    x !== null &&
-    "code" in x &&
-    typeof (x as any).code === "string"
+    isRecord(x) &&
+    typeof x.code === "string" &&
+    APP_ERROR_CODES.has(x.code as AppErrorCode)
   );
 }
 
 function isAxiosLike(x: unknown): x is {
-  response?: { status?: number; data?: any };
-  request?: any;
+  response?: { status?: number; data?: unknown };
+  request?: unknown;
   message?: string;
-  config?: any;
+  config?: unknown;
 } {
-  return (
-    typeof x === "object" && x !== null && ("response" in x || "request" in x)
-  );
+  return isRecord(x) && ("response" in x || "request" in x);
 }
 
 export function toAppError(err: unknown): AppError {
@@ -60,14 +73,14 @@ export function toAppError(err: unknown): AppError {
     if (!res) {
       return {
         code: "NETWORK",
-        message: (err as any).message ?? "네트워크 오류가 발생했습니다.",
+        message: err.message ?? "네트워크 오류가 발생했습니다.",
         raw: err,
       };
     }
 
     const { status, data } = res;
 
-    if (data && data.success === false) {
+    if (isRecord(data) && data.success === false) {
       const code =
         typeof data.errorCode === "number"
           ? mapErrorCode(data.errorCode)

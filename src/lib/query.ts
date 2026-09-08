@@ -12,6 +12,7 @@ function redirectToError(code: AppError["code"], message?: string) {
 const isRouteBlocking = (err: unknown) => {
   const e = toAppError(err);
   return (
+    e.code === "NO_COIN" ||
     e.code === "INVALID_ACCESS" ||
     e.code === "FORBIDDEN" ||
     e.code === "NOT_FOUND" ||
